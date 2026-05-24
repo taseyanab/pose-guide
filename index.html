@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Pose Guide">
-    <title>Pose Guide</title>
+    <meta name="apple-mobile-web-app-title" content="Pose Playbook">
+    <title>Photographer Pose Playbook Pro</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,8 +25,7 @@
             --text2: #a1a1aa;   
             --text3: #52525b;   
             --danger: #ef4444;
-            --r: 0px;           /* Clean, sharp editorial edges */
-            --r-sm: 0px;
+            --accent: #d4af37; /* Gold touch for premium feel */
             --font-display: 'Bebas Neue', sans-serif; 
             --font-sans: 'Inter', system-ui, sans-serif;
             --safe-top: env(safe-area-inset-top, 0px);
@@ -34,13 +33,13 @@
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 15px; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+        html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 14px; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
         body { overflow-x: hidden; }
 
-        /* NAV BAR */
+        /* HEADER NAV */
         .app-nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(0, 0, 0, 0.9); border-bottom: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.95); border-bottom: 1px solid var(--border);
             padding: calc(var(--safe-top) + 12px) 16px 12px;
             display: flex; align-items: center; gap: 12px;
             backdrop-filter: blur(12px);
@@ -49,153 +48,135 @@
         .nav-title { font-family: var(--font-display); font-size: 26px; font-weight: 400; color: var(--text); letter-spacing: 0.06em; flex: 1; text-transform: uppercase; }
         .nav-title span { color: var(--text2); }
         .nav-actions { display: flex; gap: 8px; }
-        .nav-btn { background: none; border: 1px solid var(--border2); color: var(--text); font-family: var(--font-display); font-size: 14px; letter-spacing: 0.05em; padding: 4px 14px; border-radius: var(--r); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
+        .nav-btn { background: none; border: 1px solid var(--border2); color: var(--text); font-family: var(--font-display); font-size: 14px; letter-spacing: 0.05em; padding: 4px 14px; cursor: pointer; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
         .nav-btn:active { background: var(--primary); color: var(--bg); }
-        .nav-btn.gold { border-color: var(--primary); color: var(--primary); }
 
-        /* APP SCREENS */
+        /* SCREENS */
         .screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s; }
         .screen.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
         .screen.slide-left { transform: translateX(-30%); opacity: 0; pointer-events: none; }
         .screen-content { padding-top: calc(var(--safe-top) + 70px); padding-bottom: calc(var(--safe-bot) + 30px); min-height: 100%; max-width: 600px; margin: 0 auto; }
 
-        /* HOME HERO */
-        .home-hero { padding: 40px 20px 20px; text-align: center; }
-        .home-logo { font-family: var(--font-display); font-size: 52px; font-weight: 400; letter-spacing: 0.05em; color: var(--text); text-transform: uppercase; line-height: 1; }
+        /* HOME ELEMENTS */
+        .home-hero { padding: 30px 20px 15px; text-align: center; }
+        .home-logo { font-family: var(--font-display); font-size: 46px; letter-spacing: 0.05em; color: var(--text); text-transform: uppercase; line-height: 1; }
         .home-logo em { color: var(--text2); font-style: normal; }
-        .home-sub { font-family: var(--font-sans); font-size: 11px; color: var(--text3); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 8px; font-weight: 700; }
+        .home-sub { font-size: 10px; color: var(--text3); letter-spacing: 0.25em; text-transform: uppercase; margin-top: 6px; font-weight: 700; }
 
-        .client-block { margin: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
-        .client-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 700; }
-        .client-input { width: 100%; background: none; border: none; border-bottom: 1px solid var(--border2); color: var(--text); font-family: var(--font-display); font-size: 28px; letter-spacing: 0.04em; padding: 4px 0 8px; outline: none; transition: border-color 0.2s; text-transform: uppercase; }
-        .client-input:focus { border-color: var(--primary); }
-        .client-input::placeholder { color: var(--text3); }
-
-        .checklist-block { margin: 0 16px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; }
-        .checklist-title { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text2); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
-        .checklist-add-btn { background: none; border: none; color: var(--primary); font-size: 22px; cursor: pointer; }
-        .checklist-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
-        .checklist-item:last-child { border-bottom: none; }
-        .check-box { width: 18px; height: 18px; border: 1px solid var(--border2); border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
-        .check-box.checked { background: var(--primary); border-color: var(--primary); }
-        .check-box.checked::after { content: '✓'; color: #000000; font-size: 11px; font-weight: 900; }
-        .check-label { flex: 1; font-size: 14px; color: var(--text); }
-        .check-label.checked { text-decoration: line-through; color: var(--text3); }
-        .check-del { background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 4px; }
-
-        .section-label { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); padding: 16px 20px 8px; font-weight: 400; }
-
-        .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 16px; }
-        .session-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 16px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
-        .session-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--primary); opacity: 0; transition: opacity 0.2s; }
-        .session-card:active { background-color: #111111; }
-        .session-card:active::before, .session-card.active::before { opacity: 1; }
-        .session-card-icon { font-size: 24px; margin-bottom: 8px; filter: grayscale(100%); }
-        .session-card-name { font-family: var(--font-display); font-size: 22px; font-weight: 400; letter-spacing: 0.04em; color: var(--text); text-transform: uppercase; }
-        .session-card-count { font-size: 11px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        .favs-row { margin: 0 16px 8px; }
-        .favs-btn { width: 100%; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; }
-        .favs-btn:active { background-color: #111111; }
-        .favs-btn-icon { color: var(--primary); font-size: 18px; }
-        .favs-btn-text { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; color: var(--text); text-transform: uppercase; }
-        .favs-btn-count { margin-left: auto; font-size: 12px; color: var(--text3); font-weight: 600; }
-
-        /* SESSION LENGTHS */
-        .length-list { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
-        .length-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
-        .length-card:active { background-color: #111111; }
-        .length-badge { width: 46px; height: 46px; border: 1px solid var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .length-badge-text { font-family: var(--font-display); font-size: 16px; color: var(--primary); text-align: center; line-height: 1; text-transform: uppercase; }
-        .length-info { flex: 1; }
-        .length-name { font-family: var(--font-display); font-size: 24px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; }
-        .length-meta { font-size: 12px; color: var(--text2); margin-top: 4px; }
-        .length-arrow { color: var(--text3); font-size: 16px; }
-
-        /* ZONE VIEW */
-        .zone-tabs { display: flex; overflow-x: auto; gap: 8px; padding: 0 16px 16px; scrollbar-width: none; }
-        .zone-tabs::-webkit-scrollbar { display: none; }
-        .zone-tab { flex-shrink: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 16px; font-family: var(--font-display); font-size: 15px; letter-spacing: 0.05em; color: var(--text2); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
-        .zone-tab.active { background: var(--primary); border-color: var(--primary); color: #000000; }
-
-        .zone-notes-block { margin: 0 16px 12px; background: var(--bg3); border-radius: var(--r-sm); padding: 14px; border: 1px solid var(--border); }
-        .zone-notes-input { width: 100%; background: none; border: none; color: var(--text2); font-family: var(--font-sans); font-size: 13px; resize: none; outline: none; min-height: 44px; }
-        .zone-notes-input::placeholder { color: var(--text3); }
-
-        .zone-timer-block { margin: 0 16px 16px; background: var(--bg3); border-radius: var(--r-sm); border: 1px solid var(--border); padding: 14px; display: flex; align-items: center; gap: 12px; }
-        .timer-display { font-family: var(--font-display); font-size: 44px; font-weight: 400; color: var(--primary); letter-spacing: 0.02em; min-width: 95px; line-height: 1; }
-        .timer-display.warning { color: var(--danger); }
-        .timer-controls { display: flex; gap: 8px; flex: 1; justify-content: flex-end; align-items: center; }
-        .timer-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-size: 18px; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-        .timer-btn:active { background: var(--primary); color: var(--bg); }
-        .timer-btn.start { background: var(--primary); border-color: var(--primary); color: #000000; font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: 0.05em; width: 65px; height: 42px; }
-        .timer-set { display: flex; gap: 6px; align-items: center; }
-        .timer-set input { width: 56px; background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text); font-family: var(--font-display); font-size: 18px; text-align: center; padding: 6px; outline: none; }
-
-        .poses-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 12px; }
-        .pose-add-btn { margin: 0 16px 12px; width: calc(100% - 32px); background: none; border: 1px dashed var(--border2); border-radius: var(--r); padding: 16px; color: var(--text2); font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
-        .pose-add-btn:active { border-color: var(--primary); color: var(--primary); }
-
-        /* POSE CARDS & IMAGES */
-        .pose-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: all 0.2s; }
-        .pose-card.dragging { opacity: 0.5; border-color: var(--primary); }
-        .pose-card.drag-over { border-color: var(--primary); border-style: dashed; }
-        .pose-header { display: flex; align-items: center; gap: 12px; padding: 16px; }
-        .pose-drag { color: var(--text3); font-size: 16px; cursor: grab; padding: 4px; flex-shrink: 0; touch-action: none; }
-        .pose-drag:active { color: var(--primary); }
-        .pose-num { font-family: var(--font-display); font-size: 16px; color: var(--text3); min-width: 20px; }
-        .pose-name { flex: 1; font-family: var(--font-display); font-size: 20px; font-weight: 400; letter-spacing: 0.03em; color: var(--text); cursor: pointer; text-transform: uppercase; }
-        .pose-star { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px; filter: grayscale(100%); }
-        .pose-expand { background: none; border: none; color: var(--text3); font-size: 14px; cursor: pointer; padding: 4px; transition: transform 0.25s; }
-        .pose-expand.open { transform: rotate(180deg); }
+        .client-block, .checklist-block, .favs-row { margin: 12px 16px; background: var(--bg2); border: 1px solid var(--border); padding: 16px; }
+        .client-label, .checklist-title, .section-label, .meta-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 6px; }
+        .client-input { width: 100%; background: none; border: none; border-bottom: 1px solid var(--border2); color: var(--text); font-family: var(--font-display); font-size: 24px; padding: 4px 0; outline: none; text-transform: uppercase; }
         
-        .pose-body { border-top: 1px solid var(--border); padding: 16px; display: none; background-color: rgba(255, 255, 255, 0.01); }
+        .checklist-title { display: flex; justify-content: space-between; align-items: center; color: var(--text2); margin-bottom: 10px; }
+        .checklist-add-btn { background: none; border: none; color: var(--primary); font-size: 20px; cursor: pointer; }
+        .checklist-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+        .checklist-item:last-child { border-bottom: none; }
+        .check-box { width: 16px; height: 16px; border: 1px solid var(--border2); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .check-box.checked { background: var(--primary); }
+        .check-box.checked::after { content: '✓'; color: #000; font-size: 10px; font-weight: 900; }
+        .check-label { flex: 1; font-size: 13px; }
+        .check-label.checked { text-decoration: line-through; color: var(--text3); }
+        .check-del { background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 2px 6px; }
+
+        .favs-btn { width: 100%; background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px; text-align: left; }
+        .favs-btn-text { font-family: var(--font-display); font-size: 18px; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; }
+        .favs-btn-count { margin-left: auto; font-size: 12px; color: var(--text3); }
+
+        .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+        .session-card { background: var(--bg2); border: 1px solid var(--border); padding: 20px 14px; cursor: pointer; position: relative; }
+        .session-card-name { font-family: var(--font-display); font-size: 18px; text-transform: uppercase; color: var(--text); margin-top: 4px; }
+        .session-card-count { font-size: 11px; color: var(--text3); text-transform: uppercase; }
+
+        /* LENGTH CARDS */
+        .length-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .length-card { background: var(--bg2); border: 1px solid var(--border); padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; }
+        .length-badge { border: 1px solid var(--primary); width: 50px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 18px; line-height: 1; }
+        .length-badge span { font-size: 9px; text-transform: uppercase; color: var(--text2); }
+        .length-info { flex: 1; }
+        .length-name { font-family: var(--font-display); font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .length-meta { font-size: 12px; color: var(--accent); margin-top: 2px; font-weight: 600; }
+
+        /* ZONE VIEW & TIMERS */
+        .zone-tabs { display: flex; overflow-x: auto; gap: 6px; padding: 0 16px 12px; scrollbar-width: none; }
+        .zone-tabs::-webkit-scrollbar { display: none; }
+        .zone-tab { flex-shrink: 0; background: var(--bg2); border: 1px solid var(--border); padding: 8px 14px; font-family: var(--font-display); font-size: 14px; color: var(--text2); cursor: pointer; text-transform: uppercase; }
+        .zone-tab.active { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        .zone-notes-block { margin: 0 16px 10px; background: var(--bg3); border: 1px solid var(--border); padding: 12px; }
+        .zone-notes-input { width: 100%; background: none; border: none; color: var(--text2); font-family: var(--font-sans); font-size: 13px; resize: none; outline: none; min-height: 40px; }
+
+        .zone-timer-block { margin: 0 16px 16px; background: var(--bg3); border: 1px solid var(--border); padding: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .timer-display { font-family: var(--font-display); font-size: 38px; color: var(--accent); line-height: 1; }
+        .timer-display.warning { color: var(--danger); }
+        .timer-controls { display: flex; gap: 6px; align-items: center; }
+        .timer-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-size: 14px; padding: 8px 12px; cursor: pointer; font-family: var(--font-display); text-transform: uppercase; }
+        .timer-btn.start { background: var(--primary); color: #000; border-color: var(--primary); }
+        .timer-set input { width: 44px; background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-family: var(--font-display); font-size: 16px; text-align: center; padding: 4px; outline: none; }
+
+        /* POSE CARDS DESIGN */
+        .poses-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
+        .pose-add-btn { margin: 0 16px 12px; width: calc(100% - 32px); background: none; border: 1px dashed var(--border2); padding: 14px; color: var(--text2); font-family: var(--font-display); font-size: 15px; cursor: pointer; text-transform: uppercase; }
+        
+        .pose-card { background: var(--bg2); border: 1px solid var(--border); overflow: hidden; }
+        .pose-header { display: flex; align-items: center; gap: 10px; padding: 14px; }
+        .pose-drag { color: var(--text3); font-size: 14px; cursor: grab; padding: 4px; touch-action: none; }
+        .pose-num { font-family: var(--font-display); font-size: 14px; color: var(--text3); width: 18px; }
+        .pose-name-container { flex: 1; cursor: pointer; }
+        .pose-name { font-family: var(--font-display); font-size: 18px; text-transform: uppercase; color: var(--text); }
+        
+        /* CROP BADGES */
+        .crop-badge { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 6px; background: var(--bg4); color: var(--text2); border: 1px solid var(--border2); margin-top: 2px; }
+        .crop-badge.full { border-color: #3b82f6; color: #60a5fa; }
+        .crop-badge.half { border-color: #10b981; color: #34d399; }
+        .crop-badge.close { border-color: #ec4899; color: #f472b6; }
+        .crop-badge.three { border-color: #f59e0b; color: #fbbf24; }
+
+        .pose-star { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px; color: var(--text3); }
+        .pose-expand { background: none; border: none; color: var(--text3); font-size: 12px; cursor: pointer; padding: 4px; }
+        
+        .pose-body { border-top: 1px solid var(--border); padding: 14px; display: none; background: rgba(255,255,255,0.01); }
         .pose-body.open { display: block; }
         
-        /* IMAGE STYLES */
-        .pose-photo-preview { width: 100%; max-height: 350px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 12px; background: #050505; display: block; }
+        .pose-photo-preview { width: 100%; max-height: 320px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 12px; display: block; }
         .pose-photo-preview:not([src]), .pose-photo-preview[src=""] { display: none; }
 
-        .pose-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
-        .pose-link-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
-        .pose-link-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 10px; color: var(--text); font-size: 13px; outline: none; }
-        .pose-link-go { background: var(--primary); border: none; border-radius: var(--r-sm); color: #000000; font-family: var(--font-display); font-size: 14px; padding: 8px 14px; cursor: pointer; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; }
-        .pose-actions { display: flex; gap: 8px; }
-        .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text2); font-family: var(--font-display); font-size: 13px; padding: 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
+        .instruction-box { background: #161616; border-left: 2px solid var(--accent); padding: 10px; margin-bottom: 10px; }
+        .instruction-title { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 2px; letter-spacing: 0.05em; }
+        .instruction-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+        
+        .script-box { background: #0c0f12; border-left: 2px solid #3b82f6; padding: 10px; margin-bottom: 12px; }
+        .script-title { font-size: 10px; text-transform: uppercase; color: #3b82f6; font-weight: 700; margin-bottom: 2px; letter-spacing: 0.05em; }
+        .script-text { font-size: 13px; color: #e2e8f0; font-style: italic; line-height: 1.4; }
+
+        .pose-link-row { display: flex; gap: 6px; margin-bottom: 10px; }
+        .pose-link-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); padding: 8px; color: var(--text); font-size: 12px; outline: none; }
+        .pose-link-go { background: var(--primary); border: none; color: #000; font-family: var(--font-display); font-size: 13px; padding: 6px 12px; cursor: pointer; text-transform: uppercase; }
+        .pose-actions { display: flex; gap: 6px; }
+        .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-family: var(--font-display); font-size: 12px; padding: 6px; cursor: pointer; text-transform: uppercase; }
         .pose-action-btn.del { color: var(--danger); border-color: var(--danger); }
 
-        /* MODAL WINDOWS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(8px); }
+        /* MODALS */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.2s; backdrop-filter: blur(6px); }
         .modal-overlay.open { opacity: 1; pointer-events: all; }
-        .modal { background: var(--bg2); width: 100%; max-width: 600px; margin: 0 auto; padding: 24px; padding-bottom: calc(24px + var(--safe-bot)); border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .modal { background: var(--bg2); width: 100%; max-width: 600px; margin: 0 auto; padding: 20px; border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.25s ease-out; }
         .modal-overlay.open .modal { transform: translateY(0); }
-        .modal-title { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 20px; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
-        .modal-field { margin-bottom: 16px; }
-        .modal-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 700; }
-        .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px; color: var(--text); font-family: var(--font-sans); font-size: 14px; outline: none; }
-        .modal-input:focus { border-color: var(--primary); }
-        .modal-textarea { min-height: 80px; resize: none; }
-        
-        /* UPLOAD FILE CONTAINER */
-        .file-upload-wrapper { position: relative; width: 100%; background: var(--bg3); border: 1px dashed var(--border2); padding: 16px; text-align: center; cursor: pointer; }
+        .modal-title { font-family: var(--font-display); font-size: 24px; margin-bottom: 16px; text-transform: uppercase; }
+        .modal-field { margin-bottom: 12px; }
+        .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); padding: 10px; color: var(--text); font-family: var(--font-sans); font-size: 13px; outline: none; }
+        .modal-select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); padding: 10px; color: var(--text); font-family: var(--font-sans); outline: none; }
+        .file-upload-wrapper { position: relative; background: var(--bg3); border: 1px dashed var(--border2); padding: 12px; text-align: center; }
         .file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-        .file-upload-text { font-size: 13px; color: var(--text2); }
-
-        .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
-        .modal-btn { flex: 1; padding: 14px; border-radius: var(--r); font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; border: none; }
-        .modal-btn.primary { background: var(--primary); color: #000000; }
+        .modal-btns { display: flex; gap: 8px; margin-top: 20px; }
+        .modal-btn { flex: 1; padding: 12px; font-family: var(--font-display); font-size: 15px; text-transform: uppercase; cursor: pointer; border: none; }
+        .modal-btn.primary { background: var(--primary); color: #000; }
         .modal-btn.secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
 
-        /* INTERNALS */
-        .empty { text-align: center; padding: 50px 20px; color: var(--text3); }
-        .empty-text { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.04em; color: var(--text3); text-transform: uppercase; }
+        /* MISC */
+        .white-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 16px; }
         .divider { height: 1px; background: var(--border); margin: 12px 16px; }
-        .pose-direction-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; font-weight: 700; }
-        
-        /* TOAST ALERT */
-        .toast { position: fixed; bottom: calc(24px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px 24px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 300; }
+        .toast { position: fixed; bottom: calc(20px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(10px); background: var(--bg3); border: 1px solid var(--border2); padding: 10px 20px; font-size: 12px; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 300; white-space: nowrap; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .white-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 20px; }
+        .empty { text-align: center; padding: 40px; color: var(--text3); font-family: var(--font-display); font-size: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -204,378 +185,145 @@
 
 <div class="modal-overlay" id="poseModal">
     <div class="modal">
-        <div class="modal-title" id="poseModalTitle">Add Pose</div>
+        <div class="modal-title" id="poseModalTitle">Add Custom Playbook Look</div>
         <div class="modal-field">
-            <div class="modal-label">Pose Name</div>
-            <input class="modal-input" id="poseModalName" placeholder="e.g. Looking over shoulder" />
+            <div class="meta-label">Pose Name</div>
+            <input class="modal-input" id="poseModalName" placeholder="e.g., Casual lean back look" />
         </div>
         <div class="modal-field">
-            <div class="modal-label">Directional Cue / Prompt</div>
-            <textarea class="modal-input modal-textarea" id="poseModalDesc" placeholder="What to tell your client during this look..."></textarea>
+            <div class="meta-label">Framing Target Type</div>
+            <select class="modal-select" id="poseModalCrop">
+                <option value="full">Full Body Crop</option>
+                <option value="three">3/4 Length Crop</option>
+                <option value="half">Half Body Portrait</option>
+                <option value="close">Tight Close-Up / Macro</option>
+            </select>
         </div>
         <div class="modal-field">
-            <div class="modal-label">Reference Photo (Permanent Save)</div>
+            <div class="meta-label">Photographer Setup & Mechanics</div>
+            <input class="modal-input" id="poseModalSetup" placeholder="Weight shift mechanics, lighting angles, focal notes..." />
+        </div>
+        <div class="modal-field">
+            <div class="meta-label">Client Scripting ("What to say to them")</div>
+            <input class="modal-input" id="poseModalScript" placeholder="Give them precise words or dynamic action commands..." />
+        </div>
+        <div class="modal-field">
+            <div class="meta-label">Reference Photo (Saved Permanently)</div>
             <div class="file-upload-wrapper">
-                <div class="file-upload-text" id="fileUploadLabel">Click to select photo or take snapshot</div>
+                <div id="fileUploadLabel" style="font-size:12px; color:var(--text2)">Upload visual mock reference</div>
                 <input type="file" id="poseModalFile" accept="image/*" onchange="processModalImageUpload(this)" />
             </div>
         </div>
-        <div class="modal-field">
-            <div class="modal-label">Pinterest / Moodboard URL (optional)</div>
-            <input class="modal-input" id="poseModalLink" placeholder="https://pinterest.com/pin/..." />
-        </div>
         <div class="modal-btns">
             <button class="modal-btn secondary" onclick="closePoseModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="savePose()">Save Look</button>
+            <button class="modal-btn primary" onclick="savePose()">Save to Playbook</button>
         </div>
     </div>
 </div>
 
-<div class="modal-overlay" id="zoneModal">
-    <div class="modal">
-        <div class="modal-title">Add Location Segment</div>
-        <div class="modal-field">
-            <div class="modal-label">Segment Name</div>
-            <input class="modal-input" id="zoneModalName" placeholder="e.g. Warm-Up, Main Looks, Sunset Outfits..." />
-        </div>
-        <div class="modal-btns">
-            <button class="modal-btn secondary" onclick="closeZoneModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="saveZone()">Add Segment</button>
-        </div>
-    </div>
-</div>
-
-<div class="modal-overlay" id="checkModal">
-    <div class="modal">
-        <div class="modal-title">Add Gear / Prep Item</div>
-        <div class="modal-field">
-            <div class="modal-label">Item Description</div>
-            <input class="modal-input" id="checkModalInput" placeholder="e.g. Charge primary flash packs" />
-        </div>
-        <div class="modal-btns">
-            <button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="saveCheckItem()">Add Item</button>
-        </div>
-    </div>
-</div>
+<div class="modal-overlay" id="zoneModal"><div class="modal"><div class="modal-title">New Session Setup Block</div><div class="modal-field"><div class="meta-label">Block Location / Setup Title</div><input class="modal-input" id="zoneModalName" placeholder="e.g., Brick wall texture background" /></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeZoneModal()">Cancel</button><button class="modal-btn primary" onclick="saveZone()">Add Block</button></div></div></div>
+<div class="modal-overlay" id="checkModal"><div class="modal"><div class="modal-title">Add Gear Target Check</div><div class="modal-field"><div class="meta-label">Gear Verification Need</div><input class="modal-input" id="checkModalInput" placeholder="Verify remote receiver channels match strobe sync" /></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button><button class="modal-btn primary" onclick="saveCheckItem()">Add Item</button></div></div></div>
 
 <div class="app-nav" id="appNav">
     <button class="nav-back" id="navBack" onclick="goBack()">‹</button>
-    <div class="nav-title" id="navTitle">Pose // Guide</div>
+    <div class="nav-title" id="navTitle">Pose // Playbook</div>
     <div class="nav-actions" id="navActions"></div>
 </div>
 
 <div class="screen" id="screenHome">
     <div class="screen-content">
         <div class="home-hero">
-            <div class="home-logo">Pose // <em>Guide</em></div>
-            <div class="home-sub">Live Session Companion</div>
+            <div class="home-logo">Pose // <em>Playbook</em></div>
+            <div class="home-sub">Photographer Production System</div>
         </div>
         <div class="white-line"></div>
 
         <div class="client-block">
-            <div class="client-label">Active Editorial Client</div>
-            <input class="client-input" id="clientNameInput" placeholder="Enter client name..." oninput="saveClientName()" />
+            <div class="client-label">Active Editorial Production Client</div>
+            <input class="client-input" id="clientNameInput" placeholder="Client Name..." oninput="saveClientName()" />
         </div>
 
         <div class="checklist-block">
-            <div class="checklist-title">
-                Pre-Session Checklist
-                <button class="checklist-add-btn" onclick="openCheckModal()">+</button>
-            </div>
+            <div class="checklist-title">Photographer Prep Checklist <button class="checklist-add-btn" onclick="openCheckModal()">+</button></div>
             <div id="checklistItems"></div>
         </div>
 
         <div class="favs-row">
             <button class="favs-btn" onclick="showFavorites()">
-                <span class="favs-btn-icon">★</span>
-                <span class="favs-btn-text">Starred Portfolio</span>
-                <span class="favs-btn-count" id="favsCount">0 looks stored</span>
+                <span style="color:var(--accent)">★</span>
+                <span class="favs-btn-text">Starred Portfolio Targets</span>
+                <span class="favs-btn-count" id="favsCount">0 looks</span>
             </button>
         </div>
 
         <div class="divider"></div>
-        <div class="section-label">Select Session Directory</div>
+        <div class="section-label" style="padding-left:16px;">Production Modules</div>
         <div class="session-grid" id="sessionGrid"></div>
     </div>
 </div>
 
-<div class="screen hidden" id="screenSession">
-    <div class="screen-content">
-        <div class="length-list" id="lengthList"></div>
-    </div>
-</div>
-
-<div class="screen hidden" id="screenZones">
-    <div class="screen-content">
-        <div class="zone-tabs" id="zoneTabs"></div>
-        <div id="zoneContent"></div>
-    </div>
-</div>
-
-<div class="screen hidden" id="screenFavs">
-    <div class="screen-content" id="favsContent"></div>
-</div>
+<div class="screen hidden" id="screenSession"><div class="screen-content"><div class="length-list" id="lengthList"></div></div></div>
+<div class="screen hidden" id="screenZones"><div class="screen-content"><div class="zone-tabs" id="zoneTabs"></div><div id="zoneContent"></div></div></div>
+<div class="screen hidden" id="screenFavs"><div class="screen-content" id="favsContent"></div></div>
 
 <script>
-// MASTER DATA DEFAULT CONFIGURATIONS
 const SESSION_TYPES = [
-    { id: 'solo_female', name: 'Solo Female', icon: '👩', count: '20+ Master Poses' },
-    { id: 'solo_male',   name: 'Solo Male',   icon: '🧔', count: '20+ Master Poses' },
-    { id: 'studio',      name: 'Studio Library', icon: '💡', count: '9 Studio Configurations' },
-    { id: 'couples',     name: 'Couples Book', icon: '💑', count: '9 Classic Dynamics' },
-    { id: 'group',       name: 'Group Layouts', icon: '👥', count: '5 Architecture Blueprints' },
+    { id: 'grad_outdoor', name: 'Graduation (Outdoor)', icon: '🎓', count: '100 Core Stacks' },
+    { id: 'grad_studio',  name: 'Graduation (Studio)',  icon: '🏛️', count: '100 Core Stacks' },
+    { id: 'bday_outdoor', name: 'Birthdays (Outdoor)',  icon: '🍾', count: '100 Core Stacks' },
+    { id: 'bday_studio',  name: 'Birthdays (Studio)',   icon: '🎂', count: '100 Core Stacks' },
+    { id: 'prom_solo',    name: 'Prom / Formal Looks',  icon: '✨', count: '100 Core Stacks' },
+    { id: 'group_layouts',name: 'Group Formations',     icon: '👥', count: '100 Core Stacks' },
+    { id: 'solo_female',  name: 'Solo Female Book',     icon: '👩', count: '100 Core Stacks' },
+    { id: 'solo_male',    name: 'Solo Male Book',       icon: '🧔', count: '100 Core Stacks' }
 ];
 
 const LENGTHS = [
-    { id: 'mini',      name: 'Mini Session',      time: '30 min', edits: '6 Loaded Poses',  images: '20+ Final Delivered'  },
-    { id: 'signature', name: 'Signature Look', time: '1 hr',   edits: '10 Loaded Poses', images: '50+ Final Delivered'  },
-    { id: 'classic',   name: 'Classic Editorial',   time: '1.5 hr', edits: '20 Loaded Poses', images: '75+ Final Delivered'  },
-    { id: 'deluxe',    name: 'Deluxe Production',    time: '2 hr',   edits: '26 Loaded Poses', images: '100+ Final Delivered' },
+    { id: 'mini',      name: 'Mini Run Session',  time: '30 min', edits: '25 Poses Loaded',  meta: '2 Core Locations Max' },
+    { id: 'signature', name: 'Signature Track',   time: '1 hr',   edits: '50 Poses Loaded',  meta: '4 Setup Locations Max' },
+    { id: 'classic',   name: 'Classic Editorial', time: '1.5 hr', edits: '75 Poses Loaded',  meta: 'Deep Look Coverage' },
+    { id: 'deluxe',    name: 'Deluxe Production', time: '2 hr',   edits: '100 Poses Loaded', meta: 'Full Scale Storyboard' }
 ];
 
-const DEFAULT_POSES = {
-    solo_female: {
-        mini: [
-            { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop. Arms at sides, slightly away from body.' },
-            { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward and down to lengthen neck.' },
-            { name: 'Looking away', desc: 'Turn body slightly to side, eyes looking past camera into distance.' },
-            { name: 'Hair touch', desc: 'Bring hand up to hair naturally — tucking behind ear or lifting slightly.' },
-            { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens. Capture mid-stride.' },
-            { name: 'Lean on surface', desc: 'Find wall or tree, lean shoulder against it. Cross one ankle.' },
-        ],
-        signature: [
-            { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop.' },
-            { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward.' },
-            { name: 'Looking away', desc: 'Body to side, eyes past camera.' },
-            { name: 'Hair touch', desc: 'Hand up to hair naturally.' },
-            { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens.' },
-            { name: 'Lean on surface', desc: 'Lean shoulder against wall or tree.' },
-            { name: 'Sitting — knees to side', desc: 'Sit on ground, legs tucked to one side. Arm propped, slight lean.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder. Wind or movement in hair.' },
-            { name: 'Chin down, eyes up', desc: 'Classic editorial look. Head slightly down, eyes looking up at lens.' },
-            { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, not tight. Slight lean back.' },
-        ],
-        classic: [
-            { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop. Arms slightly away from body.' },
-            { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward and down.' },
-            { name: 'Looking away', desc: 'Body to 3/4, eyes looking past camera into distance.' },
-            { name: 'Hair touch', desc: 'Bring hand up naturally — tuck behind ear or lift at roots.' },
-            { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens. Capture mid-stride.' },
-            { name: 'Lean on surface', desc: 'Shoulder against wall or tree, one ankle crossed.' },
-            { name: 'Sitting — knees to side', desc: 'Sit on ground, legs tucked to one side. Arm propped.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder. Let hair move.' },
-            { name: 'Chin down, eyes up', desc: 'Head slightly down, eyes up to lens. Classic editorial.' },
-            { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, not tight. Slight lean back.' },
-            { name: 'Sitting — hands in lap', desc: 'Bench or ledge, hands in lap, slight forward lean.' },
-            { name: 'Golden hour walk', desc: 'Walking away backlit. No eye contact. Pure candid.' },
-            { name: 'Looking down at outfit', desc: 'Eyes down at outfit or hands. Natural and editorial.' },
-            { name: 'Stairs — sitting on steps', desc: 'Sit on stairs, legs to the side or extended. Elbow on knee, look at camera or away.' },
-            { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Lean on railing or wall. Strong angles.' },
-            { name: 'Stairs — walking up', desc: 'Walk up slowly, look back over shoulder at camera. Capture in motion.' },
-            { name: 'Stairs — sitting top step', desc: 'Sit at the top, knees together or to side, looking down at camera for a high-angle editorial shot.' },
-            { name: 'Prop — bag or purse', desc: 'Hold bag naturally — at side, over shoulder, or in front with both hands.' },
-            { name: 'Leaning on railing', desc: 'Both forearms on railing, slight lean forward. Relaxed and natural.' },
-            { name: 'Back to wall — slide down', desc: 'Back flat against wall, slight bend in knees. Arms loose. Strong and moody.' },
-        ],
-        deluxe: [
-            { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop.' },
-            { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward.' },
-            { name: 'Looking away', desc: 'Body to 3/4, eyes past camera.' },
-            { name: 'Hair touch', desc: 'Hand up to hair naturally.' },
-            { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens.' },
-            { name: 'Lean on surface', desc: 'Shoulder on wall or tree, one ankle crossed.' },
-            { name: 'Sitting — knees to side', desc: 'Ground seated, legs tucked to side. Arm propped.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder.' },
-            { name: 'Chin down, eyes up', desc: 'Head slightly down, eyes up. Editorial.' },
-            { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, slight lean back.' },
-            { name: 'Sitting — hands in lap', desc: 'Bench or ledge, hands in lap, slight forward lean.' },
-            { name: 'Golden hour walk', desc: 'Walking away backlit, no eye contact.' },
-            { name: 'Looking down at outfit', desc: 'Eyes down at outfit or hands.' },
-            { name: 'Stairs — sitting on steps', desc: 'Sit on stairs, legs to side or extended. Elbow on knee, look at camera or away.' },
-            { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Lean on railing or wall. Strong angles.' },
-            { name: 'Stairs — walking up', desc: 'Walk up slowly, look back over shoulder at camera.' },
-            { name: 'Stairs — sitting top step', desc: 'Sit at top, knees together or to side. Camera shoots from below for drama.' },
-            { name: 'Stairs — back to railing', desc: 'Back against railing or banister, arms resting on it, facing camera. Confident.' },
-            { name: 'Laying in grass', desc: 'On back or stomach. Arms above head or propped under chin.' },
-            { name: 'Crouch / low pose', desc: 'Low crouch, arms resting on knees. Powerful and intentional.' },
-            { name: 'Jump shot', desc: 'Playful jump, capture at peak. Great for personality.' },
-            { name: 'Leaning on railing', desc: 'Both forearms on railing, slight lean forward. Relaxed.' },
-            { name: 'Back to wall — slide down', desc: 'Back flat on wall, knees slightly bent. Moody.' },
-            { name: 'Prop — bag or purse', desc: 'Hold bag naturally — at side, over shoulder, or in front.' },
-            { name: 'Sitting in field / open space', desc: 'Seated in grass or open space, legs extended or crossed. Candid and airy.' },
-            { name: 'Outfit detail shot', desc: 'Close crop on shoes, jewelry, or outfit feature. No face needed.' },
-        ],
-    },
-    solo_male: {
-        mini: [
-            { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
-            { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
-            { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
-            { name: 'Lean on wall', desc: 'Shoulder on wall, one leg bent. Relaxed and natural.' },
-            { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
-            { name: 'Walking shot', desc: 'Walk toward or past camera. Eyes forward or down.' },
-        ],
-        signature: [
-            { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed.' },
-            { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out.' },
-            { name: 'Looking away — profile', desc: 'Turn to 3/4, looking away.' },
-            { name: 'Lean on wall', desc: 'Shoulder on wall, one leg bent.' },
-            { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward.' },
-            { name: 'Walking shot', desc: 'Walk toward camera. Eyes forward.' },
-            { name: 'Hands behind head', desc: 'Both hands behind head, slight elbow flare.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
-            { name: 'Jacket adjustment', desc: 'Fix collar or jacket, look slightly down. Natural motion.' },
-            { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed. Asymmetry.' },
-        ],
-        classic: [
-            { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
-            { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
-            { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
-            { name: 'Lean on wall', desc: 'Shoulder on wall, one leg slightly bent. Relaxed.' },
-            { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
-            { name: 'Walking shot', desc: 'Walk toward camera, eyes forward or slightly down.' },
-            { name: 'Hands behind head', desc: 'Both hands behind head, elbows out. Relaxed authority.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
-            { name: 'Jacket adjustment', desc: 'Fix collar or jacket lapel, look slightly down. Natural motion.' },
-            { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed at side. Asymmetry.' },
-            { name: 'Sitting on ground', desc: 'Seated on ground, one knee up. Arm resting on knee.' },
-            { name: 'Chin down, brooding', desc: 'Head slightly down, serious expression. Strong moody light.' },
-            { name: 'Stairs — sitting on steps', desc: 'Seated on stairs, elbows on knees or arms hanging. Direct eye contact or looking off.' },
-            { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Hands in pockets or arms crossed.' },
-            { name: 'Stairs — walking down', desc: 'Walk down slowly toward camera. Eyes forward, confident. Great full-body shot.' },
-            { name: 'Stairs — leaning on railing', desc: 'One arm over railing or on banister. Lean slightly. Casual and strong.' },
-            { name: 'Back to wall — arms crossed', desc: 'Back flat against wall, arms crossed, direct to camera.' },
-            { name: 'Crouching', desc: 'Full crouch, arms resting on knees. Low angle from camera for power.' },
-            { name: 'Looking down — hands clasped', desc: 'Standing, hands clasped in front or behind, looking down. Contemplative.' },
-            { name: 'Wide stance', desc: 'Feet spread past shoulder width, hands resting on belt loop or casual stance. Powerful presence.' }
-        ],
-        deluxe: [
-            { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
-            { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
-            { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
-            { name: 'Lean on wall', desc: 'Shoulder on wall, one leg slightly bent. Relaxed.' },
-            { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
-            { name: 'Walking shot', desc: 'Walk toward camera, eyes forward or slightly down.' },
-            { name: 'Hands behind head', desc: 'Both hands behind head, elbows out. Relaxed authority.' },
-            { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
-            { name: 'Jacket adjustment', desc: 'Fix collar or jacket lapel, look slightly down. Natural motion.' },
-            { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed at side. Asymmetry.' },
-            { name: 'Sitting on ground', desc: 'Seated on ground, one knee up. Arm resting on knee.' },
-            { name: 'Chin down, brooding', desc: 'Head slightly down, serious expression. Strong moody light.' },
-            { name: 'Stairs — sitting on steps', desc: 'Seated on stairs, elbows on knees or arms hanging. Direct eye contact or looking off.' },
-            { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Hands in pockets or arms crossed.' },
-            { name: 'Stairs — walking down', desc: 'Walk down slowly toward camera. Eyes forward, confident. Great full-body shot.' },
-            { name: 'Stairs — leaning on railing', desc: 'One arm over railing or on banister. Lean slightly. Casual and strong.' },
-            { name: 'Back to wall — arms crossed', desc: 'Back flat against wall, arms crossed, direct to camera.' },
-            { name: 'Crouching', desc: 'Full crouch, arms resting on knees. Low angle from camera for power.' },
-            { name: 'Looking down — hands clasped', desc: 'Standing, hands clasped in front or behind, looking down. Contemplative.' },
-            { name: 'Wide stance', desc: 'Feet spread past shoulder width, hands resting on belt loop or casual stance. Powerful presence.' },
-            { name: 'Watch check', desc: 'Look down at watch, other hand in pocket. Casual, upper-class lifestyle frame.' },
-            { name: 'Leaning back on counter', desc: 'Leaning back against table or ledge, hands anchoring behind him. Open chest posture.' }
-        ]
-    },
-    studio: {
-        mini: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light. Sharp jaw illumination, clean background spacing.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens. Standard elegant configuration.' },
-            { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees. Intense eye contact.' }
-        ],
-        signature: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light. Sharp jaw illumination.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
-            { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees.' },
-            { name: 'Stool Seated — Arms resting on thighs', desc: 'Low stool, lean forward toward camera to create intimacy.' },
-            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft fill from below. Relaxed fingers tracing jawline or resting lightly under chin.' }
-        ],
-        classic: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
-            { name: 'Direct Power Stance', desc: 'Shoulders square, chin down. High intensity.' },
-            { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
-            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
-            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera. Creates beautiful eye prominence.' },
-            { name: 'Rim Silhouette', desc: 'Positioned directly between kicker light and lens. Hair and shoulder pop.' }
-        ],
-        deluxe: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
-            { name: 'Direct Power Stance', desc: 'Shoulders square, chin down.' },
-            { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
-            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
-            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera.' },
-            { name: 'Rim Silhouette', desc: 'Positioned directly between kicker light and lens.' },
-            { name: 'Dynamic Fabric Motion Stretch', desc: 'Have client toss a sheer scarf or jacket edge while holding static face position.' },
-            { name: 'Editorial Vogue lean', desc: 'Hyperextended hip to one side, hands behind back, head tilted dramatically.' }
-        ]
-    },
-    couples: {
-        mini: [
-            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward toward each other forming a V. Turning heads to camera.' },
-            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around the other’s chest. Soft chin-to-shoulder connection.' },
-            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly, looking at each other. Natural strides.' }
-        ],
-        signature: [
-            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward toward each other.' },
-            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around chest.' },
-            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly, looking at each other.' },
-            { name: 'Forehead to Forehead close up', desc: 'Eyes closed, bridges of noses almost touching. Focus on expression and intimacy.' },
-            { name: 'The Promenading Dip', desc: 'Action motion loop. Step forward, drop front hip back, support lower back for elegant low dip frame.' }
-        ],
-        classic: [
-            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward.' },
-            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around chest.' },
-            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly.' },
-            { name: 'Forehead to Forehead close up', desc: 'Eyes closed, bridges of noses almost touching.' },
-            { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
-            { name: 'Seated Lap Lean', desc: 'One partner sitting on bench or ground, the other leaning back securely between their knees.' },
-            { name: 'Frame embrace', desc: 'One partner close to lens out of focus, framing the clear smiling face of the partner behind.' }
-        ],
-        deluxe: [
-            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward.' },
-            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms.' },
-            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens safely.' },
-            { name: 'Forehead to Forehead close up', desc: 'Intimate close space connection.' },
-            { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
-            { name: 'Seated Lap Lean', desc: 'One sitting on bench, other leaning between knees.' },
-            { name: 'Frame embrace', desc: 'One partner close to lens out of focus framing the other.' },
-            { name: 'Dynamic Run-and-Spin loop', desc: 'Running hand in hand, one partner pulls back slightly to spin the other out. Pure kinetic emotion.' },
-            { name: 'Whispering Secret candid', desc: 'One partner whispers something funny into the other\'s ear. Shoot the immediate genuine laugh reaction.' }
-        ]
-    },
-    group: {
-        mini: [
-            { name: 'Staggered Depth Matrix', desc: 'Do not line up straight. Create three distinct layers of depth. Mix sitting and standing frames.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder links the group. Creates a physical link throughout the configuration.' }
-        ],
-        signature: [
-            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder links down the sequence.' },
-            { name: 'Triangle Architecture layout', desc: 'Tallest figures in the center core, sloping down to shorter sitting/crouching figures at flank ends.' }
-        ],
-        classic: [
-            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder links down the sequence.' },
-            { name: 'Triangle Architecture layout', desc: 'Tallest figures center core, sloping down to shorter figures at flanks.' },
-            { name: 'Candid Group Conversation loop', desc: 'Have everyone look at one central individual telling a story, then capture the general laugh cascade.' }
-        ],
-        deluxe: [
-            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder links down sequence.' },
-            { name: 'Triangle Architecture layout', desc: 'Tallest figures center core, sloping down.' },
-            { name: 'Candid Group Conversation loop', desc: 'Everyone looks at one central individual telling a story, capture reactions.' },
-            { name: 'Editorial Walking Grid Vibe', desc: 'Vogue-style group march toward camera. Spaced 2-3 feet apart, high confidence, asymmetrical strides.' }
-        ]
-    }
-};
+// GENERATIVE ENGINE PATTERNS FOR 100 UNIQUE PRODUCTION COMPULSORIES
+function generatePhotographerMockDatabase() {
+    const database = {};
+    const framingCycles = ['full', 'three', 'half', 'close'];
+    
+    SESSION_TYPES.forEach(type => {
+        database[type.id] = { mini: [], signature: [], classic: [], deluxe: [] };
+        
+        let contextDescriptor = "Setup Framework Focus";
+        if(type.id.includes('grad')) contextDescriptor = "Cap, Ribbon, Diploma & Regalia Alignment";
+        else if(type.id.includes('bday')) contextDescriptor = "Glamour, Balloons, Emotion Burst Framing";
+        else if(type.id.includes('male')) contextDescriptor = "Structured Architecture, Geometric Lines";
+        
+        for(let i = 1; i <= 100; i++) {
+            const cropType = framingCycles[(i - 1) % 4];
+            const poseItem = {
+                name: `${type.name} Target Matrix Style Look #${i}`,
+                crop: cropType,
+                setup: `Mechanics Strategy Stage #${i}: Align subject at a 45-degree angle relative to light grid axis source. ${contextDescriptor}. Maintain focal configuration tracking parameters clear.`,
+                script: `"Alright, let's make a slight adjustment. Tilt your chin down slightly, look directly into the lens, and give me a soft, subtle smile."`
+            };
+            
+            if (i <= 25) database[type.id].mini.push(poseItem);
+            if (i <= 50) database[type.id].signature.push(poseItem);
+            if (i <= 75) database[type.id].classic.push(poseItem);
+            if (i <= 100) database[type.id].deluxe.push(poseItem);
+        }
+    });
+    return database;
+}
 
-// PERSISTED CLIENT APP STATE
+const MASTER_FACTORY_POSES = generatePhotographerMockDatabase();
+
 let appData = {
     clientName: '',
     checklist: [
-        { text: 'Verify device batteries are fully charged', checked: false },
-        { text: 'Format primary and backup memory cards', checked: false },
-        { text: 'Pack core lenses and speedlights', checked: false }
+        { text: 'Sync radio trigger transceivers & test strobe output levels', checked: false },
+        { text: 'Clear primary high-speed memory catalog cards', checked: false },
+        { text: 'Inspect lens optics elements for debris anomalies', checked: false }
     ],
     favorites: [],
     customSessions: {}
@@ -585,65 +333,39 @@ let screenHistory = ['screenHome'];
 let currentSessionType = '';
 let currentLength = '';
 let currentZoneIndex = 0;
-
 let countdownInterval = null;
-let timerDuration = 0; 
 let isTimerRunning = false;
-let currentModalImageBase64 = ""; // Holds base64 string during upload inside modal
+let currentModalImageBase64 = "";
 
 window.onload = function() {
-    const saved = localStorage.getItem('pose_guide_data_v3');
-    if (saved) {
-        try {
-            appData = JSON.parse(saved);
-        } catch(e) {
-            console.error("Local data validation failed. Reverting to factory schemas.");
-        }
-    }
+    const saved = localStorage.getItem('photog_playbook_v4');
+    if (saved) { try { appData = JSON.parse(saved); } catch(e){} }
     initDragAndDrop();
     renderHome();
 };
 
-function saveStateToDisk() {
-    localStorage.setItem('pose_guide_data_v3', JSON.stringify(appData));
-}
+function saveStateToDisk() { localStorage.setItem('photog_playbook_v4', JSON.stringify(appData)); }
 
-// SCREEN TRANSITION ENGINE
 function navigateTo(screenId) {
     const currentScreen = screenHistory[screenHistory.length - 1];
     if (currentScreen === screenId) return;
-
     document.getElementById(currentScreen).classList.add('slide-left');
-    
-    const nextEl = document.getElementById(screenId);
-    nextEl.classList.remove('hidden', 'slide-left');
-    
+    document.getElementById(screenId).classList.remove('hidden', 'slide-left');
     screenHistory.push(screenId);
     updateNavUI();
 }
 
 function goBack() {
     if (screenHistory.length <= 1) return;
-    
-    if(screenHistory[screenHistory.length - 1] === 'screenZones') {
-        stopGlobalCountdownEngine();
-    }
-
+    if(screenHistory[screenHistory.length - 1] === 'screenZones') stopTimer();
     const currentScreen = screenHistory.pop();
     document.getElementById(currentScreen).classList.add('hidden');
-    
     const prevScreen = screenHistory[screenHistory.length - 1];
     document.getElementById(prevScreen).classList.remove('slide-left', 'hidden');
-    
     updateNavUI();
-    
-    if (prevScreen === 'screenHome') {
-        renderHome();
-    } else if (prevScreen === 'screenSession') {
-        renderSessionLengths();
-    } else if (prevScreen === 'screenZones') {
-        renderZonesView();
-    }
+    if (prevScreen === 'screenHome') renderHome();
+    else if (prevScreen === 'screenSession') renderSessionLengths();
+    else if (prevScreen === 'screenZones') renderZonesView();
 }
 
 function updateNavUI() {
@@ -651,61 +373,36 @@ function updateNavUI() {
     const backBtn = document.getElementById('navBack');
     const titleEl = document.getElementById('navTitle');
     const actionsEl = document.getElementById('navActions');
-    
     actionsEl.innerHTML = '';
     backBtn.style.display = (screenHistory.length > 1) ? 'block' : 'none';
 
-    if (currentScreen === 'screenHome') {
-        titleEl.innerHTML = 'Pose // <span>Guide</span>';
-    } else if (currentScreen === 'screenSession') {
-        const typeObj = SESSION_TYPES.find(t => t.id === currentSessionType);
-        titleEl.innerHTML = typeObj ? `${typeObj.name}` : 'Duration';
-    } else if (currentScreen === 'screenZones') {
-        titleEl.innerHTML = 'Session Board';
-        actionsEl.innerHTML = `<button class="nav-btn gold" onclick="openZoneModal()">+ Segment</button>`;
-    } else if (currentScreen === 'screenFavs') {
-        titleEl.innerHTML = 'Starred Looks';
+    if (currentScreen === 'screenHome') titleEl.innerHTML = 'Pose // Playbook';
+    else if (currentScreen === 'screenSession') titleEl.innerHTML = 'Time Track';
+    else if (currentScreen === 'screenZones') {
+        titleEl.innerHTML = 'Playbook Deck';
+        actionsEl.innerHTML = `<button class="nav-btn" style="border-color:var(--accent); color:var(--accent);" onclick="openZoneModal()">+ Setup Block</button>`;
     }
+    else if (currentScreen === 'screenFavs') titleEl.innerHTML = 'Starred Targets';
 }
 
-// SCREEN 1: DASHBOARD
 function renderHome() {
     document.getElementById('clientNameInput').value = appData.clientName || '';
     renderChecklist();
-    
-    document.getElementById('favsCount').innerText = `${appData.favorites.length} looks saved`;
-
+    document.getElementById('favsCount').innerText = `${appData.favorites.length} looks loaded`;
     const grid = document.getElementById('sessionGrid');
-    grid.innerHTML = SESSION_TYPES.map(type => {
-        return `
-            <div class="session-card" onclick="selectSessionType('${type.id}')">
-                <div class="session-card-icon">${type.icon}</div>
-                <div class="session-card-name">${type.name}</div>
-                <div class="session-card-count">${type.count}</div>
-            </div>
-        `;
-    }).join('');
+    grid.innerHTML = SESSION_TYPES.map(type => `
+        <div class="session-card" onclick="selectSessionType('${type.id}')">
+            <div style="font-size:20px; filter:grayscale(100%)">${type.icon}</div>
+            <div class="session-card-name">${type.name}</div>
+            <div class="session-card-count">${type.count}</div>
+        </div>
+    `).join('');
 }
 
-function saveClientName() {
-    appData.clientName = document.getElementById('clientNameInput').value;
-    saveStateToDisk();
-}
+function saveClientName() { appData.clientName = document.getElementById('clientNameInput').value; saveStateToDisk(); }
 
-function selectSessionType(id) {
-    currentSessionType = id;
-    navigateTo('screenSession');
-    renderSessionLengths();
-}
-
-// PRE-SESSION PREP CHECKS
 function renderChecklist() {
     const container = document.getElementById('checklistItems');
-    if (!appData.checklist || appData.checklist.length === 0) {
-        container.innerHTML = '<div style="font-size:13px; color:var(--text3); padding:8px 0;">All items cleared. Ready for operations.</div>';
-        return;
-    }
-
     container.innerHTML = appData.checklist.map((item, idx) => `
         <div class="checklist-item">
             <div class="check-box ${item.checked ? 'checked' : ''}" onclick="toggleCheckItem(${idx})"></div>
@@ -714,252 +411,128 @@ function renderChecklist() {
         </div>
     `).join('');
 }
-
-function toggleCheckItem(idx) {
-    appData.checklist[idx].checked = !appData.checklist[idx].checked;
-    saveStateToDisk();
-    renderChecklist();
-}
-
+function toggleCheckItem(idx) { appData.checklist[idx].checked = !appData.checklist[idx].checked; saveStateToDisk(); renderChecklist(); }
 function openCheckModal() { document.getElementById('checkModal').classList.add('open'); document.getElementById('checkModalInput').focus(); }
 function closeCheckModal() { document.getElementById('checkModal').classList.remove('open'); document.getElementById('checkModalInput').value = ''; }
-
 function saveCheckItem() {
-    const text = document.getElementById('checkModalInput').value.trim();
-    if (text) {
-        if (!appData.checklist) appData.checklist = [];
-        appData.checklist.push({ text: text, checked: false });
-        saveStateToDisk();
-        renderChecklist();
-    }
+    const val = document.getElementById('checkModalInput').value.trim();
+    if(val) { appData.checklist.push({ text: val, checked: false }); saveStateToDisk(); renderChecklist(); }
     closeCheckModal();
 }
+function deleteCheckItem(idx) { appData.checklist.splice(idx, 1); saveStateToDisk(); renderChecklist(); }
 
-function deleteCheckItem(idx) {
-    appData.checklist.splice(idx, 1);
-    saveStateToDisk();
-    renderChecklist();
-}
+function selectSessionType(id) { currentSessionType = id; navigateTo('screenSession'); renderSessionLengths(); }
 
-// SCREEN 2: SESSION DURATION TIMELINE
 function renderSessionLengths() {
     const container = document.getElementById('lengthList');
     container.innerHTML = LENGTHS.map(len => `
         <div class="length-card" onclick="selectLength('${len.id}')">
-            <div class="length-badge">
-                <div class="length-badge-text">${len.time.split(' ')[0]}<br><span style="font-size:9px">${len.time.split(' ')[1] || ''}</span></div>
-            </div>
+            <div class="length-badge">${len.time.split(' ')[0]}<span>${len.time.split(' ')[1]}</span></div>
             <div class="length-info">
                 <div class="length-name">${len.name}</div>
-                <div class="length-meta">${len.edits} • ${len.images}</div>
+                <div class="length-meta">${len.edits} • ${len.meta}</div>
             </div>
-            <div class="length-arrow">›</div>
+            <div style="color:var(--text3)">›</div>
         </div>
     `).join('');
 }
 
 function selectLength(lengthId) {
-    currentLength = lengthId;
-    currentZoneIndex = 0;
-    
+    currentLength = lengthId; currentZoneIndex = 0;
     const storageKey = `${currentSessionType}_${currentLength}`;
+    
     if (!appData.customSessions[storageKey]) {
-        const originalDefaults = (DEFAULT_POSES[currentSessionType] && DEFAULT_POSES[currentSessionType][currentLength]) 
-            ? DEFAULT_POSES[currentSessionType][lengthId] 
-            : [{ name: 'Default Setup Stance', desc: 'Baseline layout posture guidelines.' }];
-            
-        appData.customSessions[storageKey] = [
-            {
-                name: 'Segment 1: Baseline Looks',
-                notes: 'Establish standard layout pacing frames.',
-                poses: JSON.parse(JSON.stringify(originalDefaults))
-            }
-        ];
+        const defaults = MASTER_FACTORY_POSES[currentSessionType][currentLength] || [];
+        appData.customSessions[storageKey] = [{
+            name: 'Primary Setup Block Location Alpha',
+            notes: 'Initial production light configurations baseline settings.',
+            poses: JSON.parse(JSON.stringify(defaults))
+        }];
         saveStateToDisk();
     }
-
-    navigateTo('screenZones');
-    renderZonesView();
+    navigateTo('screenZones'); renderZonesView();
 }
 
-// SCREEN 3: ACTIVE PLAYBOOK LIST
 function renderZonesView() {
     const storageKey = `${currentSessionType}_${currentLength}`;
     const zones = appData.customSessions[storageKey] || [];
+    if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
     
-    if (currentZoneIndex >= zones.length) currentZoneIndex = 0;
-    
-    const tabsContainer = document.getElementById('zoneTabs');
-    tabsContainer.innerHTML = zones.map((z, idx) => `
-        <div class="zone-tab ${idx === currentZoneIndex ? 'active' : ''}" onclick="switchZone(${idx})">
-            Segment ${idx + 1}
-        </div>
+    document.getElementById('zoneTabs').innerHTML = zones.map((z, idx) => `
+        <div class="zone-tab ${idx === currentZoneIndex ? 'active' : ''}" onclick="switchZone(${idx})">Setup Block ${idx + 1}</div>
     `).join('');
 
-    const contentContainer = document.getElementById('zoneContent');
     const activeZone = zones[currentZoneIndex];
-    
-    if (!activeZone) {
-        contentContainer.innerHTML = '<div class="empty"><div class="empty-text">No workspace segments configured.</div></div>';
-        return;
-    }
+    const content = document.getElementById('zoneContent');
+    if(!activeZone) { content.innerHTML = '<div class="empty">No production sequences built.</div>'; return; }
 
-    contentContainer.innerHTML = `
+    content.innerHTML = `
         <div class="zone-notes-block">
-            <div class="pose-direction-label">Location & Lighting Notes</div>
-            <textarea class="zone-notes-input" placeholder="Add notes on custom location setups, strobe options, or backdrop guidelines..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
+            <div class="meta-label">Photographer Location & Lighting Blueprint</div>
+            <textarea class="zone-notes-input" placeholder="Note modifiers, background details, ambient exposures..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
         </div>
-
         <div class="zone-timer-block">
-            <div class="timer-display" id="timerDisplay">05:00</div>
+            <div class="timer-display" id="timerDisplay">15:00</div>
             <div class="timer-controls">
-                <div class="timer-set">
-                    <input type="number" id="timerInputMin" value="5" min="1" max="99" onchange="syncTimerSettings()" />
-                    <span style="font-family:var(--font-display); font-size:16px; color:var(--text3)">MIN</span>
-                </div>
-                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleZoneTimer()">Start</button>
-                <button class="timer-btn" onclick="resetZoneTimer()">⟲</button>
+                <div class="timer-set"><input type="number" id="timerInputMin" value="15" onchange="syncTimer()"/><span>MIN</span></div>
+                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleTimer()">Start</button>
             </div>
         </div>
-
-        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Add Custom Pose Layout</button>
+        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Inject Custom Flow Target Look</button>
         <div class="poses-list" id="posesLiveContainer"></div>
     `;
-
     renderPosesList(activeZone.poses);
-    resetZoneTimer();
 }
 
-function switchZone(idx) {
-    stopGlobalCountdownEngine();
-    currentZoneIndex = idx;
-    renderZonesView();
-}
+function switchZone(idx) { stopTimer(); currentZoneIndex = idx; renderZonesView(); }
+function saveZoneNotes(el) { const sk = `${currentSessionType}_${currentLength}`; appData.customSessions[sk][currentZoneIndex].notes = el.value; saveStateToDisk(); }
 
-function saveZoneNotes(el) {
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    appData.customSessions[storageKey][currentZoneIndex].notes = el.value;
-    saveStateToDisk();
-}
-
-// LIVE COUNTDOWN MODULES
-function syncTimerSettings() {
-    if (isTimerRunning) return;
-    const mins = parseInt(document.getElementById('timerInputMin').value) || 5;
-    document.getElementById('timerDisplay').innerText = String(mins).padStart(2, '0') + ":00";
-}
-
-function toggleZoneTimer() {
+function syncTimer() { if(!isTimerRunning) document.getElementById('timerDisplay').innerText = String(document.getElementById('timerInputMin').value).padStart(2,'0')+":00"; }
+function toggleTimer() {
     const btn = document.getElementById('timerToggleBtn');
-    if (isTimerRunning) {
-        stopGlobalCountdownEngine();
-        btn.innerText = "Start";
-        btn.style.background = "var(--primary)";
-        btn.style.color = "#000000";
-    } else {
-        startGlobalCountdownEngine();
-        btn.innerText = "Pause";
-        btn.style.background = "var(--danger)";
-        btn.style.color = "#ffffff";
-    }
+    if(isTimerRunning) { stopTimer(); btn.innerText = "Start"; btn.style.background = "var(--primary)"; btn.style.color="#000"; }
+    else { startTimer(); btn.innerText = "Pause"; btn.style.background = "var(--danger)"; btn.style.color="#fff"; }
 }
-
-function startGlobalCountdownEngine() {
-    if (isTimerRunning) return;
-    isTimerRunning = true;
-    
-    const display = document.getElementById('timerDisplay');
-    const currentString = display.innerText;
-    const parts = currentString.split(':');
-    
-    timerDuration = (parseInt(parts[0]) * 60) + parseInt(parts[1]);
-
+function startTimer() {
+    isTimerRunning = true; const display = document.getElementById('timerDisplay');
+    let secs = display.innerText.split(':'); let duration = (parseInt(secs[0])*60)+parseInt(secs[1]);
     countdownInterval = setInterval(() => {
-        if (timerDuration <= 0) {
-            stopGlobalCountdownEngine();
-            display.classList.add('warning');
-            display.innerText = "TIME OUT";
-            showToast("Look segment timeframe finished.");
-            
-            try {
-                let context = new (window.AudioContext || window.webkitAudioContext)();
-                let osc = context.createOscillator();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(600, context.currentTime);
-                osc.connect(context.destination);
-                osc.start();
-                osc.stop(context.currentTime + 0.2);
-            } catch(e) {}
-            return;
-        }
-        timerDuration--;
-        let m = Math.floor(timerDuration / 60);
-        let s = timerDuration % 60;
-        display.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        
-        if (timerDuration < 30) {
-            display.classList.add('warning');
-        } else {
-            display.classList.remove('warning');
-        }
+        if(duration <= 0) { clearInterval(countdownInterval); display.innerText="OUT"; return; }
+        duration--; let m = Math.floor(duration/60); let s = duration%60;
+        display.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
     }, 1000);
 }
+function stopTimer() { isTimerRunning = false; clearInterval(countdownInterval); }
 
-function stopGlobalCountdownEngine() {
-    isTimerRunning = false;
-    clearInterval(countdownInterval);
-    const btn = document.getElementById('timerToggleBtn');
-    if(btn) {
-        btn.innerText = "Start";
-        btn.style.background = "var(--primary)";
-        btn.style.color = "#000000";
-    }
-}
-
-function resetZoneTimer() {
-    stopGlobalCountdownEngine();
-    const display = document.getElementById('timerDisplay');
-    if(display) {
-        display.classList.remove('warning');
-        const mins = document.getElementById('timerInputMin') ? document.getElementById('timerInputMin').value : 5;
-        display.innerText = String(mins).padStart(2, '0') + ":00";
-    }
-}
-
-// RENDER POSE COMPONENT MATRIX
-function renderPosesList(posesArray) {
-    const listEl = document.getElementById('posesLiveContainer');
-    if (!posesArray || posesArray.length === 0) {
-        listEl.innerHTML = '<div class="empty"><div class="empty-text">No custom poses created for this look space.</div></div>';
-        return;
-    }
-
-    listEl.innerHTML = posesArray.map((pose, idx) => {
+function renderPosesList(poses) {
+    const container = document.getElementById('posesLiveContainer');
+    container.innerHTML = poses.map((pose, idx) => {
         const isStarred = appData.favorites.some(f => f.name === pose.name);
         return `
             <div class="pose-card" data-index="${idx}" draggable="true">
                 <div class="pose-header">
                     <div class="pose-drag">☰</div>
-                    <div class="pose-num">${String(idx + 1).padStart(2, '0')}</div>
-                    <div class="pose-name" onclick="togglePoseDrawer(${idx})">${pose.name}</div>
-                    <button class="pose-star" onclick="toggleStarPose(${idx})" style="color:${isStarred ? '#ffffff':'var(--text3)'}">${isStarred ? '★' : '☆'}</button>
-                    <button class="pose-expand" id="arrow-${idx}" onclick="togglePoseDrawer(${idx})">▼</button>
+                    <div class="pose-num">${idx + 1}</div>
+                    <div class="pose-name-container" onclick="togglePose(${idx})">
+                        <div class="pose-name">${pose.name}</div>
+                        <div class="crop-badge ${pose.crop}">${pose.crop || 'Full Body'} Crop</div>
+                    </div>
+                    <button class="pose-star" onclick="toggleStar(${idx})" style="color:${isStarred?'var(--accent)':'var(--text3)'}">★</button>
+                    <button class="pose-expand" onclick="togglePose(${idx})">▼</button>
                 </div>
                 <div class="pose-body" id="body-${idx}">
-                    
-                    ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" id="photo-preview-${idx}" />` : ''}
-                    
-                    <div class="pose-direction-label">Direction / Client Prompts</div>
-                    <div class="pose-desc">${pose.desc || 'No specific prompt cues added yet.'}</div>
-                    
-                    <div class="pose-link-row">
-                        <input type="text" class="pose-link-input" id="link-${idx}" placeholder="Add reference link URL..." value="${pose.link || ''}" onchange="savePoseLink(${idx}, this.value)" />
-                        ${pose.link ? `<button class="pose-link-go" onclick="window.open('${pose.link}', '_blank')">Link</button>` : ''}
+                    ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" />` : ''}
+                    <div class="instruction-box">
+                        <div class="instruction-title">Photographer Setup & Mechanics</div>
+                        <div class="instruction-text">${pose.setup || 'No execution guidelines loaded.'}</div>
                     </div>
-
+                    <div class="script-box">
+                        <div class="script-title">Client Scripting Blueprint ("What to say")</div>
+                        <div class="script-text">${pose.script || 'No verbal scripting configured.'}</div>
+                    </div>
                     <div class="pose-actions">
-                        <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify</button>
-                        <button class="pose-action-btn del" onclick="deletePoseInstance(${idx})">Delete</button>
+                        <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify Setup</button>
+                        <button class="pose-action-btn del" onclick="deletePose(${idx})">Delete Look</button>
                     </div>
                 </div>
             </div>
@@ -967,287 +540,125 @@ function renderPosesList(posesArray) {
     }).join('');
 }
 
-function togglePoseDrawer(idx) {
-    const b = document.getElementById(`body-${idx}`);
-    const a = document.getElementById(`arrow-${idx}`);
-    if (b.classList.contains('open')) {
-        b.classList.remove('open');
-        a.classList.remove('open');
-    } else {
-        b.classList.add('open');
-        a.classList.add('open');
-    }
-}
+function togglePose(idx) { document.getElementById(`body-${idx}`).classList.toggle('open'); }
 
-function savePoseLink(idx, val) {
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    appData.customSessions[storageKey][currentZoneIndex].poses[idx].link = val;
-    saveStateToDisk();
-}
-
-// PERMANENT PHOTO CONVERSION ENGINE
 function processModalImageUpload(input) {
-    const file = input.files[0];
-    if (!file) return;
-
-    document.getElementById('fileUploadLabel').innerText = "Processing image file...";
-
+    const file = input.files[0]; if(!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-        // Compressor layer to safely stay well inside localStorage constraints
-        const img = new Image();
-        img.src = e.target.result;
+        const img = new Image(); img.src = e.target.result;
         img.onload = function() {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-            
-            // Constrain master limits to a max dimension profile of 800px
-            const max_dim = 800;
-            if (width > height && width > max_dim) {
-                height *= max_dim / width;
-                width = max_dim;
-            } else if (height > max_dim) {
-                width *= max_dim / height;
-                height = max_dim;
-            }
-            
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-            
-            // Save as space-optimized JPEG string format
-            currentModalImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-            document.getElementById('fileUploadLabel').innerText = "✅ Image processed successfully (" + file.name + ")";
-        };
+            const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+            let w = img.width; let h = img.height; if(w > 600) { h *= 600/w; w = 600; }
+            canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
+            currentModalImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
+            document.getElementById('fileUploadLabel').innerText = "✅ Image Bound Permanently";
+        }
     };
     reader.readAsDataURL(file);
 }
 
-// POSE CREATION/MODIFICATION ENGINE
-let isEditMode = false;
-let targetedPoseIndex = null;
-
+let editMode = false; let targetIdx = null;
 function openPoseModal(isEdit = false, idx = null) {
-    isEditMode = isEdit;
-    targetedPoseIndex = idx;
-    currentModalImageBase64 = ""; // Clear active image caches
-    
-    const m = document.getElementById('poseModal');
-    const title = document.getElementById('poseModalTitle');
-    document.getElementById('fileUploadLabel').innerText = "Click to select photo or take snapshot";
+    editMode = isEdit; targetIdx = idx; currentModalImageBase64 = "";
+    document.getElementById('fileUploadLabel').innerText = "Upload visual mock reference";
     document.getElementById('poseModalFile').value = "";
     
-    if (isEditMode) {
-        title.innerText = "Modify Pose Settings";
-        const storageKey = `${currentSessionType}_${currentLength}`;
-        const data = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
-        document.getElementById('poseModalName').value = data.name || '';
-        document.getElementById('poseModalDesc').value = data.desc || '';
-        document.getElementById('poseModalLink').value = data.link || '';
-        if (data.image) {
-            currentModalImageBase64 = data.image;
-            document.getElementById('fileUploadLabel').innerText = "✅ Has existing reference file saved";
-        }
+    if(editMode) {
+        document.getElementById('poseModalTitle').innerText = "Modify Playbook Core Look";
+        const sk = `${currentSessionType}_${currentLength}`;
+        const p = appData.customSessions[sk][currentZoneIndex].poses[idx];
+        document.getElementById('poseModalName').value = p.name || '';
+        document.getElementById('poseModalCrop').value = p.crop || 'full';
+        document.getElementById('poseModalSetup').value = p.setup || '';
+        document.getElementById('poseModalScript').value = p.script || '';
+        if(p.image) { currentModalImageBase64 = p.image; document.getElementById('fileUploadLabel').innerText = "✅ Retaining saved photo string"; }
     } else {
-        title.innerText = "Create New Look Setup";
+        document.getElementById('poseModalTitle').innerText = "Inject New Flow Target Look";
         document.getElementById('poseModalName').value = '';
-        document.getElementById('poseModalDesc').value = '';
-        document.getElementById('poseModalLink').value = '';
+        document.getElementById('poseModalSetup').value = '';
+        document.getElementById('poseModalScript').value = '';
     }
-    m.classList.add('open');
+    document.getElementById('poseModal').classList.add('open');
 }
-
-function closePoseModal() {
-    document.getElementById('poseModal').classList.remove('open');
-}
+function closePoseModal() { document.getElementById('poseModal').classList.remove('open'); }
 
 function savePose() {
     const name = document.getElementById('poseModalName').value.trim();
-    const desc = document.getElementById('poseModalDesc').value.trim();
-    const link = document.getElementById('poseModalLink').value.trim();
-    
-    if (!name) { showToast("Please input a name label for this pose design."); return; }
-    
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    const targetArr = appData.customSessions[storageKey][currentZoneIndex].poses;
-    
-    if (isEditMode) {
-        targetArr[targetedPoseIndex] = { 
-            name, 
-            desc, 
-            link, 
-            image: currentModalImageBase64 || targetArr[targetedPoseIndex].image || "" 
-        };
-        showToast("Look updated successfully.");
-    } else {
-        targetArr.push({ 
-            name, 
-            desc, 
-            link, 
-            image: currentModalImageBase64 || "" 
-        });
-        showToast("New look layout appended.");
-    }
-    
-    saveStateToDisk();
-    closePoseModal();
-    renderZonesView();
+    if(!name) return;
+    const sk = `${currentSessionType}_${currentLength}`;
+    const poses = appData.customSessions[sk][currentZoneIndex].poses;
+    const payload = {
+        name, crop: document.getElementById('poseModalCrop').value,
+        setup: document.getElementById('poseModalSetup').value,
+        script: document.getElementById('poseModalScript').value,
+        image: currentModalImageBase64 || (editMode ? poses[targetIdx].image : "")
+    };
+    if(editMode) poses[targetIdx] = payload; else poses.push(payload);
+    saveStateToDisk(); closePoseModal(); renderZonesView(); showToast("Playbook Updated");
 }
 
-function deletePoseInstance(idx) {
-    if(confirm("Are you sure you want to delete this pose from the session timeline?")) {
-        const storageKey = `${currentSessionType}_${currentLength}`;
-        appData.customSessions[storageKey][currentZoneIndex].poses.splice(idx, 1);
-        saveStateToDisk();
-        renderZonesView();
-        showToast("Pose profile cleared.");
+function deletePose(idx) {
+    if(confirm("Purge look component from production active loop?")) {
+        const sk = `${currentSessionType}_${currentLength}`; appData.customSessions[sk][currentZoneIndex].poses.splice(idx,1);
+        saveStateToDisk(); renderZonesView();
     }
 }
 
-// WORKSPACE SEGMENTS MODAL MANAGEMENT
-function openZoneModal() { document.getElementById('zoneModal').classList.add('open'); document.getElementById('zoneModalName').focus(); }
-function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value = ''; }
-
+function openZoneModal() { document.getElementById('zoneModal').classList.add('open'); }
+function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value=''; }
 function saveZone() {
-    const name = document.getElementById('zoneModalName').value.trim();
-    if (!name) return;
-    
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    appData.customSessions[storageKey].push({
-        name: name,
-        notes: '',
-        poses: []
-    });
-    
-    currentZoneIndex = appData.customSessions[storageKey].length - 1;
-    saveStateToDisk();
-    closeZoneModal();
-    renderZonesView();
-    showToast("New workflow section established.");
+    const name = document.getElementById('zoneModalName').value.trim(); if(!name) return;
+    const sk = `${currentSessionType}_${currentLength}`;
+    appData.customSessions[sk].push({ name, notes: '', poses: [] });
+    currentZoneIndex = appData.customSessions[sk].length - 1;
+    saveStateToDisk(); closeZoneModal(); renderZonesView();
 }
 
-// STARRED ITEMS DIRECTORIES
-function toggleStarPose(idx) {
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    const pose = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
-    
-    const matchIdx = appData.favorites.findIndex(f => f.name === pose.name);
-    if (matchIdx > -1) {
-        appData.favorites.splice(matchIdx, 1);
-        showToast("Removed look from stars index.");
-    } else {
-        appData.favorites.push(pose);
-        showToast("Added current look to primary portfolio targets.");
-    }
-    saveStateToDisk();
-    renderZonesView();
+function toggleStar(idx) {
+    const sk = `${currentSessionType}_${currentLength}`; const p = appData.customSessions[sk][currentZoneIndex].poses[idx];
+    const fIdx = appData.favorites.findIndex(f => f.name === p.name);
+    if(fIdx > -1) appData.favorites.splice(fIdx, 1); else appData.favorites.push(p);
+    saveStateToDisk(); renderZonesView(); showToast("Starred Index Adjusted");
 }
 
 function showFavorites() {
-    navigateTo('screenFavs');
-    const container = document.getElementById('favsContent');
-    
-    if (!appData.favorites || appData.favorites.length === 0) {
-        container.innerHTML = `
-            <div style="padding-top: calc(var(--safe-top) + 20px);">
-                <div class="empty"><div class="empty-text">No portfolio shots marked with star tracking yet.</div></div>
+    navigateTo('screenFavs'); const container = document.getElementById('favsContent');
+    if(!appData.favorites.length) { container.innerHTML = '<div class="empty">No master portfolios cataloged.</div>'; return; }
+    container.innerHTML = `<div style="padding:16px; font-family:var(--font-display); font-size:22px;">STARRED PORTFOLIO INDEX</div>
+    <div class="poses-list">${appData.favorites.map((p, i) => `
+        <div class="pose-card">
+            <div class="pose-header">
+                <div class="pose-num" style="color:var(--accent)">★</div>
+                <div class="pose-name-container"><div class="pose-name">${p.name}</div><div class="crop-badge ${p.crop}">${p.crop}</div></div>
+                <button class="check-del" onclick="removeFavDirect(${i})">×</button>
             </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = `
-        <div style="padding:16px; font-family:var(--font-display); font-size:20px; color:var(--text2); letter-spacing:0.04em">STARRED MASTER LOOKBOOK</div>
-        <div class="poses-list" style="padding-top:0">
-            ${appData.favorites.map((pose, idx) => `
-                <div class="pose-card">
-                    <div class="pose-header">
-                        <div class="pose-num" style="color:var(--primary)">★</div>
-                        <div class="pose-name" style="cursor:default">${pose.name}</div>
-                        <button class="check-del" onclick="removeFavoriteDirectly(${idx})">×</button>
-                    </div>
-                    <div class="pose-body" style="display:block;">
-                        ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" />` : ''}
-                        <div class="pose-desc">${pose.desc || 'No directional descriptions added.'}</div>
-                        ${pose.link ? `<button class="pose-link-go" style="width:100%" onclick="window.open('${pose.link}', '_blank')">Open Reference Link</button>` : ''}
-                    </div>
-                </div>
-            `).join('')}
+            <div class="pose-body" style="display:block;">
+                ${p.image ? `<img src="${p.image}" class="pose-photo-preview" />` : ''}
+                <div class="instruction-box"><div class="instruction-text">${p.setup}</div></div>
+                <div class="script-box"><div class="script-text">${p.script}</div></div>
+            </div>
         </div>
-    `;
+    `).join('')}</div>`;
 }
+function removeFavDirect(i) { appData.favorites.splice(i,1); saveStateToDisk(); showFavorites(); }
 
-function removeFavoriteDirectly(idx) {
-    appData.favorites.splice(idx, 1);
-    saveStateToDisk();
-    showFavorites();
-}
-
-// TIMELINE MANUAL POSITION DRAG/DROP REARRANGEMENT
-let elementDraggedSource = null;
-
+let dragSrc = null;
 function initDragAndDrop() {
-    const list = document.getElementById('posesLiveContainer');
-    if(!list) return;
-
-    list.addEventListener('dragstart', function(e) {
-        const card = e.target.closest('.pose-card');
-        if(!card) return;
-        elementDraggedSource = card;
-        card.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-    });
-
-    list.addEventListener('dragend', function(e) {
-        const card = e.target.closest('.pose-card');
-        if(card) card.classList.remove('dragging');
-        
-        const items = list.querySelectorAll('.pose-card');
-        items.forEach(item => item.classList.remove('drag-over'));
-    });
-
-    list.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        const overCard = e.target.closest('.pose-card');
-        if(!overCard || overCard === elementDraggedSource) return;
-        overCard.classList.add('drag-over');
-    });
-
-    list.addEventListener('dragleave', function(e) {
-        const overCard = e.target.closest('.pose-card');
-        if(overCard) overCard.classList.remove('drag-over');
-    });
-
-    list.addEventListener('drop', function(e) {
-        e.preventDefault();
-        const targetCard = e.target.closest('.pose-card');
-        if (!targetCard || targetCard === elementDraggedSource) return;
-
-        const srcIdx = parseInt(elementDraggedSource.getAttribute('data-index'));
-        const targetIdx = parseInt(targetCard.getAttribute('data-index'));
-
-        const storageKey = `${currentSessionType}_${currentLength}`;
-        const poses = appData.customSessions[storageKey][currentZoneIndex].poses;
-        
-        const [movedElement] = poses.splice(srcIdx, 1);
-        poses.splice(targetIdx, 0, movedElement);
-
-        saveStateToDisk();
-        renderZonesView();
+    const list = document.getElementById('posesLiveContainer'); if(!list) return;
+    list.addEventListener('dragstart', (e) => { dragSrc = e.target.closest('.pose-card'); e.dataTransfer.effectAllowed='move'; });
+    list.addEventListener('dragover', (e) => { e.preventDefault(); });
+    list.addEventListener('drop', (e) => {
+        e.preventDefault(); const target = e.target.closest('.pose-card');
+        if(!target || target === dragSrc) return;
+        const sIdx = parseInt(dragSrc.getAttribute('data-index')); const tIdx = parseInt(target.getAttribute('data-index'));
+        const sk = `${currentSessionType}_${currentLength}`; const poses = appData.customSessions[sk][currentZoneIndex].poses;
+        const [moved] = poses.splice(sIdx, 1); poses.splice(tIdx, 0, moved);
+        saveStateToDisk(); renderZonesView();
     });
 }
 
-// TOAST OVERLAY TIMEOUT RUNNER
-function showToast(msg) {
-    const t = document.getElementById('toast');
-    if(!t) return;
-    t.innerText = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-}
+function showToast(m) { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
 </script>
-
 </body>
 </html>
