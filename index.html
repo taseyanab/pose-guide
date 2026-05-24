@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pose Guide">
+<title>Pose Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a96e;
+    --gold-dim: #a8845080;
+    --gold-light: #e8cfa0;
+    --bg: #0d0d0d;
+    --bg2: #151515;
+    --bg3: #1e1e1e;
+    --bg4: #252525;
+    --border: #2a2a2a;
+    --border2: #333;
+    --text: #e8e0d4;
+    --text2: #a09080;
+    --text3: #6a5f52;
+    --danger: #c0604a;
+    --safe: radius 12px;
+    --r: 12px;
+    --r-sm: 8px;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'DM Sans', sans-serif;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bot: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 15px; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
+  body { overflow-x: hidden; }
+
+  /* ── NAV ── */
+  .app-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: calc(var(--safe-top) + 10px) 16px 10px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .nav-back { background: none; border: none; color: var(--gold); font-size: 22px; cursor: pointer; padding: 4px; line-height: 1; }
+  .nav-title { font-family: var(--font-serif); font-size: 20px; font-weight: 400; color: var(--text); letter-spacing: 0.02em; flex: 1; }
+  .nav-title span { color: var(--gold); }
+  .nav-actions { display: flex; gap: 8px; }
+  .nav-btn { background: none; border: 1px solid var(--border2); color: var(--text2); font-family: var(--font-sans); font-size: 12px; font-weight: 400; padding: 6px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .nav-btn:active { opacity: 0.7; }
+  .nav-btn.gold { border-color: var(--gold); color: var(--gold); }
+
+  /* ── SCREENS ── */
+  .screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s; }
+  .screen.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
+  .screen.slide-left { transform: translateX(-30%); opacity: 0; pointer-events: none; }
+  .screen-content { padding-top: calc(var(--safe-top) + 60px); padding-bottom: calc(var(--safe-bot) + 30px); min-height: 100%; }
+
+  /* ── HOME ── */
+  .home-hero { padding: 32px 20px 16px; text-align: center; }
+  .home-logo { font-family: var(--font-serif); font-size: 34px; font-weight: 300; letter-spacing: 0.04em; color: var(--text); }
+  .home-logo em { color: var(--gold); font-style: italic; }
+  .home-sub { font-size: 12px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
+
+  .client-block { margin: 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+  .client-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .client-input { width: 100%; background: none; border: none; border-bottom: 1px solid var(--border2); color: var(--text); font-family: var(--font-serif); font-size: 22px; font-weight: 300; padding: 4px 0 8px; outline: none; }
+  .client-input::placeholder { color: var(--text3); }
+
+  .checklist-block { margin: 0 16px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; }
+  .checklist-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .checklist-add-btn { background: none; border: none; color: var(--gold); font-size: 18px; cursor: pointer; }
+  .checklist-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .checklist-item:last-child { border-bottom: none; }
+  .check-box { width: 20px; height: 20px; border: 1.5px solid var(--border2); border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .check-box.checked { background: var(--gold); border-color: var(--gold); }
+  .check-box.checked::after { content: '✓'; color: #0d0d0d; font-size: 12px; font-weight: 700; }
+  .check-label { flex: 1; font-size: 14px; color: var(--text); }
+  .check-label.checked { text-decoration: line-through; color: var(--text3); }
+  .check-del { background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 4px; }
+
+  .section-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 8px 20px 6px; }
+
+  .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 16px; }
+  .session-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 18px 14px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .session-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); opacity: 0; transition: opacity 0.2s; }
+  .session-card:active { transform: scale(0.97); }
+  .session-card:active::before, .session-card.active::before { opacity: 1; }
+  .session-card-icon { font-size: 22px; margin-bottom: 8px; }
+  .session-card-name { font-family: var(--font-serif); font-size: 17px; font-weight: 400; color: var(--text); }
+  .session-card-count { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  .favs-row { margin: 0 16px 8px; }
+  .favs-btn { width: 100%; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; }
+  .favs-btn:active { opacity: 0.7; }
+  .favs-btn-icon { color: var(--gold); font-size: 18px; }
+  .favs-btn-text { font-family: var(--font-serif); font-size: 17px; color: var(--text); }
+  .favs-btn-count { margin-left: auto; font-size: 12px; color: var(--text3); }
+
+  /* ── SESSION (lengths) ── */
+  .length-list { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .length-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all 0.2s; }
+  .length-card:active { opacity: 0.7; }
+  .length-badge { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .length-badge-text { font-family: var(--font-serif); font-size: 11px; color: var(--gold); text-align: center; line-height: 1.2; }
+  .length-info { flex: 1; }
+  .length-name { font-family: var(--font-serif); font-size: 19px; font-weight: 400; }
+  .length-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .length-arrow { color: var(--text3); font-size: 16px; }
+
+  /* ── ZONE VIEW ── */
+  .zone-tabs { display: flex; overflow-x: auto; gap: 8px; padding: 0 16px 12px; scrollbar-width: none; }
+  .zone-tabs::-webkit-scrollbar { display: none; }
+  .zone-tab { flex-shrink: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .zone-tab.active { background: var(--gold); border-color: var(--gold); color: #0d0d0d; font-weight: 500; }
+  .zone-tab-add { flex-shrink: 0; background: none; border: 1px dashed var(--border2); border-radius: 20px; padding: 7px 14px; font-size: 13px; color: var(--text3); cursor: pointer; }
+
+  .zone-notes-block { margin: 0 16px 12px; background: var(--bg3); border-radius: var(--r-sm); padding: 12px; }
+  .zone-notes-input { width: 100%; background: none; border: none; color: var(--text2); font-family: var(--font-sans); font-size: 13px; resize: none; outline: none; min-height: 40px; }
+  .zone-notes-input::placeholder { color: var(--text3); }
+
+  .zone-timer-block { margin: 0 16px 16px; background: var(--bg3); border-radius: var(--r-sm); padding: 14px; display: flex; align-items: center; gap: 12px; }
+  .timer-display { font-family: var(--font-serif); font-size: 36px; font-weight: 300; color: var(--gold); letter-spacing: 0.05em; min-width: 90px; }
+  .timer-display.warning { color: #e07a5f; }
+  .timer-controls { display: flex; gap: 8px; flex: 1; justify-content: flex-end; align-items: center; }
+  .timer-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-size: 18px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .timer-btn:active { transform: scale(0.9); }
+  .timer-btn.start { background: var(--gold); border-color: var(--gold); color: #0d0d0d; font-size: 16px; width: 48px; height: 48px; }
+  .timer-set { display: flex; gap: 6px; align-items: center; }
+  .timer-set input { width: 52px; background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text); font-family: var(--font-serif); font-size: 15px; text-align: center; padding: 6px; outline: none; }
+
+  .poses-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
+  .pose-add-btn { margin: 0 16px 12px; width: calc(100% - 32px); background: none; border: 1px dashed var(--border2); border-radius: var(--r); padding: 14px; color: var(--text3); font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .pose-add-btn:active { border-color: var(--gold); color: var(--gold); }
+
+  .pose-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: all 0.2s; }
+  .pose-card.dragging { opacity: 0.5; border-color: var(--gold); }
+  .pose-card.drag-over { border-color: var(--gold); border-style: dashed; }
+  .pose-header { display: flex; align-items: center; gap: 10px; padding: 14px; }
+  .pose-drag { color: var(--text3); font-size: 16px; cursor: grab; padding: 4px; flex-shrink: 0; touch-action: none; }
+  .pose-drag:active { cursor: grabbing; color: var(--gold); }
+  .pose-num { font-family: var(--font-serif); font-size: 13px; color: var(--text3); min-width: 20px; }
+  .pose-name { flex: 1; font-family: var(--font-serif); font-size: 17px; font-weight: 400; color: var(--text); cursor: pointer; }
+  .pose-star { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px; transition: transform 0.2s; }
+  .pose-star:active { transform: scale(1.3); }
+  .pose-expand { background: none; border: none; color: var(--text3); font-size: 14px; cursor: pointer; padding: 4px; transition: transform 0.25s; }
+  .pose-expand.open { transform: rotate(180deg); }
+  .pose-body { border-top: 1px solid var(--border); padding: 12px 14px; display: none; }
+  .pose-body.open { display: block; }
+  .pose-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+  .pose-link-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .pose-link-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 8px 10px; color: var(--text); font-size: 13px; outline: none; }
+  .pose-link-input::placeholder { color: var(--text3); }
+  .pose-link-go { background: var(--gold); border: none; border-radius: var(--r-sm); color: #0d0d0d; font-size: 13px; padding: 8px 12px; cursor: pointer; white-space: nowrap; }
+  .pose-actions { display: flex; gap: 8px; }
+  .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text2); font-size: 12px; padding: 8px; cursor: pointer; transition: all 0.2s; }
+  .pose-action-btn.del { color: var(--danger); border-color: var(--danger); }
+  .pose-action-btn:active { opacity: 0.7; }
+
+  /* ── PER-POSE TIMER ── */
+  .pose-time-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 10px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+  .pose-time-chip:active { border-color: var(--gold); color: var(--gold); }
+  .pose-time-chip.running { border-color: var(--gold); color: var(--gold); background: rgba(201,169,110,0.08); }
+  .pose-time-chip.warning { border-color: #e07a5f; color: #e07a5f; }
+  .pose-direction-label { font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+
+  /* ── FAVORITES ── */
+  .favs-group { margin: 0 16px 20px; }
+  .favs-group-title { font-family: var(--font-serif); font-size: 13px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+
+  /* ── MODAL ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--bg2); border-radius: var(--r) var(--r) 0 0; width: 100%; padding: 20px; padding-bottom: calc(20px + var(--safe-bot)); border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-title { font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 16px; color: var(--text); }
+  .modal-field { margin-bottom: 14px; }
+  .modal-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+  .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 11px 12px; color: var(--text); font-family: var(--font-sans); font-size: 14px; outline: none; }
+  .modal-input:focus { border-color: var(--gold); }
+  .modal-textarea { min-height: 80px; resize: none; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 18px; }
+  .modal-btn { flex: 1; padding: 13px; border-radius: var(--r-sm); font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: opacity 0.2s; }
+  .modal-btn:active { opacity: 0.8; }
+  .modal-btn.primary { background: var(--gold); color: #0d0d0d; }
+  .modal-btn.secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+
+  /* ── ZONE MODAL ── */
+  .zone-modal-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .zone-modal-item:last-child { border-bottom: none; }
+  .zone-modal-name { flex: 1; font-size: 15px; color: var(--text); }
+  .zone-modal-del { background: none; border: none; color: var(--danger); font-size: 20px; cursor: pointer; }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 40px 20px; color: var(--text3); }
+  .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.5; }
+  .empty-text { font-family: var(--font-serif); font-size: 18px; color: var(--text3); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: calc(24px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 10px 20px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 300; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── ZONE DELETE BTN ── */
+  .zone-delete-btn { background: none; border: none; color: var(--danger); font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .gold-line { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 16px 20px; }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODAL: Add/Edit Pose -->
+<div class="modal-overlay" id="poseModal">
+  <div class="modal">
+    <div class="modal-title" id="poseModalTitle">Add Pose</div>
+    <div class="modal-field">
+      <div class="modal-label">Pose Name</div>
+      <input class="modal-input" id="poseModalName" placeholder="e.g. Looking over shoulder" />
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Direction / Cue (optional)</div>
+      <textarea class="modal-input modal-textarea" id="poseModalDesc" placeholder="What to say to your client during this pose..."></textarea>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Pinterest / Reference URL (optional)</div>
+      <input class="modal-input" id="poseModalLink" placeholder="https://pinterest.com/pin/..." />
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn secondary" onclick="closePoseModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="savePose()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Add Zone -->
+<div class="modal-overlay" id="zoneModal">
+  <div class="modal">
+    <div class="modal-title">Add Zone</div>
+    <div class="modal-field">
+      <div class="modal-label">Zone Name</div>
+      <input class="modal-input" id="zoneModalName" placeholder="e.g. Warm-Up, Feature Looks, Closing..." />
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn secondary" onclick="closeZoneModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveZone()">Add Zone</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Checklist Add -->
+<div class="modal-overlay" id="checkModal">
+  <div class="modal">
+    <div class="modal-title">Add Checklist Item</div>
+    <div class="modal-field">
+      <div class="modal-label">Item</div>
+      <input class="modal-input" id="checkModalInput" placeholder="e.g. Reflector packed" />
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button>
+      <button class="modal-btn primary" onclick="saveCheckItem()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="app-nav" id="appNav">
+  <button class="nav-back" id="navBack" onclick="goBack()" style="display:none">‹</button>
+  <div class="nav-title" id="navTitle"><em>Pose</em> Guide</div>
+  <div class="nav-actions" id="navActions"></div>
+</div>
+
+<!-- SCREENS -->
+<div class="screen" id="screenHome">
+  <div class="screen-content">
+    <div class="home-hero">
+      <div class="home-logo"><em>Pose</em> Guide</div>
+      <div class="home-sub">Session Companion</div>
+    </div>
+    <div class="gold-line"></div>
+
+    <div class="client-block">
+      <div class="client-label">Today's Client</div>
+      <input class="client-input" id="clientNameInput" placeholder="Client name..." oninput="saveClientName()" />
+    </div>
+
+    <div class="checklist-block">
+      <div class="checklist-title">
+        Pre-Session Checklist
+        <button class="checklist-add-btn" onclick="openCheckModal()">+</button>
+      </div>
+      <div id="checklistItems"></div>
+    </div>
+
+    <div class="favs-row">
+      <button class="favs-btn" onclick="showFavorites()">
+        <span class="favs-btn-icon">★</span>
+        <span class="favs-btn-text">Favorites</span>
+        <span class="favs-btn-count" id="favsCount">0 poses</span>
+      </button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">Session Types</div>
+    <div class="session-grid" id="sessionGrid"></div>
+  </div>
+</div>
+
+<div class="screen hidden" id="screenSession">
+  <div class="screen-content">
+    <div class="length-list" id="lengthList"></div>
+  </div>
+</div>
+
+<div class="screen hidden" id="screenZones">
+  <div class="screen-content">
+    <div class="zone-tabs" id="zoneTabs"></div>
+    <div id="zoneContent"></div>
+  </div>
+</div>
+
+<div class="screen hidden" id="screenFavs">
+  <div class="screen-content" id="favsContent" style="padding-top:calc(var(--safe-top) + 70px); padding-bottom: calc(var(--safe-bot)+30px)">
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  DATA DEFAULTS
+// ═══════════════════════════════════════════════════
+const SESSION_TYPES = [
+  { id: 'solo_female', name: 'Solo Female', icon: '👩' },
+  { id: 'solo_male',   name: 'Solo Male',   icon: '🧔' },
+  { id: 'studio',      name: 'Studio',      icon: '💡' },
+  { id: 'couples',     name: 'Couples',     icon: '💑' },
+  { id: 'group',       name: 'Group',       icon: '👥' },
+];
+const LENGTHS = [
+  { id: 'mini',      name: 'Mini',      time: '30 min', edits: '~1 hr editing',  images: '20+ images'  },
+  { id: 'signature', name: 'Signature', time: '1 hr',   edits: '~2 hr editing',  images: '50+ images'  },
+  { id: 'classic',   name: 'Classic',   time: '1.5 hr', edits: '~3 hr editing',  images: '75+ images'  },
+  { id: 'deluxe',    name: 'Deluxe',    time: '2 hr',   edits: '~4 hr editing',  images: '100+ images' },
+];
+
+const DEFAULT_POSES = {
+  solo_female: {
+    mini: [
+      { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop. Arms at sides, slightly away from body.' },
+      { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward and down to lengthen neck.' },
+      { name: 'Looking away', desc: 'Turn body slightly to side, eyes looking past camera into distance.' },
+      { name: 'Hair touch', desc: 'Bring hand up to hair naturally — tucking behind ear or lifting slightly.' },
+      { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens. Capture mid-stride.' },
+      { name: 'Lean on surface', desc: 'Find wall or tree, lean shoulder against it. Cross one ankle.' },
+    ],
+    signature: [
+      { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop.' },
+      { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward.' },
+      { name: 'Looking away', desc: 'Body to side, eyes past camera.' },
+      { name: 'Hair touch', desc: 'Hand up to hair naturally.' },
+      { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens.' },
+      { name: 'Lean on surface', desc: 'Lean shoulder against wall or tree.' },
+      { name: 'Sitting — knees to side', desc: 'Sit on ground, legs tucked to one side. Arm propped, slight lean.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder. Wind or movement in hair.' },
+      { name: 'Chin down, eyes up', desc: 'Classic editorial look. Head slightly down, eyes looking up at lens.' },
+      { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, not tight. Slight lean back.' },
+    ],
+    classic: [
+      { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop. Arms slightly away from body.' },
+      { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward and down.' },
+      { name: 'Looking away', desc: 'Body to 3/4, eyes looking past camera into distance.' },
+      { name: 'Hair touch', desc: 'Bring hand up naturally — tuck behind ear or lift at roots.' },
+      { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens. Capture mid-stride.' },
+      { name: 'Lean on surface', desc: 'Shoulder against wall or tree, one ankle crossed.' },
+      { name: 'Sitting — knees to side', desc: 'Sit on ground, legs tucked to one side. Arm propped.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder. Let hair move.' },
+      { name: 'Chin down, eyes up', desc: 'Head slightly down, eyes up to lens. Classic editorial.' },
+      { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, not tight. Slight lean back.' },
+      { name: 'Sitting — hands in lap', desc: 'Bench or ledge, hands in lap, slight forward lean.' },
+      { name: 'Golden hour walk', desc: 'Walking away backlit. No eye contact. Pure candid.' },
+      { name: 'Looking down at outfit', desc: 'Eyes down at outfit or hands. Natural and editorial.' },
+      { name: 'Stairs — sitting on steps', desc: 'Sit on stairs, legs to the side or extended. Elbow on knee, look at camera or away.' },
+      { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Lean on railing or wall. Strong angles.' },
+      { name: 'Stairs — walking up', desc: 'Walk up slowly, look back over shoulder at camera. Capture in motion.' },
+      { name: 'Stairs — sitting top step', desc: 'Sit at the top, knees together or to side, looking down at camera for a high-angle editorial shot.' },
+      { name: 'Prop — bag or purse', desc: 'Hold bag naturally — at side, over shoulder, or in front with both hands.' },
+      { name: 'Leaning on railing', desc: 'Both forearms on railing, slight lean forward. Relaxed and natural.' },
+      { name: 'Back to wall — slide down', desc: 'Back flat against wall, slight bend in knees. Arms loose. Strong and moody.' },
+    ],
+    deluxe: [
+      { name: 'Standing — arms relaxed', desc: 'Weight on back leg, slight hip pop.' },
+      { name: 'Hand on hip', desc: 'One hand on hip, chin slightly forward.' },
+      { name: 'Looking away', desc: 'Body to 3/4, eyes past camera.' },
+      { name: 'Hair touch', desc: 'Hand up to hair naturally.' },
+      { name: 'Walk toward camera', desc: 'Slow confident walk, eyes on lens.' },
+      { name: 'Lean on surface', desc: 'Shoulder on wall or tree, one ankle crossed.' },
+      { name: 'Sitting — knees to side', desc: 'Ground seated, legs tucked to side. Arm propped.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, look back over shoulder.' },
+      { name: 'Chin down, eyes up', desc: 'Head slightly down, eyes up. Editorial.' },
+      { name: 'Crossed arms — relaxed', desc: 'Arms loosely crossed, slight lean back.' },
+      { name: 'Sitting — hands in lap', desc: 'Bench or ledge, hands in lap, slight forward lean.' },
+      { name: 'Golden hour walk', desc: 'Walking away backlit, no eye contact.' },
+      { name: 'Looking down at outfit', desc: 'Eyes down at outfit or hands.' },
+      { name: 'Stairs — sitting on steps', desc: 'Sit on stairs, legs to side or extended. Elbow on knee, look at camera or away.' },
+      { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Lean on railing or wall. Strong angles.' },
+      { name: 'Stairs — walking up', desc: 'Walk up slowly, look back over shoulder at camera.' },
+      { name: 'Stairs — sitting top step', desc: 'Sit at top, knees together or to side. Camera shoots from below for drama.' },
+      { name: 'Stairs — back to railing', desc: 'Back against railing or banister, arms resting on it, facing camera. Confident.' },
+      { name: 'Laying in grass', desc: 'On back or stomach. Arms above head or propped under chin.' },
+      { name: 'Crouch / low pose', desc: 'Low crouch, arms resting on knees. Powerful and intentional.' },
+      { name: 'Jump shot', desc: 'Playful jump, capture at peak. Great for personality.' },
+      { name: 'Leaning on railing', desc: 'Both forearms on railing, slight lean forward. Relaxed.' },
+      { name: 'Back to wall — slide down', desc: 'Back flat on wall, knees slightly bent. Moody.' },
+      { name: 'Prop — bag or purse', desc: 'Hold bag naturally — at side, over shoulder, or in front.' },
+      { name: 'Sitting in field / open space', desc: 'Seated in grass or open space, legs extended or crossed. Candid and airy.' },
+      { name: 'Outfit detail shot', desc: 'Close crop on shoes, jewelry, or outfit feature. No face needed.' },
+    ],
+  },
+  solo_male: {
+    mini: [
+      { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
+      { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
+      { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
+      { name: 'Lean on wall', desc: 'Shoulder on wall, one leg bent. Relaxed and natural.' },
+      { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
+      { name: 'Walking shot', desc: 'Walk toward or past camera. Eyes forward or down.' },
+    ],
+    signature: [
+      { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed.' },
+      { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out.' },
+      { name: 'Looking away — profile', desc: 'Turn to 3/4, looking away.' },
+      { name: 'Lean on wall', desc: 'Shoulder on wall, one leg bent.' },
+      { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward.' },
+      { name: 'Walking shot', desc: 'Walk toward camera. Eyes forward.' },
+      { name: 'Hands behind head', desc: 'Both hands behind head, slight elbow flare.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
+      { name: 'Jacket adjustment', desc: 'Fix collar or jacket, look slightly down. Natural motion.' },
+      { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed. Asymmetry.' },
+    ],
+    classic: [
+      { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
+      { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
+      { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
+      { name: 'Lean on wall', desc: 'Shoulder on wall, one leg slightly bent. Relaxed.' },
+      { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
+      { name: 'Walking shot', desc: 'Walk toward camera, eyes forward or slightly down.' },
+      { name: 'Hands behind head', desc: 'Both hands behind head, elbows out. Relaxed authority.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
+      { name: 'Jacket adjustment', desc: 'Fix collar or jacket lapel, look slightly down. Natural motion.' },
+      { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed at side. Asymmetry.' },
+      { name: 'Sitting on ground', desc: 'Seated on ground, one knee up. Arm resting on knee.' },
+      { name: 'Chin down, brooding', desc: 'Head slightly down, serious expression. Strong moody light.' },
+      { name: 'Stairs — sitting on steps', desc: 'Seated on stairs, elbows on knees or arms hanging. Direct eye contact or looking off.' },
+      { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Hands in pockets or arms crossed.' },
+      { name: 'Stairs — walking down', desc: 'Walk down slowly toward camera. Eyes forward, confident. Great full-body shot.' },
+      { name: 'Stairs — leaning on railing', desc: 'One arm over railing or on banister. Lean slightly. Casual and strong.' },
+      { name: 'Back to wall — arms crossed', desc: 'Back flat against wall, arms crossed, direct to camera.' },
+      { name: 'Crouching', desc: 'Full crouch, arms resting on knees. Low angle from camera for power.' },
+      { name: 'Looking down — hands clasped', desc: 'Standing, hands clasped in front or behind, looking down. Contemplative.' },
+      { name: 'Wide stance', desc: 'Feet wider than shoulder-width, arms loose. Strong and grounded.' },
+    ],
+    deluxe: [
+      { name: 'Standing — arms crossed', desc: 'Confident, arms loosely crossed.' },
+      { name: 'Hands in pockets', desc: 'Thumbs out, weight on one leg.' },
+      { name: 'Looking away — profile', desc: 'Strong 3/4 profile.' },
+      { name: 'Lean on wall', desc: 'Shoulder on wall, one leg slightly bent.' },
+      { name: 'Seated — forward lean', desc: 'Elbows on knees, intentional energy.' },
+      { name: 'Walking shot', desc: 'Walk toward camera, eyes forward.' },
+      { name: 'Hands behind head', desc: 'Both hands behind head, elbows out.' },
+      { name: 'Over-the-shoulder', desc: 'Walk away, glance back.' },
+      { name: 'Jacket adjustment', desc: 'Fix collar, natural motion.' },
+      { name: 'One hand in pocket', desc: 'Asymmetric stance.' },
+      { name: 'Sitting on ground', desc: 'One knee up, arm resting on knee.' },
+      { name: 'Chin down, brooding', desc: 'Head down, serious expression, moody.' },
+      { name: 'Stairs — sitting on steps', desc: 'Seated on stairs, elbows on knees. Direct or off-camera gaze.' },
+      { name: 'Stairs — standing mid-flight', desc: 'Mid-step, one foot higher. Arms crossed or hands in pockets.' },
+      { name: 'Stairs — walking down', desc: 'Slow walk down toward camera. Eyes forward, full body.' },
+      { name: 'Stairs — leaning on railing', desc: 'One arm over railing. Casual and strong.' },
+      { name: 'Stairs — back to railing', desc: 'Back against railing at top or bottom. Looking at camera or profile.' },
+      { name: 'Back to wall — arms crossed', desc: 'Back flat on wall, direct to camera.' },
+      { name: 'Crouching', desc: 'Full crouch, arms on knees. Low camera angle for power.' },
+      { name: 'Wide stance', desc: 'Feet wide, arms loose. Grounded and strong.' },
+      { name: 'Action — walking away', desc: 'Walking away from camera, no eye contact. Candid energy.' },
+      { name: 'Seated on ledge or bench', desc: 'Casual seated position, legs slightly apart, arms relaxed on thighs.' },
+      { name: 'Leaning forward — hands on surface', desc: 'Both hands on a railing, ledge, or wall in front. Leaning in. Strong.' },
+      { name: 'Hat adjustment', desc: 'If wearing a hat — tip it, pull it down, or adjust the brim. Natural moment.' },
+      { name: 'Close-up — face and shoulder', desc: 'Tight portrait crop. Strong jawline, direct to camera.' },
+    ],
+  },
+  studio: {
+    mini: [
+      { name: 'Standing — center frame', desc: 'Direct to camera, centered. Strong light on face.' },
+      { name: 'High key — white backdrop', desc: 'Bright exposure, minimal shadow.' },
+      { name: 'Low key — dark backdrop', desc: 'Dramatic shadows, moodier feel.' },
+      { name: 'Hand framing face', desc: 'One or both hands near chin/cheek. Editorial.' },
+      { name: 'Seated on stool', desc: 'Stool at center, slight lean or perch.' },
+      { name: 'Floor pose', desc: 'Sitting or laying on studio floor. Unique angle.' },
+    ],
+    signature: [
+      { name: 'Standing — center frame', desc: 'Direct to camera, centered.' },
+      { name: 'High key', desc: 'Bright, minimal shadow.' },
+      { name: 'Low key', desc: 'Dramatic and moody.' },
+      { name: 'Hand framing face', desc: 'Hands near chin. Editorial.' },
+      { name: 'Seated on stool', desc: 'Stool at center.' },
+      { name: 'Floor pose', desc: 'Floor sitting or laying.' },
+      { name: 'Profile — side light', desc: 'Strong side lighting, profile angle.' },
+      { name: 'Close-up portrait', desc: 'Tight crop on face. Eyes sharp.' },
+      { name: 'Movement shot', desc: 'Hair toss, fabric movement, spinning.' },
+      { name: 'Seated on floor — knees up', desc: 'Seated with knees drawn up, arms around.' },
+    ],
+    classic: [
+      { name: 'Standing — center frame', desc: 'Direct to camera, centered. Strong light on face.' },
+      { name: 'High key', desc: 'Bright exposure, minimal shadow. Clean and fresh.' },
+      { name: 'Low key', desc: 'Dramatic shadows, moodier feel. One light source.' },
+      { name: 'Hand framing face', desc: 'One or both hands near chin or cheek. Editorial.' },
+      { name: 'Seated on stool', desc: 'Stool at center. Slight lean or perch on edge.' },
+      { name: 'Floor pose', desc: 'Sitting or laying on studio floor. Unique angle.' },
+      { name: 'Profile — side light', desc: 'Strong side lighting, subject in profile. Dramatic.' },
+      { name: 'Close-up portrait', desc: 'Tight crop on face. Eyes sharp. Fill the frame.' },
+      { name: 'Movement shot', desc: 'Hair toss, fabric movement, or slow spin.' },
+      { name: 'Seated — knees up', desc: 'Seated on floor, knees drawn up, arms around or resting on knees.' },
+      { name: 'Chair pose', desc: 'Straddled, side-saddle, or perched on chair. Vary each way.' },
+      { name: 'Window light simulation', desc: 'Subject near softbox angled to simulate window. Natural and warm.' },
+      { name: 'Back to camera', desc: 'Turned away, look over shoulder or don\'t. Strong hair and texture shot.' },
+      { name: 'Arms above head', desc: 'Both arms raised, hands relaxed or crossed at wrist. Elongates the body.' },
+      { name: 'Lean into light', desc: 'Have subject lean their face toward the key light source. Observe shadow.' },
+      { name: 'Seated — hands in lap, direct gaze', desc: 'Formal, seated, hands relaxed in lap. Steady eye contact. Strong headshot energy.' },
+      { name: 'Lying on floor — side', desc: 'Laying on side, propped on one elbow. Legs extended or bent.' },
+      { name: 'Hands framing body', desc: 'Hands on waist or running down sides. Shape the silhouette.' },
+      { name: 'Chin tilt series', desc: 'Three quick shots — chin neutral, chin down, chin up. Find the best angle.' },
+      { name: 'Negative space shot', desc: 'Position subject off-center, let backdrop fill the frame intentionally.' },
+    ],
+    deluxe: [
+      { name: 'Standing — center frame', desc: 'Direct to camera, centered.' },
+      { name: 'High key', desc: 'Bright and clean.' },
+      { name: 'Low key', desc: 'Moody and dramatic.' },
+      { name: 'Hand framing face', desc: 'Hands near chin. Editorial.' },
+      { name: 'Seated on stool', desc: 'Stool at center, slight lean.' },
+      { name: 'Floor pose', desc: 'Sitting or laying on floor.' },
+      { name: 'Profile — side light', desc: 'Strong side light, profile angle.' },
+      { name: 'Close-up portrait', desc: 'Tight face crop. Eyes sharp.' },
+      { name: 'Movement shot', desc: 'Hair toss, spin, or fabric movement.' },
+      { name: 'Seated — knees up', desc: 'Floor seated, knees drawn up.' },
+      { name: 'Chair pose', desc: 'Straddled, side-saddle, or perched.' },
+      { name: 'Window light simulation', desc: 'Softbox as window, natural feel.' },
+      { name: 'Back to camera', desc: 'Turned away, over-shoulder or not.' },
+      { name: 'Arms above head', desc: 'Arms raised, hands relaxed or crossed.' },
+      { name: 'Lean into light', desc: 'Face leaning toward key light. Study the shadow.' },
+      { name: 'Seated — hands in lap, direct gaze', desc: 'Formal seated, steady eye contact.' },
+      { name: 'Lying on floor — side', desc: 'Propped on elbow, legs extended.' },
+      { name: 'Hands framing body', desc: 'Hands on waist, shape the silhouette.' },
+      { name: 'Chin tilt series', desc: 'Three quick angles — neutral, down, up.' },
+      { name: 'Negative space shot', desc: 'Subject off-center, backdrop intentional.' },
+      { name: 'Rembrandt lighting', desc: 'Classic triangle shadow under the eye. Mark the light position.' },
+      { name: 'Double exposure setup', desc: 'Creative overlay concept — plan in advance with backdrop color.' },
+      { name: 'Full body to headshot progression', desc: 'Start wide, move in incrementally. Cover full-body, 3/4, and tight portrait in one zone.' },
+      { name: 'Seated — leaning back', desc: 'Stool or chair, leaning slightly back, arms relaxed. Confident and open.' },
+      { name: 'Outfit change moment', desc: 'If second look — shoot the transition. Candid energy while they adjust.' },
+    ],
+  },
+  couples: {
+    mini: [
+      { name: 'Walking together', desc: 'Walk hand-in-hand toward or away from camera.' },
+      { name: 'Forehead touch', desc: 'Foreheads together, eyes closed. Intimate.' },
+      { name: 'Side hug — looking at camera', desc: 'One arm around, both smiling at lens.' },
+      { name: 'Whisper pose', desc: 'One whispers in other\'s ear. Authentic laugh reaction.' },
+      { name: 'Dip', desc: 'Classic romantic dip. Catch the laugh.' },
+      { name: 'Candid — just be together', desc: 'Tell them to ignore you. Capture natural interaction.' },
+    ],
+    signature: [
+      { name: 'Walking together', desc: 'Walk hand-in-hand.' },
+      { name: 'Forehead touch', desc: 'Foreheads together, eyes closed.' },
+      { name: 'Side hug — looking at camera', desc: 'Both smiling at lens.' },
+      { name: 'Whisper pose', desc: 'Whisper, catch the laugh.' },
+      { name: 'Dip', desc: 'Classic romantic dip.' },
+      { name: 'Candid — just be together', desc: 'Natural interaction.' },
+      { name: 'Nose to nose', desc: 'Almost-kiss. Noses touching.' },
+      { name: 'Spin', desc: 'One spins the other. Capture motion.' },
+      { name: 'Piggyback', desc: 'One on back. Fun and playful.' },
+      { name: 'Sitting together', desc: 'Side by side. Leaning on each other.' },
+    ],
+    classic: [
+      { name: 'Walking together', desc: 'Walk hand-in-hand toward or away from camera.' },
+      { name: 'Forehead touch', desc: 'Foreheads together, eyes closed. Quiet and intimate.' },
+      { name: 'Side hug — looking at camera', desc: 'One arm around the other, both smiling at lens.' },
+      { name: 'Whisper pose', desc: 'One whispers in the other\'s ear. Capture the laugh reaction.' },
+      { name: 'Dip', desc: 'Classic romantic dip. Watch for the laugh at the bottom.' },
+      { name: 'Candid — just be together', desc: 'Tell them to forget the camera. Shoot their natural interaction.' },
+      { name: 'Nose to nose', desc: 'Almost-kiss, noses just touching. Slow and intentional.' },
+      { name: 'Spin', desc: 'One spins the other. Capture the motion mid-spin.' },
+      { name: 'Piggyback', desc: 'One on the other\'s back. Playful and fun.' },
+      { name: 'Sitting together', desc: 'Side by side, leaning into each other.' },
+      { name: 'Hug from behind', desc: 'One wraps arms around from behind, cheek to cheek.' },
+      { name: 'Looking at each other', desc: 'Ignore the camera entirely. Shoot from the side.' },
+      { name: 'Stairs — sitting on steps together', desc: 'Both seated on steps, close together. One leaning on the other or both facing camera.' },
+      { name: 'Stairs — standing on different steps', desc: 'Place them on separate steps to equalize height or create levels. Look at each other or camera.' },
+      { name: 'Stairs — walking up together', desc: 'Walk up hand-in-hand, look back at camera or at each other.' },
+      { name: 'Stairs — one seated, one standing', desc: 'One sits on steps, the other stands beside or behind on a higher step.' },
+      { name: 'Hands only detail shot', desc: 'Close crop on linked hands, rings, or an embrace. No faces needed.' },
+      { name: 'Cheek to cheek', desc: 'Faces pressed together, both looking at camera.' },
+      { name: 'Walking away together', desc: 'Both walking away from camera, hand in hand. Backlit if possible.' },
+      { name: 'One leading the other', desc: 'One pulls the other gently by the hand. Capture mid-motion.' },
+    ],
+    deluxe: [
+      { name: 'Walking together', desc: 'Walk hand-in-hand toward or away from camera.' },
+      { name: 'Forehead touch', desc: 'Foreheads together, eyes closed. Intimate.' },
+      { name: 'Side hug — looking at camera', desc: 'Both smiling at lens.' },
+      { name: 'Whisper pose', desc: 'Whisper, capture the laugh.' },
+      { name: 'Dip', desc: 'Classic romantic dip.' },
+      { name: 'Candid — just be together', desc: 'Natural interaction, camera forgotten.' },
+      { name: 'Nose to nose', desc: 'Almost-kiss, slow and intentional.' },
+      { name: 'Spin', desc: 'Capture mid-spin motion.' },
+      { name: 'Piggyback', desc: 'Playful.' },
+      { name: 'Sitting together', desc: 'Side by side, leaning in.' },
+      { name: 'Hug from behind', desc: 'Cheek to cheek from behind.' },
+      { name: 'Looking at each other', desc: 'Candid side shot, ignore camera.' },
+      { name: 'Stairs — sitting on steps together', desc: 'Both seated, close together on steps.' },
+      { name: 'Stairs — standing on different steps', desc: 'Different steps for height variation.' },
+      { name: 'Stairs — walking up together', desc: 'Hand in hand going up, look back at camera.' },
+      { name: 'Stairs — one seated, one standing', desc: 'One on steps, one standing beside. Great composition.' },
+      { name: 'Stairs — leaning on railing together', desc: 'Both leaning on railing side by side, relaxed and candid.' },
+      { name: 'Hands only detail shot', desc: 'Close crop on linked hands or rings.' },
+      { name: 'Cheek to cheek', desc: 'Faces pressed together, both to camera.' },
+      { name: 'Walking away together', desc: 'Both walking away, hand in hand, backlit.' },
+      { name: 'One leading the other', desc: 'One gently pulls the other. Capture mid-motion.' },
+      { name: 'Lying in grass', desc: 'Both lying down, overhead or side angle. Relaxed and intimate.' },
+      { name: 'Individual portraits', desc: 'Split up and shoot each person solo for a few minutes.' },
+      { name: 'Back-to-back', desc: 'Backs touching, facing opposite directions. Camera or away.' },
+      { name: 'Embrace — tight crop', desc: 'Full hug, shoot tight on the embrace. Emotion over posing.' },
+      { name: 'Kiss on cheek', desc: 'One kisses the other on the cheek. Capture the receiver\'s smile.' },
+    ],
+  },
+  group: {
+    mini: [
+      { name: 'Traditional lineup', desc: 'Everyone standing, tallest in back or center.' },
+      { name: 'Staggered heights', desc: 'Vary standing/sitting. Create visual layers.' },
+      { name: 'Walking toward camera', desc: 'All walking together, candid energy.' },
+      { name: 'Pile-in / hug group', desc: 'Everyone comes in close, big group hug.' },
+      { name: 'Laughing candid', desc: 'Tell a joke or ask them to fake laugh. Real laughs follow.' },
+    ],
+    signature: [
+      { name: 'Traditional lineup', desc: 'Tallest in back or center.' },
+      { name: 'Staggered heights', desc: 'Layers — standing, seated, crouching.' },
+      { name: 'Walking toward camera', desc: 'Candid walk.' },
+      { name: 'Pile-in hug', desc: 'Group hug close.' },
+      { name: 'Laughing candid', desc: 'Real laughs.' },
+      { name: 'In a circle — overhead', desc: 'If possible, overhead shot of everyone looking up.' },
+      { name: 'Sitting on steps', desc: 'Use stairs for natural staggering.' },
+      { name: 'Pointing at one person', desc: 'Fun, everyone points at the birthday person or VIP.' },
+    ],
+    classic: [
+      { name: 'Traditional lineup', desc: 'Everyone standing, tallest in back or center.' },
+      { name: 'Staggered heights', desc: 'Layers — standing, seated, crouching. Create depth.' },
+      { name: 'Walking toward camera', desc: 'All walking together, candid energy.' },
+      { name: 'Pile-in hug', desc: 'Everyone close, big group hug.' },
+      { name: 'Laughing candid', desc: 'Tell a joke. Real laughs always follow the fake ones.' },
+      { name: 'Overhead circle', desc: 'Everyone in a circle looking up at camera. Needs elevation or a step stool.' },
+      { name: 'Stairs — full group seated', desc: 'Spread group across multiple steps. Tallest at back, work down. Natural stagger.' },
+      { name: 'Stairs — standing on steps', desc: 'Everyone standing on different steps, spread out. Good for large groups.' },
+      { name: 'Stairs — walking down together', desc: 'Walk down as a group toward camera. Candid energy, no stiff posing.' },
+      { name: 'Pointing at one person', desc: 'Fun variation — everyone points at the birthday person or guest of honor.' },
+      { name: 'Back-to-back', desc: 'Pairs or whole group back to back. Works well for smaller groups.' },
+      { name: 'Split into pairs', desc: 'Break the group into smaller pairs or trios for variety shots.' },
+      { name: 'Candid — looking at each other', desc: 'Tell them to look at the funniest person in the group. Capture the reaction.' },
+      { name: 'Arms around each other', desc: 'Everyone in a line with arms around shoulders or waists. Tight and connected.' },
+      { name: 'Seated on ground — casual', desc: 'Everyone seated on grass or ground, informal and relaxed. Mix of poses within the group.' },
+      { name: 'Walking away — group shot', desc: 'All walking away from camera together. Great for candid variety.' },
+      { name: 'Subgroup spotlight', desc: 'Pull out a smaller subgroup for their own shot while others watch.' },
+      { name: 'Funny pose round', desc: 'Give them 10 seconds to do their silliest pose. Always gets genuine laughs afterward.' },
+    ],
+    deluxe: [
+      { name: 'Traditional lineup', desc: 'Everyone standing, tallest in back or center.' },
+      { name: 'Staggered heights', desc: 'Layers — standing, seated, crouching. Create depth.' },
+      { name: 'Walking toward camera', desc: 'All walking together, candid energy.' },
+      { name: 'Pile-in hug', desc: 'Everyone close, big group hug.' },
+      { name: 'Laughing candid', desc: 'Tell a joke. Real laughs always follow.' },
+      { name: 'Overhead circle', desc: 'Everyone looking up at camera from a circle.' },
+      { name: 'Stairs — full group seated', desc: 'Spread group across multiple steps. Tallest at back, work down.' },
+      { name: 'Stairs — standing on steps', desc: 'Everyone on different steps, spread out.' },
+      { name: 'Stairs — walking down together', desc: 'Walk down as a group toward camera. Candid.' },
+      { name: 'Stairs — mixed seated and standing', desc: 'Some sitting on steps, some standing. Natural variety within one frame.' },
+      { name: 'Pointing at one person', desc: 'Everyone points at the guest of honor.' },
+      { name: 'Back-to-back', desc: 'Pairs or full group.' },
+      { name: 'Split into pairs', desc: 'Smaller subgroup shots.' },
+      { name: 'Candid — looking at each other', desc: 'Tell them to look at the funniest person. Capture the reaction.' },
+      { name: 'Arms around each other', desc: 'Everyone in a line, arms around shoulders or waists.' },
+      { name: 'Seated on ground — casual', desc: 'Everyone seated informally. Mix poses within the group.' },
+      { name: 'Walking away — group shot', desc: 'All walking away from camera. Candid variety.' },
+      { name: 'Subgroup spotlight', desc: 'Smaller subgroup gets their own shot.' },
+      { name: 'Funny pose round', desc: '10 seconds to do their silliest pose. Gets real laughs after.' },
+      { name: 'Running toward camera', desc: 'High energy. Everyone running toward lens at once. Capture the chaos.' },
+      { name: 'Individual spotlight', desc: 'Each person gets ~30s solo while the group watches and hypes them.' },
+      { name: 'Tight cluster — no gaps', desc: 'Everyone squeezed in close, no space between. Bodies touching. Intimate and warm.' },
+      { name: 'Candid — ignore the camera', desc: 'Tell them to have a conversation. Step back and shoot documentary style.' },
+      { name: 'Final group hug shot', desc: 'End the session with one big genuine group hug. Capture mid-embrace.' },
+    ],
+  },
+};
+
+const DEFAULT_CHECKLIST = [
+  { id: 'c1', label: 'Memory card', checked: false },
+  { id: 'c2', label: 'Battery charged', checked: false },
+  { id: 'c3', label: 'Contract signed', checked: false },
+  { id: 'c4', label: 'Deposit paid', checked: false },
+];
+
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
+let state = {
+  clientName: '',
+  checklist: [],
+  sessions: {}, // sessions[typeId][lengthId] = { zones: [{ id, name, notes, timerSec, poses: [] }] }
+  favorites: {}, // favorites[typeId+lengthId+poseId] = true
+};
+
+let currentScreen = 'home';
+let currentSessionType = null;
+let currentLength = null;
+let currentZoneIndex = 0;
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+let timerPreset = 0;
+let poseTimers = {};
+
+// Edit modal state
+let editingPoseIndex = null; // null = add, number = edit
+
+// ═══════════════════════════════════════════════════
+//  PERSISTENCE
+// ═══════════════════════════════════════════════════
+const DATA_VERSION = 2; // bump this when defaults change to force reload
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('poseGuideState');
+    if (s) {
+      const parsed = JSON.parse(s);
+      // If data version is old, wipe sessions so new defaults load fresh
+      if ((parsed.version || 1) < DATA_VERSION) {
+        state.clientName = parsed.clientName || '';
+        state.checklist = parsed.checklist && parsed.checklist.length ? parsed.checklist : JSON.parse(JSON.stringify(DEFAULT_CHECKLIST));
+        state.favorites = parsed.favorites || {};
+        state.sessions = {}; // reset so new defaults kick in
+        state.version = DATA_VERSION;
+      } else {
+        state = parsed;
+      }
+    }
+    if (!state.checklist || !state.checklist.length) state.checklist = JSON.parse(JSON.stringify(DEFAULT_CHECKLIST));
+    if (!state.favorites) state.favorites = {};
+    if (!state.sessions) state.sessions = {};
+    if (!state.clientName) state.clientName = '';
+    state.version = DATA_VERSION;
+  } catch(e) {
+    state.checklist = JSON.parse(JSON.stringify(DEFAULT_CHECKLIST));
+    state.sessions = {};
+    state.favorites = {};
+    state.clientName = '';
+    state.version = DATA_VERSION;
+  }
+}
+
+function saveState() {
+  localStorage.setItem('poseGuideState', JSON.stringify(state));
+}
+
+function getSession(typeId, lengthId) {
+  if (!state.sessions[typeId]) state.sessions[typeId] = {};
+  if (!state.sessions[typeId][lengthId]) {
+    const defaultPoses = (DEFAULT_POSES[typeId] && DEFAULT_POSES[typeId][lengthId]) || [];
+    state.sessions[typeId][lengthId] = {
+      zones: [{
+        id: 'z0',
+        name: 'Main',
+        notes: '',
+        timerSec: 0,
+        poses: defaultPoses.map((p, i) => ({ id: 'p' + Date.now() + i, name: p.name, desc: p.desc, link: '' }))
+      }]
+    };
+    saveState();
+  }
+  return state.sessions[typeId][lengthId];
+}
+
+// ═══════════════════════════════════════════════════
+//  RENDER HOME
+// ═══════════════════════════════════════════════════
+function renderHome() {
+  document.getElementById('clientNameInput').value = state.clientName;
+  renderChecklist();
+  renderSessionGrid();
+  renderFavsCount();
+}
+
+function saveClientName() {
+  state.clientName = document.getElementById('clientNameInput').value;
+  saveState();
+}
+
+function renderChecklist() {
+  const el = document.getElementById('checklistItems');
+  el.innerHTML = '';
+  state.checklist.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'checklist-item';
+    div.innerHTML = `
+      <div class="check-box ${item.checked ? 'checked' : ''}" onclick="toggleCheck(${i})"></div>
+      <div class="check-label ${item.checked ? 'checked' : ''}">${item.label}</div>
+      <button class="check-del" onclick="deleteCheck(${i})">×</button>
+    `;
+    el.appendChild(div);
+  });
+}
+
+function toggleCheck(i) {
+  state.checklist[i].checked = !state.checklist[i].checked;
+  saveState();
+  renderChecklist();
+}
+
+function deleteCheck(i) {
+  state.checklist.splice(i, 1);
+  saveState();
+  renderChecklist();
+}
+
+function openCheckModal() {
+  document.getElementById('checkModalInput').value = '';
+  document.getElementById('checkModal').classList.add('open');
+  setTimeout(() => document.getElementById('checkModalInput').focus(), 300);
+}
+function closeCheckModal() { document.getElementById('checkModal').classList.remove('open'); }
+function saveCheckItem() {
+  const val = document.getElementById('checkModalInput').value.trim();
+  if (!val) return;
+  state.checklist.push({ id: 'c' + Date.now(), label: val, checked: false });
+  saveState();
+  renderChecklist();
+  closeCheckModal();
+}
+
+function renderSessionGrid() {
+  const grid = document.getElementById('sessionGrid');
+  grid.innerHTML = '';
+  SESSION_TYPES.forEach(st => {
+    const card = document.createElement('div');
+    card.className = 'session-card';
+    card.innerHTML = `
+      <div class="session-card-icon">${st.icon}</div>
+      <div class="session-card-name">${st.name}</div>
+      <div class="session-card-count">${countTotalPoses(st.id)} poses</div>
+    `;
+    card.onclick = () => showSession(st);
+    grid.appendChild(card);
+  });
+}
+
+function countTotalPoses(typeId) {
+  let count = 0;
+  LENGTHS.forEach(l => {
+    const s = state.sessions[typeId] && state.sessions[typeId][l.id];
+    if (s) {
+      s.zones.forEach(z => count += z.poses.length);
+    } else {
+      const dp = DEFAULT_POSES[typeId] && DEFAULT_POSES[typeId][l.id];
+      if (dp) count += dp.length;
+    }
+  });
+  return count;
+}
+
+function renderFavsCount() {
+  const count = Object.values(state.favorites).filter(Boolean).length;
+  document.getElementById('favsCount').textContent = count + ' poses';
+}
+
+// ═══════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════
+function showScreen(to, from, reverse=false) {
+  const fromEl = document.getElementById('screen' + capitalize(from));
+  const toEl = document.getElementById('screen' + capitalize(to));
+  if (reverse) {
+    fromEl.classList.add('hidden');
+    fromEl.classList.remove('slide-left');
+    toEl.classList.remove('slide-left');
+    toEl.classList.remove('hidden');
+  } else {
+    fromEl.classList.add('slide-left');
+    fromEl.classList.remove('hidden');
+    toEl.classList.remove('hidden');
+    toEl.classList.remove('slide-left');
+    setTimeout(() => fromEl.classList.add('hidden'), 350);
+  }
+  currentScreen = to;
+  updateNav();
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function goBack() {
+  stopTimer();
+  if (currentScreen === 'zones') {
+    showScreen('session', 'zones', true);
+    renderSessionScreen();
+  } else if (currentScreen === 'session') {
+    showScreen('home', 'session', true);
+    renderHome();
+  } else if (currentScreen === 'favs') {
+    showScreen('home', 'favs', true);
+    renderHome();
+  }
+}
+
+function updateNav() {
+  const backBtn = document.getElementById('navBack');
+  const title = document.getElementById('navTitle');
+  const actions = document.getElementById('navActions');
+  actions.innerHTML = '';
+
+  if (currentScreen === 'home') {
+    backBtn.style.display = 'none';
+    title.innerHTML = '<em>Pose</em> Guide';
+  } else if (currentScreen === 'session') {
+    backBtn.style.display = 'block';
+    title.innerHTML = `<em>${currentSessionType.name}</em>`;
+  } else if (currentScreen === 'zones') {
+    backBtn.style.display = 'block';
+    title.innerHTML = `<em>${currentSessionType.name}</em> <span>· ${LENGTHS.find(l=>l.id===currentLength).name}</span>`;
+
+    const manageBtn = document.createElement('button');
+    manageBtn.className = 'nav-btn gold';
+    manageBtn.textContent = 'Zones';
+    manageBtn.onclick = openZoneManager;
+    actions.appendChild(manageBtn);
+
+    const addPoseBtn = document.createElement('button');
+    addPoseBtn.className = 'nav-btn';
+    addPoseBtn.textContent = '+ Pose';
+    addPoseBtn.onclick = () => openPoseModal(null);
+    actions.appendChild(addPoseBtn);
+  } else if (currentScreen === 'favs') {
+    backBtn.style.display = 'block';
+    title.innerHTML = '<em>Favorites</em>';
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  SESSION SCREEN
+// ═══════════════════════════════════════════════════
+function showSession(sessionType) {
+  currentSessionType = sessionType;
+  currentLength = null;
+  renderSessionScreen();
+  showScreen('session', 'home');
+}
+
+function renderSessionScreen() {
+  const list = document.getElementById('lengthList');
+  list.innerHTML = '';
+  LENGTHS.forEach(l => {
+    const card = document.createElement('div');
+    card.className = 'length-card';
+    card.innerHTML = `
+      <div class="length-badge"><div class="length-badge-text">${l.time.replace(' ','<br>')}</div></div>
+      <div class="length-info">
+        <div class="length-name">${l.name}</div>
+        <div class="length-meta">${l.images} &nbsp;·&nbsp; ${l.edits}</div>
+      </div>
+      <div class="length-arrow">›</div>
+    `;
+    card.onclick = () => showZones(l.id);
+    list.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+//  ZONES SCREEN
+// ═══════════════════════════════════════════════════
+function showZones(lengthId) {
+  currentLength = lengthId;
+  currentZoneIndex = 0;
+  const session = getSession(currentSessionType.id, lengthId);
+  timerPreset = session.zones[0].timerSec || 0;
+  stopTimer();
+  timerSeconds = timerPreset;
+  renderZonesScreen();
+  showScreen('zones', 'session');
+}
+
+function renderZonesScreen() {
+  renderZoneTabs();
+  renderZoneContent();
+}
+
+function renderZoneTabs() {
+  const session = getSession(currentSessionType.id, currentLength);
+  const tabs = document.getElementById('zoneTabs');
+  tabs.innerHTML = '';
+  session.zones.forEach((z, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'zone-tab' + (i === currentZoneIndex ? ' active' : '');
+    tab.textContent = z.name;
+    tab.onclick = () => switchZone(i);
+    tabs.appendChild(tab);
+  });
+  const addTab = document.createElement('div');
+  addTab.className = 'zone-tab-add';
+  addTab.textContent = '+ Zone';
+  addTab.onclick = openZoneModal;
+  tabs.appendChild(addTab);
+}
+
+function switchZone(i) {
+  stopTimer();
+  // Clear any running pose timers
+  Object.values(poseTimers).forEach(t => clearInterval(t.interval));
+  poseTimers = {};
+  currentZoneIndex = i;
+  const session = getSession(currentSessionType.id, currentLength);
+  timerSeconds = session.zones[i].timerSec || 0;
+  timerPreset = timerSeconds;
+  renderZoneTabs();
+  renderZoneContent();
+}
+
+function renderZoneContent() {
+  const session = getSession(currentSessionType.id, currentLength);
+  const zone = session.zones[currentZoneIndex];
+  const container = document.getElementById('zoneContent');
+  container.innerHTML = '';
+
+  // Notes
+  const notesBlock = document.createElement('div');
+  notesBlock.className = 'zone-notes-block';
+  notesBlock.innerHTML = `<textarea class="zone-notes-input" placeholder="Zone notes..." rows="2" oninput="saveZoneNotes(this.value)">${zone.notes || ''}</textarea>`;
+  container.appendChild(notesBlock);
+
+  // Timer
+  const timerBlock = document.createElement('div');
+  timerBlock.className = 'zone-timer-block';
+  timerBlock.innerHTML = `
+    <div class="timer-display" id="timerDisplay">${formatTime(timerSeconds)}</div>
+    <div style="flex:1">
+      <div class="timer-set" style="margin-bottom:8px">
+        <input type="number" id="timerPresetInput" value="${Math.floor((zone.timerSec||0)/60)}" min="0" max="120" oninput="setTimerPreset(this.value)" style="width:52px" />
+        <span style="color:var(--text3);font-size:13px">min</span>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" onclick="resetTimer()" title="Reset">↺</button>
+        <button class="timer-btn start" id="timerStartBtn" onclick="toggleTimer()">▶</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(timerBlock);
+
+  // Poses
+  const posesContainer = document.createElement('div');
+  posesContainer.className = 'poses-list';
+  posesContainer.id = 'posesList';
+  renderPoses(zone, posesContainer);
+  container.appendChild(posesContainer);
+}
+
+function saveZoneNotes(val) {
+  const session = getSession(currentSessionType.id, currentLength);
+  session.zones[currentZoneIndex].notes = val;
+  saveState();
+}
+
+function setTimerPreset(val) {
+  const mins = parseInt(val) || 0;
+  const secs = mins * 60;
+  const session = getSession(currentSessionType.id, currentLength);
+  session.zones[currentZoneIndex].timerSec = secs;
+  timerPreset = secs;
+  if (!timerRunning) {
+    timerSeconds = secs;
+    updateTimerDisplay();
+  }
+  saveState();
+}
+
+// ── TIMER ──
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const ss = s % 60;
+  return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    stopTimer();
+  } else {
+    startTimer();
+  }
+}
+
+function startTimer() {
+  if (timerSeconds <= 0) { timerSeconds = timerPreset; }
+  timerRunning = true;
+  document.getElementById('timerStartBtn').textContent = '⏸';
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+    if (timerSeconds <= 0) {
+      stopTimer();
+      showToast('⏱ Time\'s up!');
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  timerRunning = false;
+  clearInterval(timerInterval);
+  const btn = document.getElementById('timerStartBtn');
+  if (btn) btn.textContent = '▶';
+}
+
+function resetTimer() {
+  stopTimer();
+  timerSeconds = timerPreset;
+  updateTimerDisplay();
+}
+
+function updateTimerDisplay() {
+  const el = document.getElementById('timerDisplay');
+  if (!el) return;
+  el.textContent = formatTime(timerSeconds);
+  el.className = 'timer-display' + (timerSeconds > 0 && timerSeconds <= 30 ? ' warning' : '');
+}
+
+// ── PER-POSE TIMERS ──
+// poseTimers[i] = { seconds, interval, running }
+let poseTimers = {};
+
+function getPoseTimeSecs(totalPoses) {
+  // Session length in seconds
+  const lengthMins = { mini: 30, signature: 60, classic: 90, deluxe: 120 };
+  const mins = lengthMins[currentLength] || 60;
+  // Reserve ~5 min for setup/transitions, split remaining equally
+  const usableSecs = Math.max((mins - 5) * 60, 60);
+  return totalPoses > 0 ? Math.floor(usableSecs / totalPoses) : 60;
+}
+
+function formatTimeSecs(s) {
+  if (s >= 60) { const m = Math.floor(s/60); const ss = s%60; return ss ? `${m}m ${ss}s` : `${m}m`; }
+  return s + 's';
+}
+
+function startPoseTimer(i, totalPoses, chipEl) {
+  // Stop any already-running pose timer
+  Object.keys(poseTimers).forEach(k => {
+    if (poseTimers[k].running) {
+      clearInterval(poseTimers[k].interval);
+      poseTimers[k].running = false;
+      const otherChip = document.getElementById('poseChip' + k);
+      if (otherChip) {
+        otherChip.classList.remove('running', 'warning');
+        otherChip.querySelector('.chip-time').textContent = formatTimeSecs(poseTimers[k].preset);
+      }
+    }
+  });
+  const preset = getPoseTimeSecs(totalPoses);
+  if (!poseTimers[i] || !poseTimers[i].running) {
+    poseTimers[i] = { seconds: preset, preset, running: true, interval: null };
+    chipEl.classList.add('running');
+    chipEl.querySelector('.chip-time').textContent = formatTimeSecs(preset);
+    poseTimers[i].interval = setInterval(() => {
+      poseTimers[i].seconds--;
+      const t = poseTimers[i].seconds;
+      const chip = document.getElementById('poseChip' + i);
+      if (chip) {
+        chip.querySelector('.chip-time').textContent = formatTimeSecs(Math.max(0, t));
+        chip.classList.toggle('warning', t <= 15 && t > 0);
+        chip.classList.toggle('running', t > 0);
+      }
+      if (t <= 0) {
+        clearInterval(poseTimers[i].interval);
+        poseTimers[i].running = false;
+        showToast('⏱ Move to next pose');
+      }
+    }, 1000);
+  }
+}
+
+// ── POSES ──
+function renderPoses(zone, container) {
+  container.innerHTML = '';
+  Object.values(poseTimers).forEach(t => clearInterval(t.interval));
+  poseTimers = {};
+  const totalPoses = zone.poses.length;
+  const poseTimeSecs = getPoseTimeSecs(totalPoses);
+
+  zone.poses.forEach((pose, i) => {
+    const favKey = currentSessionType.id + '_' + currentLength + '_' + pose.id;
+    const isFav = !!state.favorites[favKey];
+    const card = document.createElement('div');
+    card.className = 'pose-card';
+    card.draggable = true;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="pose-header">
+        <span class="pose-drag" title="Drag to reorder">⠿</span>
+        <span class="pose-num">${i+1}.</span>
+        <span class="pose-name" onclick="togglePoseBody(${i})">${pose.name}</span>
+        <span class="pose-time-chip" id="poseChip${i}" onclick="startPoseTimer(${i}, ${totalPoses}, this)" title="Tap to start countdown">
+          ⏱ <span class="chip-time">${formatTimeSecs(poseTimeSecs)}</span>
+        </span>
+        <button class="pose-star" onclick="toggleFav('${favKey}', this)">${isFav ? '★' : '☆'}</button>
+        <button class="pose-expand" id="poseExpand${i}" onclick="togglePoseBody(${i})">▾</button>
+      </div>
+      <div class="pose-body" id="poseBody${i}">
+        ${pose.desc ? `<div class="pose-direction-label">Direction</div><div class="pose-desc">${pose.desc}</div>` : ''}
+        <div class="pose-link-row">
+          <input class="pose-link-input" placeholder="Pinterest / reference URL..." value="${pose.link||''}" oninput="savePoseLink(${i}, this.value)" />
+          ${pose.link ? `<button class="pose-link-go" onclick="openLink('${pose.link}')">Open ↗</button>` : ''}
+        </div>
+        <div class="pose-actions">
+          <button class="pose-action-btn" onclick="openPoseModal(${i})">Edit</button>
+          <button class="pose-action-btn del" onclick="deletePose(${i})">Delete</button>
+        </div>
+      </div>
+    `;
+
+    // Drag events
+    card.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', i); card.classList.add('dragging'); });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    card.addEventListener('dragover', (e) => { e.preventDefault(); card.classList.add('drag-over'); });
+    card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+    card.addEventListener('drop', (e) => {
+      e.preventDefault();
+      card.classList.remove('drag-over');
+      const from = parseInt(e.dataTransfer.getData('text/plain'));
+      const to = i;
+      if (from !== to) reorderPose(from, to);
+    });
+
+    // Touch drag (simple touch reorder)
+    let touchStartY = 0, touchStartIndex = i, isDragging = false;
+    const dragHandle = card.querySelector('.pose-drag');
+    dragHandle.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+      touchStartIndex = i;
+      isDragging = false;
+    }, { passive: true });
+    dragHandle.addEventListener('touchmove', (e) => {
+      isDragging = true;
+      e.preventDefault();
+      const dy = e.touches[0].clientY - touchStartY;
+      const cards = container.querySelectorAll('.pose-card');
+      const cardH = card.offsetHeight + 10;
+      const steps = Math.round(dy / cardH);
+      const newIndex = Math.max(0, Math.min(cards.length - 1, touchStartIndex + steps));
+      cards.forEach((c, ci) => c.classList.toggle('drag-over', ci === newIndex && ci !== touchStartIndex));
+    }, { passive: false });
+    dragHandle.addEventListener('touchend', (e) => {
+      if (!isDragging) return;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const cardH = card.offsetHeight + 10;
+      const steps = Math.round(dy / cardH);
+      const session = getSession(currentSessionType.id, currentLength);
+      const newIndex = Math.max(0, Math.min(session.zones[currentZoneIndex].poses.length - 1, touchStartIndex + steps));
+      container.querySelectorAll('.pose-card').forEach(c => c.classList.remove('drag-over'));
+      if (newIndex !== touchStartIndex) reorderPose(touchStartIndex, newIndex);
+    });
+
+    container.appendChild(card);
+  });
+}
+
+function togglePoseBody(i) {
+  const body = document.getElementById('poseBody' + i);
+  const expand = document.getElementById('poseExpand' + i);
+  const open = body.classList.toggle('open');
+  expand.classList.toggle('open', open);
+}
+
+function savePoseLink(i, val) {
+  const session = getSession(currentSessionType.id, currentLength);
+  session.zones[currentZoneIndex].poses[i].link = val;
+  saveState();
+  // refresh link button
+  renderZoneContent();
+}
+
+function openLink(url) {
+  if (!url.startsWith('http')) url = 'https://' + url;
+  window.open(url, '_blank');
+}
+
+function toggleFav(key, btn) {
+  state.favorites[key] = !state.favorites[key];
+  if (!state.favorites[key]) delete state.favorites[key];
+  btn.textContent = state.favorites[key] ? '★' : '☆';
+  saveState();
+  renderFavsCount();
+  showToast(state.favorites[key] ? '★ Added to favorites' : 'Removed from favorites');
+}
+
+function reorderPose(from, to) {
+  const session = getSession(currentSessionType.id, currentLength);
+  const poses = session.zones[currentZoneIndex].poses;
+  const [item] = poses.splice(from, 1);
+  poses.splice(to, 0, item);
+  saveState();
+  renderZoneContent();
+}
+
+function deletePose(i) {
+  const session = getSession(currentSessionType.id, currentLength);
+  session.zones[currentZoneIndex].poses.splice(i, 1);
+  saveState();
+  renderZoneContent();
+  showToast('Pose deleted');
+}
+
+// ── POSE MODAL ──
+function openPoseModal(index) {
+  editingPoseIndex = index;
+  const session = getSession(currentSessionType.id, currentLength);
+  const zone = session.zones[currentZoneIndex];
+  document.getElementById('poseModalTitle').textContent = index === null ? 'Add Pose' : 'Edit Pose';
+  if (index !== null) {
+    const pose = zone.poses[index];
+    document.getElementById('poseModalName').value = pose.name;
+    document.getElementById('poseModalDesc').value = pose.desc || '';
+    document.getElementById('poseModalLink').value = pose.link || '';
+  } else {
+    document.getElementById('poseModalName').value = '';
+    document.getElementById('poseModalDesc').value = '';
+    document.getElementById('poseModalLink').value = '';
+  }
+  document.getElementById('poseModal').classList.add('open');
+  setTimeout(() => document.getElementById('poseModalName').focus(), 300);
+}
+function closePoseModal() { document.getElementById('poseModal').classList.remove('open'); }
+function savePose() {
+  const name = document.getElementById('poseModalName').value.trim();
+  if (!name) { showToast('Please enter a pose name'); return; }
+  const desc = document.getElementById('poseModalDesc').value.trim();
+  const link = document.getElementById('poseModalLink').value.trim();
+  const session = getSession(currentSessionType.id, currentLength);
+  const zone = session.zones[currentZoneIndex];
+  if (editingPoseIndex === null) {
+    zone.poses.push({ id: 'p' + Date.now(), name, desc, link });
+    showToast('Pose added');
+  } else {
+    zone.poses[editingPoseIndex].name = name;
+    zone.poses[editingPoseIndex].desc = desc;
+    zone.poses[editingPoseIndex].link = link;
+    showToast('Pose updated');
+  }
+  saveState();
+  closePoseModal();
+  renderZoneContent();
+}
+
+// ── ZONE MODAL ──
+function openZoneModal() {
+  document.getElementById('zoneModalName').value = '';
+  document.getElementById('zoneModal').classList.add('open');
+  setTimeout(() => document.getElementById('zoneModalName').focus(), 300);
+}
+function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); }
+function saveZone() {
+  const name = document.getElementById('zoneModalName').value.trim();
+  if (!name) { showToast('Enter a zone name'); return; }
+  const session = getSession(currentSessionType.id, currentLength);
+  session.zones.push({ id: 'z' + Date.now(), name, notes: '', timerSec: 0, poses: [] });
+  saveState();
+  currentZoneIndex = session.zones.length - 1;
+  closeZoneModal();
+  renderZonesScreen();
+  showToast('Zone added');
+}
+
+// Zone manager (nav btn)
+function openZoneManager() {
+  // Simple inline sheet: show zone list with delete buttons
+  const session = getSession(currentSessionType.id, currentLength);
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay open';
+  overlay.style.zIndex = 250;
+  let itemsHTML = session.zones.map((z, i) => `
+    <div class="zone-modal-item">
+      <span class="zone-modal-name">${z.name}</span>
+      ${session.zones.length > 1 ? `<button class="zone-modal-del" onclick="deleteZoneFromManager(${i}, this.closest('.modal-overlay'))">×</button>` : ''}
+    </div>
+  `).join('');
+  overlay.innerHTML = `<div class="modal">
+    <div class="modal-title">Manage Zones</div>
+    ${itemsHTML}
+    <div class="modal-btns" style="margin-top:16px">
+      <button class="modal-btn secondary" onclick="this.closest('.modal-overlay').remove()">Done</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+}
+
+function deleteZoneFromManager(i, overlay) {
+  const session = getSession(currentSessionType.id, currentLength);
+  if (session.zones.length <= 1) { showToast('Cannot delete the only zone'); return; }
+  session.zones.splice(i, 1);
+  if (currentZoneIndex >= session.zones.length) currentZoneIndex = session.zones.length - 1;
+  saveState();
+  overlay.remove();
+  renderZonesScreen();
+  showToast('Zone deleted');
+}
+
+// ═══════════════════════════════════════════════════
+//  FAVORITES SCREEN
+// ═══════════════════════════════════════════════════
+function showFavorites() {
+  renderFavoritesScreen();
+  showScreen('favs', 'home');
+}
+
+function renderFavoritesScreen() {
+  const container = document.getElementById('favsContent');
+  container.innerHTML = '';
+  const favKeys = Object.keys(state.favorites).filter(k => state.favorites[k]);
+  if (!favKeys.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">☆</div><div class="empty-text">No favorites yet.<br>Star poses during a session.</div></div>';
+    return;
+  }
+
+  // Group by session type
+  const groups = {};
+  favKeys.forEach(key => {
+    const [typeId, lengthId, poseId] = key.split('_');
+    const session = state.sessions[typeId] && state.sessions[typeId][lengthId];
+    if (!session) return;
+    let pose = null;
+    session.zones.forEach(z => { const p = z.poses.find(p => p.id === poseId); if (p) pose = p; });
+    if (!pose) return;
+    const groupKey = typeId + '_' + lengthId;
+    if (!groups[groupKey]) groups[groupKey] = { typeId, lengthId, poses: [] };
+    groups[groupKey].poses.push({ ...pose, favKey: key });
+  });
+
+  Object.values(groups).forEach(g => {
+    const typeName = SESSION_TYPES.find(s => s.id === g.typeId)?.name || g.typeId;
+    const lengthName = LENGTHS.find(l => l.id === g.lengthId)?.name || g.lengthId;
+    const block = document.createElement('div');
+    block.className = 'favs-group';
+    block.innerHTML = `<div class="favs-group-title">${typeName} · ${lengthName}</div>`;
+    g.poses.forEach(pose => {
+      const card = document.createElement('div');
+      card.className = 'pose-card';
+      card.style.marginBottom = '8px';
+      card.innerHTML = `
+        <div class="pose-header">
+          <span class="pose-name" style="cursor:default">${pose.name}</span>
+          <button class="pose-star" onclick="removeFavFromScreen('${pose.favKey}', this)">★</button>
+        </div>
+        ${pose.desc ? `<div style="padding:0 14px 12px;font-size:13px;color:var(--text2)">${pose.desc}</div>` : ''}
+      `;
+      block.appendChild(card);
+    });
+    container.appendChild(block);
+  });
+}
+
+function removeFavFromScreen(key, btn) {
+  delete state.favorites[key];
+  saveState();
+  renderFavsCount();
+  renderFavoritesScreen();
+  showToast('Removed from favorites');
+}
+
+// ═══════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════════════════════
+//  CLOSE MODALS ON OVERLAY TAP
+// ═══════════════════════════════════════════════════
+document.getElementById('poseModal').addEventListener('click', e => { if (e.target.id === 'poseModal') closePoseModal(); });
+document.getElementById('zoneModal').addEventListener('click', e => { if (e.target.id === 'zoneModal') closeZoneModal(); });
+document.getElementById('checkModal').addEventListener('click', e => { if (e.target.id === 'checkModal') closeCheckModal(); });
+
+// ═══════════════════════════════════════════════════
+//  KEYBOARD SUBMIT
+// ═══════════════════════════════════════════════════
+document.getElementById('poseModalName').addEventListener('keydown', e => { if (e.key === 'Enter') savePose(); });
+document.getElementById('zoneModalName').addEventListener('keydown', e => { if (e.key === 'Enter') saveZone(); });
+document.getElementById('checkModalInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveCheckItem(); });
+
+// ═══════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════
+loadState();
+renderHome();
+updateNav();
+</script>
+</body>
+</html>
