@@ -251,7 +251,7 @@
 </div>
 
 <div class="app-nav" id="appNav">
-    <button class="nav-back" id="navBack" onclick="goBack()" style="display:none">‹</button>
+    <button class="nav-back" id="navBack" onclick="goBack()">‹</button>
     <div class="nav-title" id="navTitle">Pose // Guide</div>
     <div class="nav-actions" id="navActions"></div>
 </div>
@@ -305,13 +305,12 @@
 </div>
 
 <div class="screen hidden" id="screenFavs">
-    <div class="screen-content" id="favsContent" style="padding-top:calc(var(--safe-top) + 70px); padding-bottom: calc(var(--safe-bot)+30px)">
-    </div>
+    <div class="screen-content" id="favsContent"></div>
 </div>
 
 <script>
 // ═══════════════════════════════════════════════════
-//  DATA DEFAULTS & LOGIC INTERNALS
+//  DATA DEFAULTS & GLOBAL SPECIFICATION ENGINE
 // ═══════════════════════════════════════════════════
 const SESSION_TYPES = [
     { id: 'solo_female', name: 'Solo Female', icon: '👩' },
@@ -444,51 +443,770 @@ const DEFAULT_POSES = {
             { name: 'Looking down — hands clasped', desc: 'Standing, hands clasped in front or behind, looking down. Contemplative.' },
             { name: 'Wide stance', desc: 'Feet spread past shoulder width, hands resting on belt loop or casual stance. Powerful presence.' }
         ],
+        deluxe: [
+            { name: 'Standing — arms crossed', desc: 'Confident stance, arms loosely crossed. Slight lean.' },
+            { name: 'Hands in pockets', desc: 'Both hands in pockets, thumbs out. Weight on one leg.' },
+            { name: 'Looking away — profile', desc: 'Turn to 3/4 angle, looking away. Strong jawline.' },
+            { name: 'Lean on wall', desc: 'Shoulder on wall, one leg slightly bent. Relaxed.' },
+            { name: 'Seated — forward lean', desc: 'Sitting, elbows on knees, leaning forward. Intentional energy.' },
+            { name: 'Walking shot', desc: 'Walk toward camera, eyes forward or slightly down.' },
+            { name: 'Hands behind head', desc: 'Both hands behind head, elbows out. Relaxed authority.' },
+            { name: 'Over-the-shoulder', desc: 'Walk away, glance back over shoulder.' },
+            { name: 'Jacket adjustment', desc: 'Fix collar or jacket lapel, look slightly down. Natural motion.' },
+            { name: 'One hand in pocket', desc: 'One hand in pocket, other arm relaxed at side. Asymmetry.' },
+            { name: 'Sitting on ground', desc: 'Seated on ground, one knee up. Arm resting on knee.' },
+            { name: 'Chin down, brooding', desc: 'Head slightly down, serious expression. Strong moody light.' },
+            { name: 'Stairs — sitting on steps', desc: 'Seated on stairs, elbows on knees or arms hanging. Direct eye contact or looking off.' },
+            { name: 'Stairs — standing mid-flight', desc: 'Stand on a mid-step, one foot higher. Hands in pockets or arms crossed.' },
+            { name: 'Stairs — walking down', desc: 'Walk down slowly toward camera. Eyes forward, confident. Great full-body shot.' },
+            { name: 'Stairs — leaning on railing', desc: 'One arm over railing or on banister. Lean slightly. Casual and strong.' },
+            { name: 'Back to wall — arms crossed', desc: 'Back flat against wall, arms crossed, direct to camera.' },
+            { name: 'Crouching', desc: 'Full crouch, arms resting on knees. Low angle from camera for power.' },
+            { name: 'Looking down — hands clasped', desc: 'Standing, hands clasped in front or behind, looking down. Contemplative.' },
+            { name: 'Wide stance', desc: 'Feet spread past shoulder width, hands resting on belt loop or casual stance. Powerful presence.' },
+            { name: 'Watch check', desc: 'Look down at watch, other hand in pocket. Casual, upper-class lifestyle frame.' },
+            { name: 'Leaning back on counter', desc: 'Leaning back against table or ledge, hands anchoring behind him. Open chest posture.' }
+        ]
     },
+    studio: {
+        mini: [
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light. Sharp jaw illumination, clean background spacing.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens. Standard elegant headshot configuration.' },
+            { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees. Intense eye contact.' }
+        ],
+        signature: [
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light. Sharp jaw illumination.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees.' },
+            { name: 'Stool Seated — Arms resting on thighs', desc: 'Low stool, lean forward toward camera to create intimacy and eliminate midsection bunching.' },
+            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft fill from below. Relaxed fingers tracing jawline or resting lightly under chin.' }
+        ],
+        classic: [
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Direct Power Stance', desc: 'Shoulders square, chin down. High intensity.' },
+            { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
+            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
+            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera. Creates beautiful eye prominence and soft drop-off.' },
+            { name: 'Gelled Rim Silhouette', desc: 'Positioned directly between kicker light and lens. Hair and shoulder pop.' }
+        ],
+        deluxe: [
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Direct Power Stance', desc: 'Shoulders square, chin down.' },
+            { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
+            { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
+            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera.' },
+            { name: 'Gelled Rim Silhouette', desc: 'Positioned directly between kicker light and lens.' },
+            { name: 'Dynamic Fabric Motion Stretch', desc: 'Have client toss a sheer scarf or jacket edge while holding static face position.' },
+            { name: 'Editorial Vogue lean', desc: 'Hyperextended hip to one side, hands behind back, head tilted dramatically away from key.' }
+        ]
+    },
+    couples: {
+        mini: [
+            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward toward each other forming a V. Turning heads to camera.' },
+            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around the other’s chest. Soft chin-to-shoulder connection.' },
+            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly, looking at each other. Natural strides.' }
+        ],
+        signature: [
+            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward toward each other.' },
+            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around chest.' },
+            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly, looking at each other.' },
+            { name: 'Forehead to Forehead close up', desc: 'Eyes closed, bridges of noses almost touching. Focus on expression and intimacy.' },
+            { name: 'The Promenading Dip', desc: 'Action motion loop. Step forward, drop front hip back, support lower back for elegant low dip frame.' }
+        ],
+        classic: [
+            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward.' },
+            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms around chest.' },
+            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens slowly.' },
+            { name: 'Forehead to Forehead close up', desc: 'Eyes closed, bridges of noses almost touching.' },
+            { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
+            { name: 'Seated Lap Lean', desc: 'One partner sitting on bench or ground, the other leaning back securely between their knees.' },
+            { name: 'Frame-Within-A-Frame embrace', desc: 'One partner close to lens out of focus, framing the clear smiling face of the partner behind.' }
+        ],
+        deluxe: [
+            { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward.' },
+            { name: 'Chest to Back wrap', desc: 'Taller partner behind, wrapping arms.' },
+            { name: 'Hand-in-Hand Walk away', desc: 'Walking away from lens safely.' },
+            { name: 'Forehead to Forehead close up', desc: 'Intimate close space connection.' },
+            { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
+            { name: 'Seated Lap Lean', desc: 'One sitting on bench, other leaning between knees.' },
+            { name: 'Frame-Within-A-Frame embrace', desc: 'One partner close to lens out of focus framing the other.' },
+            { name: 'Dynamic Run-and-Spin loop', desc: 'Running hand in hand, one partner pulls back slightly to spin the other out. Pure kinetic emotion.' },
+            { name: 'Whispering Secret candid', desc: 'One partner whispers something funny/absurd into the other\'s ear. Shoot the immediate genuine laugh reaction.' }
+        ]
+    },
+    group: {
+        mini: [
+            { name: 'Staggered Depth Matrix', desc: 'Do not line up straight. Create three distinct layers of depth. Mix sitting and standing frames.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence. Creates a physical link throughout the frame architecture.' }
+        ],
+        signature: [
+            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence.' },
+            { name: 'Triangle Architecture layout', desc: 'Tallest figures in the center core, sloping down to shorter sitting/crouching figures at flank ends.' }
+        ],
+        classic: [
+            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence.' },
+            { name: 'Triangle Architecture layout', desc: 'Tallest figures in center core, sloping down to shorter figures at flanks.' },
+            { name: 'Candid Group Conversation loop', desc: 'Have everyone look at one central individual telling a story, then capture the general laugh cascade.' }
+        ],
+        deluxe: [
+            { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder loops down sequence.' },
+            { name: 'Triangle Architecture layout', desc: 'Tallest figures center core, sloping down.' },
+            { name: 'Candid Group Conversation loop', desc: 'Everyone looks at one central individual telling a story, capture reactions.' },
+            { name: 'Editorial Walking Grid Vibe', desc: 'Vogue-style group march toward camera. Spaced 2-3 feet apart, high confidence, asymmetrical strides.' }
+        ]
+    }
 };
 
-// Application State Managers Initialization
-let appData = JSON.parse(localStorage.getItem('pose_guide_data')) || { clientName: '', checklist: [], favorites: [] };
-console.log("Minimalist system stack loaded successfully.");
+// ═══════════════════════════════════════════════════
+//  APPLICATION CORE INSTANCE STATE MACHINE
+// ═══════════════════════════════════════════════════
+let appData = {
+    clientName: '',
+    checklist: [
+        { text: 'Verify batteries fully charged', checked: false },
+        { text: 'Clear and format primary memory cards', checked: false },
+        { text: 'Check backup lenses and speedlights', checked: false }
+    ],
+    favorites: [],
+    customSessions: {}
+};
 
-// Render Base Shell on window load
+// State Stack Tracking for Back Navigations
+let screenHistory = ['screenHome'];
+let currentSessionType = '';
+let currentLength = '';
+let currentZoneIndex = 0;
+
+// Global Countdown Core Engine Reference
+let countdownInterval = null;
+let timerDuration = 0; 
+let isTimerRunning = false;
+
+// Initialize Storage State Core Pipeline on window mount
 window.onload = function() {
+    const saved = localStorage.getItem('pose_guide_data_v2');
+    if (saved) {
+        try {
+            appData = JSON.parse(saved);
+        } catch(e) {
+            console.error("Local schema validation failed. Reverting to structural architecture template.");
+        }
+    }
+    initDragAndDrop();
     renderHome();
 };
 
-function renderHome() {
-    document.getElementById('clientNameInput').value = appData.clientName || '';
-    const grid = document.getElementById('sessionGrid');
-    grid.innerHTML = SESSION_TYPES.map(t => `
-        <div class="session-card" onclick="selectSessionType('${t.id}')">
-            <div class="session-card-icon">${t.icon}</div>
-            <div class="session-card-name">${t.name}</div>
-            <div class="session-card-count">Interactive Index</div>
-        </div>
-    `).join('');
+function saveStateToDisk() {
+    localStorage.setItem('pose_guide_data_v2', JSON.stringify(appData));
 }
 
-function selectSessionType(typeId) {
-    showToast("Selected: " + typeId.replace('_', ' '));
+// ═══════════════════════════════════════════════════
+//  SCREEN TRANSITION LAYERENGINE
+// ═══════════════════════════════════════════════════
+function navigateTo(screenId) {
+    const currentScreen = screenHistory[screenHistory.length - 1];
+    if (currentScreen === screenId) return;
+
+    document.getElementById(currentScreen).classList.add('slide-left');
+    
+    const nextEl = document.getElementById(screenId);
+    nextEl.classList.remove('hidden', 'slide-left');
+    
+    screenHistory.push(screenId);
+    updateNavUI();
+}
+
+function goBack() {
+    if (screenHistory.length <= 1) return;
+    
+    // Stop core system countdowns instantly if navigating out of active zones
+    if(screenHistory[screenHistory.length - 1] === 'screenZones') {
+        stopGlobalCountdownEngine();
+    }
+
+    const currentScreen = screenHistory.pop();
+    document.getElementById(currentScreen).classList.add('hidden');
+    
+    const prevScreen = screenHistory[screenHistory.length - 1];
+    document.getElementById(prevScreen).classList.remove('slide-left', 'hidden');
+    
+    updateNavUI();
+    
+    if (prevScreen === 'screenHome') {
+        renderHome();
+    } else if (prevScreen === 'screenSession') {
+        renderSessionLengths();
+    } else if (prevScreen === 'screenZones') {
+        renderZonesView();
+    }
+}
+
+function updateNavUI() {
+    const currentScreen = screenHistory[screenHistory.length - 1];
+    const backBtn = document.getElementById('navBack');
+    const titleEl = document.getElementById('navTitle');
+    const actionsEl = document.getElementById('navActions');
+    
+    actionsEl.innerHTML = '';
+    backBtn.style.display = (screenHistory.length > 1) ? 'block' : 'none';
+
+    if (currentScreen === 'screenHome') {
+        titleEl.innerHTML = 'Pose // <span>Guide</span>';
+    } else if (currentScreen === 'screenSession') {
+        const typeObj = SESSION_TYPES.find(t => t.id === currentSessionType);
+        titleEl.innerHTML = typeObj ? `${typeObj.name}` : 'Duration';
+    } else if (currentScreen === 'screenZones') {
+        titleEl.innerHTML = 'Execution Matrix';
+        actionsEl.innerHTML = `<button class="nav-btn gold" onclick="openZoneModal()">+ Zone</button>`;
+    } else if (currentScreen === 'screenFavs') {
+        titleEl.innerHTML = 'Global Stars';
+    }
+}
+
+// ═══════════════════════════════════════════════════
+//  SCREEN 1: HOME VIEW MANAGEMENT
+// ═══════════════════════════════════════════════════
+function renderHome() {
+    document.getElementById('clientNameInput').value = appData.clientName || '';
+    renderChecklist();
+    
+    // Render Favorite Button Label Status Tracker
+    document.getElementById('favsCount').innerText = `${appData.favorites.length} poses total`;
+
+    const grid = document.getElementById('sessionGrid');
+    grid.innerHTML = SESSION_TYPES.map(type => {
+        return `
+            <div class="session-card" onclick="selectSessionType('${type.id}')">
+                <div class="session-card-icon">${type.icon}</div>
+                <div class="session-card-name">${type.name}</div>
+                <div class="session-card-count">System Configuration Array</div>
+            </div>
+        `;
+    }).join('');
 }
 
 function saveClientName() {
     appData.clientName = document.getElementById('clientNameInput').value;
-    localStorage.setItem('pose_guide_data', JSON.stringify(appData));
+    saveStateToDisk();
 }
 
+function selectSessionType(id) {
+    currentSessionType = id;
+    navigateTo('screenSession');
+    renderSessionLengths();
+}
+
+// ── CHECKLIST CONTROLLERS ──
+function renderChecklist() {
+    const container = document.getElementById('checklistItems');
+    if (!appData.checklist || appData.checklist.length === 0) {
+        container.innerHTML = '<div style="font-size:13px; color:var(--text3); padding:8px 0;">Checklist clear. No performance tasks initialized.</div>';
+        return;
+    }
+
+    container.innerHTML = appData.checklist.map((item, idx) => `
+        <div class="checklist-item">
+            <div class="check-box ${item.checked ? 'checked' : ''}" onclick="toggleCheckItem(${idx})"></div>
+            <div class="check-label ${item.checked ? 'checked' : ''}">${item.text}</div>
+            <button class="check-del" onclick="deleteCheckItem(${idx})">×</button>
+        </div>
+    `).join('');
+}
+
+function toggleCheckItem(idx) {
+    appData.checklist[idx].checked = !appData.checklist[idx].checked;
+    saveStateToDisk();
+    renderChecklist();
+}
+
+function openCheckModal() { document.getElementById('checkModal').classList.add('open'); document.getElementById('checkModalInput').focus(); }
+function closeCheckModal() { document.getElementById('checkModal').classList.remove('open'); document.getElementById('checkModalInput').value = ''; }
+
+function saveCheckItem() {
+    const text = document.getElementById('checkModalInput').value.trim();
+    if (text) {
+        if (!appData.checklist) appData.checklist = [];
+        appData.checklist.push({ text: text, checked: false });
+        saveStateToDisk();
+        renderChecklist();
+    }
+    closeCheckModal();
+}
+
+function deleteCheckItem(idx) {
+    appData.checklist.splice(idx, 1);
+    saveStateToDisk();
+    renderChecklist();
+}
+
+// ═══════════════════════════════════════════════════
+//  SCREEN 2: TIMEFRAME SELECTION ARCHITECTURE
+// ═══════════════════════════════════════════════════
+function renderSessionLengths() {
+    const container = document.getElementById('lengthList');
+    container.innerHTML = LENGTHS.map(len => `
+        <div class="length-card" onclick="selectLength('${len.id}')">
+            <div class="length-badge">
+                <div class="length-badge-text">${len.time.split(' ')[0]}<br><span style="font-size:9px">${len.time.split(' ')[1] || ''}</span></div>
+            </div>
+            <div class="length-info">
+                <div class="length-name">${len.name}</div>
+                <div class="length-meta">${len.edits} • ${len.images}</div>
+            </div>
+            <div class="length-arrow">›</div>
+        </div>
+    `).join('');
+}
+
+function selectLength(lengthId) {
+    currentLength = lengthId;
+    currentZoneIndex = 0;
+    
+    // Core Engine Structural Setup Check
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    if (!appData.customSessions[storageKey]) {
+        // Build fresh functional runtime arrays inside storage engine matching default baseline parameters
+        const originalDefaults = (DEFAULT_POSES[currentSessionType] && DEFAULT_POSES[currentSessionType][currentLength]) 
+            ? DEFAULT_POSES[currentSessionType][lengthId] 
+            : [{ name: 'Introductory Stance Framework', desc: 'Baseline portrait alignment stance sequence configuration.' }];
+            
+        appData.customSessions[storageKey] = [
+            {
+                name: 'Zone A: Foundation Mapping',
+                notes: 'Establish standard composition frames.',
+                poses: JSON.parse(JSON.stringify(originalDefaults))
+            }
+        ];
+        saveStateToDisk();
+    }
+
+    navigateTo('screenZones');
+    renderZonesView();
+}
+
+// ═══════════════════════════════════════════════════
+//  SCREEN 3: MATRIX ZONE PRODUCTION BOARD
+// ═══════════════════════════════════════════════════
+function renderZonesView() {
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    const zones = appData.customSessions[storageKey] || [];
+    
+    // Boundary structural sanitization checker
+    if (currentZoneIndex >= zones.length) currentZoneIndex = 0;
+    
+    // 1. Render Horizontal Tabs Layer
+    const tabsContainer = document.getElementById('zoneTabs');
+    tabsContainer.innerHTML = zones.map((z, idx) => `
+        <div class="zone-tab ${idx === currentZoneIndex ? 'active' : ''}" onclick="switchZone(${idx})">
+            ${z.name.split(':')[0]}
+        </div>
+    `).join('');
+
+    // 2. Target Component Rendering Core
+    const contentContainer = document.getElementById('zoneContent');
+    const activeZone = zones[currentZoneIndex];
+    
+    if (!activeZone) {
+        contentContainer.innerHTML = '<div class="empty"><div class="empty-text">No active loops initialized.</div></div>';
+        return;
+    }
+
+    contentContainer.innerHTML = `
+        <div class="zone-notes-block">
+            <div class="pose-direction-label">Zone Operational Framework Notes</div>
+            <textarea class="zone-notes-input" placeholder="Add custom lighting strategies or notes for this location segment..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
+        </div>
+
+        <div class="zone-timer-block">
+            <div class="timer-display" id="timerDisplay">05:00</div>
+            <div class="timer-controls">
+                <div class="timer-set">
+                    <input type="number" id="timerInputMin" value="5" min="1" max="99" onchange="syncTimerSettings()" />
+                    <span style="font-family:var(--font-display); font-size:16px; color:var(--text3)">M</span>
+                </div>
+                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleZoneTimer()">Run</button>
+                <button class="timer-btn" onclick="resetZoneTimer()">⟲</button>
+            </div>
+        </div>
+
+        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Capture Vector Parameter</button>
+        <div class="poses-list" id="posesLiveContainer"></div>
+    `;
+
+    renderPosesList(activeZone.poses);
+    resetZoneTimer();
+}
+
+function switchZone(idx) {
+    stopGlobalCountdownEngine();
+    currentZoneIndex = idx;
+    renderZonesView();
+}
+
+function saveZoneNotes(el) {
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    appData.customSessions[storageKey][currentZoneIndex].notes = el.value;
+    saveStateToDisk();
+}
+
+// ── TIMING SYSTEM CONTROL MATRIX ──
+function syncTimerSettings() {
+    if (isTimerRunning) return;
+    const mins = parseInt(document.getElementById('timerInputMin').value) || 5;
+    document.getElementById('timerDisplay').innerText = String(mins).padStart(2, '0') + ":00";
+}
+
+function toggleZoneTimer() {
+    const btn = document.getElementById('timerToggleBtn');
+    if (isTimerRunning) {
+        stopGlobalCountdownEngine();
+        btn.innerText = "Run";
+        btn.style.background = "var(--primary)";
+        btn.style.color = "#000000";
+    } else {
+        startGlobalCountdownEngine();
+        btn.innerText = "Hold";
+        btn.style.background = "var(--danger)";
+        btn.style.color = "#ffffff";
+    }
+}
+
+function startGlobalCountdownEngine() {
+    if (isTimerRunning) return;
+    isTimerRunning = true;
+    
+    const display = document.getElementById('timerDisplay');
+    const currentString = display.innerText;
+    const parts = currentString.split(':');
+    
+    timerDuration = (parseInt(parts[0]) * 60) + parseInt(parts[1]);
+
+    countdownInterval = setInterval(() => {
+        if (timerDuration <= 0) {
+            stopGlobalCountdownEngine();
+            display.classList.add('warning');
+            display.innerText = "00:00 - COMPLETE";
+            showToast("Zone operational frame completed.");
+            
+            // Audio pulse ping frequency generation core logic sequence
+            try {
+                let context = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = context.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, context.currentTime);
+                osc.connect(context.destination);
+                osc.start();
+                osc.stop(context.currentTime + 0.3);
+            } catch(e) {}
+            
+            return;
+        }
+        timerDuration--;
+        let m = Math.floor(timerDuration / 60);
+        let s = timerDuration % 60;
+        display.innerText = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        
+        if (timerDuration < 30) {
+            display.classList.add('warning');
+        } else {
+            display.classList.remove('warning');
+        }
+    }, 1000);
+}
+
+function stopGlobalCountdownEngine() {
+    isTimerRunning = false;
+    clearInterval(countdownInterval);
+    const btn = document.getElementById('timerToggleBtn');
+    if(btn) {
+        btn.innerText = "Run";
+        btn.style.background = "var(--primary)";
+        btn.style.color = "#000000";
+    }
+}
+
+function resetZoneTimer() {
+    stopGlobalCountdownEngine();
+    const display = document.getElementById('timerDisplay');
+    if(display) {
+        display.classList.remove('warning');
+        const mins = document.getElementById('timerInputMin') ? document.getElementById('timerInputMin').value : 5;
+        display.innerText = String(mins).padStart(2, '0') + ":00";
+    }
+}
+
+// ── POSES STRUCTURAL TRANSITION LAYER ──
+function renderPosesList(posesArray) {
+    const listEl = document.getElementById('posesLiveContainer');
+    if (!posesArray || posesArray.length === 0) {
+        listEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No vectors tracked inside zone.</div></div>';
+        return;
+    }
+
+    listEl.innerHTML = posesArray.map((pose, idx) => {
+        const isStarred = appData.favorites.some(f => f.name === pose.name);
+        return `
+            <div class="pose-card" data-index="${idx}" draggable="true">
+                <div class="pose-header">
+                    <div class="pose-drag">☰</div>
+                    <div class="pose-num">${String(idx + 1).padStart(2, '0')}</div>
+                    <div class="pose-name" onclick="togglePoseDrawer(${idx})">${pose.name}</div>
+                    <button class="pose-star" onclick="toggleStarPose(${idx})">${isStarred ? '★' : '☆'}</button>
+                    <button class="pose-expand" id="arrow-${idx}" onclick="togglePoseDrawer(${idx})">▼</button>
+                </div>
+                <div class="pose-body" id="body-${idx}">
+                    <div class="pose-direction-label">Directional Prompt Matrix</div>
+                    <div class="pose-desc">${pose.desc || 'No procedural metrics defined for execution framework.'}</div>
+                    
+                    <div class="pose-link-row">
+                        <input type="text" class="pose-link-input" id="link-${idx}" placeholder="Reference layout hyperlink..." value="${pose.link || ''}" onchange="savePoseLink(${idx}, this.value)" />
+                        ${pose.link ? `<button class="pose-link-go" onclick="window.open('${pose.link}', '_blank')">View</button>` : ''}
+                    </div>
+
+                    <div class="pose-actions">
+                        <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify</button>
+                        <button class="pose-action-btn del" onclick="deletePoseInstance(${idx})">Purge</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function togglePoseDrawer(idx) {
+    const b = document.getElementById(`body-${idx}`);
+    const a = document.getElementById(`arrow-${idx}`);
+    if (b.classList.contains('open')) {
+        b.classList.remove('open');
+        a.classList.remove('open');
+    } else {
+        b.classList.add('open');
+        a.classList.add('open');
+    }
+}
+
+function savePoseLink(idx, val) {
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    appData.customSessions[storageKey][currentZoneIndex].poses[idx].link = val;
+    saveStateToDisk();
+}
+
+// ═══════════════════════════════════════════════════
+//  MODAL SYSTEM INTERNALS ENGINE
+// ═══════════════════════════════════════════════════
+let isEditMode = false;
+let targetedPoseIndex = null;
+
+function openPoseModal(isEdit = false, idx = null) {
+    isEditMode = isEdit;
+    targetedPoseIndex = idx;
+    
+    const m = document.getElementById('poseModal');
+    const title = document.getElementById('poseModalTitle');
+    
+    if (isEditMode) {
+        title.innerText = "Edit Pose Matrix Elements";
+        const storageKey = `${currentSessionType}_${currentLength}`;
+        const data = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
+        document.getElementById('poseModalName').value = data.name || '';
+        document.getElementById('poseModalDesc').value = data.desc || '';
+        document.getElementById('poseModalLink').value = data.link || '';
+    } else {
+        title.innerText = "Initialize Custom Pose Vector";
+        document.getElementById('poseModalName').value = '';
+        document.getElementById('poseModalDesc').value = '';
+        document.getElementById('poseModalLink').value = '';
+    }
+    m.classList.add('open');
+}
+
+function closePoseModal() {
+    document.getElementById('poseModal').classList.remove('open');
+}
+
+function savePose() {
+    const name = document.getElementById('poseModalName').value.trim();
+    const desc = document.getElementById('poseModalDesc').value.trim();
+    const link = document.getElementById('poseModalLink').value.trim();
+    
+    if (!name) { showToast("Name context cannot be structural space character void."); return; }
+    
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    const targetArr = appData.customSessions[storageKey][currentZoneIndex].poses;
+    
+    if (isEditMode) {
+        targetArr[targetedPoseIndex] = { name, desc, link };
+        showToast("Vector parameters structured correctly.");
+    } else {
+        targetArr.push({ name, desc, link });
+        showToast("New alignment target instantiated.");
+    }
+    
+    saveStateToDisk();
+    closePoseModal();
+    renderZonesView();
+}
+
+function deletePoseInstance(idx) {
+    if(confirm("Confirm structural purge validation routine?")) {
+        const storageKey = `${currentSessionType}_${currentLength}`;
+        appData.customSessions[storageKey][currentZoneIndex].poses.splice(idx, 1);
+        saveStateToDisk();
+        renderZonesView();
+        showToast("Parameter dropped safely.");
+    }
+}
+
+// ── COMPONENT LEVEL MANAGEMENT LAYER: ZONES ──
+function openZoneModal() { document.getElementById('zoneModal').classList.add('open'); document.getElementById('zoneModalName').focus(); }
+function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value = ''; }
+
+function saveZone() {
+    const name = document.getElementById('zoneModalName').value.trim();
+    if (!name) return;
+    
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    appData.customSessions[storageKey].push({
+        name: name,
+        notes: '',
+        poses: []
+    });
+    
+    currentZoneIndex = appData.customSessions[storageKey].length - 1;
+    saveStateToDisk();
+    closeZoneModal();
+    renderZonesView();
+    showToast("Segment system loop array added.");
+}
+
+// ═══════════════════════════════════════════════════
+//  FAVORITES CORE INTERFACE LAYER
+// ═══════════════════════════════════════════════════
+function toggleStarPose(idx) {
+    const storageKey = `${currentSessionType}_${currentLength}`;
+    const pose = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
+    
+    const matchIdx = appData.favorites.findIndex(f => f.name === pose.name);
+    if (matchIdx > -1) {
+        appData.favorites.splice(matchIdx, 1);
+        showToast("De-starred vector element.");
+    } else {
+        appData.favorites.push(pose);
+        showToast("Added target matrix element to stars library.");
+    }
+    saveStateToDisk();
+    renderZonesView();
+}
+
+function showFavorites() {
+    navigateTo('screenFavs');
+    const container = document.getElementById('favsContent');
+    
+    if (!appData.favorites || appData.favorites.length === 0) {
+        container.innerHTML = `
+            <div style="padding-top: calc(var(--safe-top) + 20px);">
+                <div class="empty"><div class="empty-text">Star tracking storage array empty.</div></div>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = `
+        <div style="padding:16px; font-family:var(--font-display); font-size:20px; color:var(--text2); letter-spacing:0.04em">STARS PORTFOLIO CONTROL ARCHIVE</div>
+        <div class="poses-list" style="padding-top:0">
+            ${appData.favorites.map((pose, idx) => `
+                <div class="pose-card">
+                    <div class="pose-header">
+                        <div class="pose-num" style="color:var(--primary)">★</div>
+                        <div class="pose-name" style="cursor:default">${pose.name}</div>
+                        <button class="check-del" onclick="removeFavoriteDirectly(${idx})">×</button>
+                    </div>
+                    <div class="pose-body style" style="display:block; border-top:1px solid var(--border)">
+                        <div class="pose-desc">${pose.desc || 'No framework specs verified.'}</div>
+                        ${pose.link ? `<button class="pose-link-go" style="width:100%" onclick="window.open('${pose.link}', '_blank')">Launch Asset Ref Frame</button>` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function removeFavoriteDirectly(idx) {
+    appData.favorites.splice(idx, 1);
+    saveStateToDisk();
+    showFavorites();
+}
+
+// ═══════════════════════════════════════════════════
+//  KINETIC HARDWARE INTERACTION DRAG/DROP PIPELINE
+// ═══════════════════════════════════════════════════
+let elementDraggedSource = null;
+
+function initDragAndDrop() {
+    const list = document.getElementById('posesLiveContainer');
+    if(!list) return;
+
+    list.addEventListener('dragstart', function(e) {
+        const card = e.target.closest('.pose-card');
+        if(!card) return;
+        elementDraggedSource = card;
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    list.addEventListener('dragend', function(e) {
+        const card = e.target.closest('.pose-card');
+        if(card) card.classList.remove('dragging');
+        
+        const items = list.querySelectorAll('.pose-card');
+        items.forEach(item => item.classList.remove('drag-over'));
+    });
+
+    list.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        const overCard = e.target.closest('.pose-card');
+        if(!overCard || overCard === elementDraggedSource) return;
+        overCard.classList.add('drag-over');
+    });
+
+    list.addEventListener('dragleave', function(e) {
+        const overCard = e.target.closest('.pose-card');
+        if(overCard) overCard.classList.remove('drag-over');
+    });
+
+    list.addEventListener('drop', function(e) {
+        e.preventDefault();
+        const targetCard = e.target.closest('.pose-card');
+        if (!targetCard || targetCard === elementDraggedSource) return;
+
+        const srcIdx = parseInt(elementDraggedSource.getAttribute('data-index'));
+        const targetIdx = parseInt(targetCard.getAttribute('data-index'));
+
+        const storageKey = `${currentSessionType}_${currentLength}`;
+        const poses = appData.customSessions[storageKey][currentZoneIndex].poses;
+        
+        // Mutate array indices using technical splice swap execution architecture
+        const [movedElement] = poses.splice(srcIdx, 1);
+        poses.splice(targetIdx, 0, movedElement);
+
+        saveStateToDisk();
+        renderZonesView();
+    });
+}
+
+// Utility Toast Deployment System Core Engine
 function showToast(msg) {
     const t = document.getElementById('toast');
+    if(!t) return;
     t.innerText = msg;
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-function openCheckModal() { document.getElementById('checkModal').classList.add('open'); }
-function closeCheckModal() { document.getElementById('checkModal').classList.remove('open'); }
-function closePoseModal() { document.getElementById('poseModal').classList.remove('open'); }
-function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); }
-function goBack() { console.log("State array popped."); }
 </script>
 
 </body>
