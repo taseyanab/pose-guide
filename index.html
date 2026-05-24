@@ -7,26 +7,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Pose Guide">
     <title>Pose Guide</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #ffffff; /* High Contrast White */
-            --bg: #000000;      /* Pure Minimal Black */
-            --bg2: #0a0a0a;     /* Stark Charcoal Cards */
-            --bg3: #121212;     /* Core Inputs & Elements */
+            --primary: #ffffff; 
+            --bg: #000000;      
+            --bg2: #0a0a0a;     
+            --bg3: #121212;     
             --bg4: #1a1a1a;
-            --border: #222222;  /* Structured Borders */
+            --border: #222222;  
             --border2: #333333;
-            --text: #ffffff;    /* Crisp White Typography */
-            --text2: #a1a1aa;   /* Muted Gray Secondary */
-            --text3: #52525b;   /* Low-contrast Accent Labels */
+            --text: #ffffff;    
+            --text2: #a1a1aa;   
+            --text3: #52525b;   
             --danger: #ef4444;
-            --r: 0px;           /* 0px Border Radius for an ultra-sleek, brutalist editorial look */
+            --r: 0px;           /* Clean, sharp editorial edges */
             --r-sm: 0px;
-            --font-display: 'Bebas Neue', sans-serif; /* Your Brand Font */
+            --font-display: 'Bebas Neue', sans-serif; 
             --font-sans: 'Inter', system-ui, sans-serif;
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bot: env(safe-area-inset-bottom, 0px);
@@ -36,7 +37,7 @@
         html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-sans); font-size: 15px; -webkit-font-smoothing: antialiased; overscroll-behavior: none; }
         body { overflow-x: hidden; }
 
-        /* ── NAV ── */
+        /* NAV BAR */
         .app-nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
             background: rgba(0, 0, 0, 0.9); border-bottom: 1px solid var(--border);
@@ -52,13 +53,13 @@
         .nav-btn:active { background: var(--primary); color: var(--bg); }
         .nav-btn.gold { border-color: var(--primary); color: var(--primary); }
 
-        /* ── SCREENS ── */
+        /* APP SCREENS */
         .screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s; }
         .screen.hidden { transform: translateX(100%); opacity: 0; pointer-events: none; }
         .screen.slide-left { transform: translateX(-30%); opacity: 0; pointer-events: none; }
         .screen-content { padding-top: calc(var(--safe-top) + 70px); padding-bottom: calc(var(--safe-bot) + 30px); min-height: 100%; max-width: 600px; margin: 0 auto; }
 
-        /* ── HOME HERO ── */
+        /* HOME HERO */
         .home-hero { padding: 40px 20px 20px; text-align: center; }
         .home-logo { font-family: var(--font-display); font-size: 52px; font-weight: 400; letter-spacing: 0.05em; color: var(--text); text-transform: uppercase; line-height: 1; }
         .home-logo em { color: var(--text2); font-style: normal; }
@@ -100,23 +101,22 @@
         .favs-btn-text { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; color: var(--text); text-transform: uppercase; }
         .favs-btn-count { margin-left: auto; font-size: 12px; color: var(--text3); font-weight: 600; }
 
-        /* ── SESSION LENGTHS ── */
+        /* SESSION LENGTHS */
         .length-list { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 12px; }
         .length-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; cursor: pointer; display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
         .length-card:active { background-color: #111111; }
-        .length-badge { width: 46px; height: 46px; border-radius: 0%; border: 1px solid var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .length-badge { width: 46px; height: 46px; border: 1px solid var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .length-badge-text { font-family: var(--font-display); font-size: 16px; color: var(--primary); text-align: center; line-height: 1; text-transform: uppercase; }
         .length-info { flex: 1; }
         .length-name { font-family: var(--font-display); font-size: 24px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.04em; }
         .length-meta { font-size: 12px; color: var(--text2); margin-top: 4px; }
         .length-arrow { color: var(--text3); font-size: 16px; }
 
-        /* ── ZONE VIEW ── */
+        /* ZONE VIEW */
         .zone-tabs { display: flex; overflow-x: auto; gap: 8px; padding: 0 16px 16px; scrollbar-width: none; }
         .zone-tabs::-webkit-scrollbar { display: none; }
         .zone-tab { flex-shrink: 0; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 8px 16px; font-family: var(--font-display); font-size: 15px; letter-spacing: 0.05em; color: var(--text2); cursor: pointer; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
         .zone-tab.active { background: var(--primary); border-color: var(--primary); color: #000000; }
-        .zone-tab-add { flex-shrink: 0; background: none; border: 1px dashed var(--border2); border-radius: var(--r); padding: 8px 14px; font-family: var(--font-display); font-size: 15px; color: var(--text3); cursor: pointer; text-transform: uppercase; }
 
         .zone-notes-block { margin: 0 16px 12px; background: var(--bg3); border-radius: var(--r-sm); padding: 14px; border: 1px solid var(--border); }
         .zone-notes-input { width: 100%; background: none; border: none; color: var(--text2); font-family: var(--font-sans); font-size: 13px; resize: none; outline: none; min-height: 44px; }
@@ -126,9 +126,9 @@
         .timer-display { font-family: var(--font-display); font-size: 44px; font-weight: 400; color: var(--primary); letter-spacing: 0.02em; min-width: 95px; line-height: 1; }
         .timer-display.warning { color: var(--danger); }
         .timer-controls { display: flex; gap: 8px; flex: 1; justify-content: flex-end; align-items: center; }
-        .timer-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-size: 18px; width: 42px; height: 42px; border-radius: 0%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+        .timer-btn { background: var(--bg4); border: 1px solid var(--border2); color: var(--text); font-size: 18px; width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
         .timer-btn:active { background: var(--primary); color: var(--bg); }
-        .timer-btn.start { background: var(--primary); border-color: var(--primary); color: #000000; font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: 0.05em; width: 56px; height: 42px; }
+        .timer-btn.start { background: var(--primary); border-color: var(--primary); color: #000000; font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: 0.05em; width: 65px; height: 42px; }
         .timer-set { display: flex; gap: 6px; align-items: center; }
         .timer-set input { width: 56px; background: var(--bg4); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text); font-family: var(--font-display); font-size: 18px; text-align: center; padding: 6px; outline: none; }
 
@@ -136,6 +136,7 @@
         .pose-add-btn { margin: 0 16px 12px; width: calc(100% - 32px); background: none; border: 1px dashed var(--border2); border-radius: var(--r); padding: 16px; color: var(--text2); font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; }
         .pose-add-btn:active { border-color: var(--primary); color: var(--primary); }
 
+        /* POSE CARDS & IMAGES */
         .pose-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; transition: all 0.2s; }
         .pose-card.dragging { opacity: 0.5; border-color: var(--primary); }
         .pose-card.drag-over { border-color: var(--primary); border-style: dashed; }
@@ -144,54 +145,55 @@
         .pose-drag:active { color: var(--primary); }
         .pose-num { font-family: var(--font-display); font-size: 16px; color: var(--text3); min-width: 20px; }
         .pose-name { flex: 1; font-family: var(--font-display); font-size: 20px; font-weight: 400; letter-spacing: 0.03em; color: var(--text); cursor: pointer; text-transform: uppercase; }
-        .pose-star { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px; transition: transform 0.2s; filter: grayscale(100%); }
-        .pose-star:active { transform: scale(1.3); }
+        .pose-star { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px; filter: grayscale(100%); }
         .pose-expand { background: none; border: none; color: var(--text3); font-size: 14px; cursor: pointer; padding: 4px; transition: transform 0.25s; }
         .pose-expand.open { transform: rotate(180deg); }
+        
         .pose-body { border-top: 1px solid var(--border); padding: 16px; display: none; background-color: rgba(255, 255, 255, 0.01); }
         .pose-body.open { display: block; }
+        
+        /* IMAGE STYLES */
+        .pose-photo-preview { width: 100%; max-height: 350px; object-fit: cover; border: 1px solid var(--border); margin-bottom: 12px; background: #050505; display: block; }
+        .pose-photo-preview:not([src]), .pose-photo-preview[src=""] { display: none; }
+
         .pose-desc { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
         .pose-link-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
         .pose-link-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 10px; color: var(--text); font-size: 13px; outline: none; }
-        .pose-link-input::placeholder { color: var(--text3); }
-        .pose-link-go { background: var(--primary); border: none; border-radius: var(--r-sm); color: #000000; font-family: var(--font-display); font-size: 14px; padding: 8px 14px; cursor: pointer; white-space: nowrap; text-transform: uppercase; font-weight: 400; letter-spacing: 0.04em; }
+        .pose-link-go { background: var(--primary); border: none; border-radius: var(--r-sm); color: #000000; font-family: var(--font-display); font-size: 14px; padding: 8px 14px; cursor: pointer; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em; }
         .pose-actions { display: flex; gap: 8px; }
         .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); color: var(--text2); font-family: var(--font-display); font-size: 13px; padding: 8px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.04em; }
         .pose-action-btn.del { color: var(--danger); border-color: var(--danger); }
-        .pose-action-btn:active { opacity: 0.7; }
 
-        /* ── TIMERS & LABELS ── */
-        .pose-time-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 4px 12px; font-size: 12px; color: var(--text3); cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
-        .pose-time-chip:active { border-color: var(--primary); color: var(--primary); }
-        .pose-time-chip.running { border-color: var(--primary); color: var(--primary); background: rgba(255, 255, 255, 0.05); }
-        .pose-time-chip.warning { border-color: var(--danger); color: var(--danger); }
-        .pose-direction-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; font-weight: 700; }
-
-        /* ── MODAL WINDOWS ── */
+        /* MODAL WINDOWS */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(8px); }
         .modal-overlay.open { opacity: 1; pointer-events: all; }
-        .modal { background: var(--bg2); border-radius: var(--r); width: 100%; max-width: 600px; margin: 0 auto; padding: 24px; padding-bottom: calc(24px + var(--safe-bot)); border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
+        .modal { background: var(--bg2); width: 100%; max-width: 600px; margin: 0 auto; padding: 24px; padding-bottom: calc(24px + var(--safe-bot)); border-top: 1px solid var(--border); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
         .modal-overlay.open .modal { transform: translateY(0); }
         .modal-title { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 20px; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
         .modal-field { margin-bottom: 16px; }
         .modal-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 700; }
-        .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px; color: var(--text); font-family: var(--font-sans); font-size: 14px; outline: none; transition: border-color 0.2s; }
+        .modal-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px; color: var(--text); font-family: var(--font-sans); font-size: 14px; outline: none; }
         .modal-input:focus { border-color: var(--primary); }
-        .modal-textarea { min-height: 90px; resize: none; }
+        .modal-textarea { min-height: 80px; resize: none; }
+        
+        /* UPLOAD FILE CONTAINER */
+        .file-upload-wrapper { position: relative; width: 100%; background: var(--bg3); border: 1px dashed var(--border2); padding: 16px; text-align: center; cursor: pointer; }
+        .file-upload-wrapper input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-upload-text { font-size: 13px; color: var(--text2); }
+
         .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
-        .modal-btn { flex: 1; padding: 14px; border-radius: var(--r); font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; border: none; transition: opacity 0.2s; }
-        .modal-btn:active { opacity: 0.8; }
+        .modal-btn { flex: 1; padding: 14px; border-radius: var(--r); font-family: var(--font-display); font-size: 16px; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; border: none; }
         .modal-btn.primary { background: var(--primary); color: #000000; }
         .modal-btn.secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
 
-        /* ── INTERNALS ── */
+        /* INTERNALS */
         .empty { text-align: center; padding: 50px 20px; color: var(--text3); }
-        .empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.4; }
         .empty-text { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.04em; color: var(--text3); text-transform: uppercase; }
         .divider { height: 1px; background: var(--border); margin: 12px 16px; }
+        .pose-direction-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; font-weight: 700; }
         
-        /* ── TOAST ALERT ── */
-        .toast { position: fixed; bottom: calc(24px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px 24px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 300; font-weight: 500; }
+        /* TOAST ALERT */
+        .toast { position: fixed; bottom: calc(24px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r-sm); padding: 12px 24px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; z-index: 300; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .white-line { height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); margin: 20px; }
     </style>
@@ -208,44 +210,51 @@
             <input class="modal-input" id="poseModalName" placeholder="e.g. Looking over shoulder" />
         </div>
         <div class="modal-field">
-            <div class="modal-label">Direction / Cue (optional)</div>
-            <textarea class="modal-input modal-textarea" id="poseModalDesc" placeholder="What to say to your client during this pose..."></textarea>
+            <div class="modal-label">Directional Cue / Prompt</div>
+            <textarea class="modal-input modal-textarea" id="poseModalDesc" placeholder="What to tell your client during this look..."></textarea>
         </div>
         <div class="modal-field">
-            <div class="modal-label">Pinterest / Reference URL (optional)</div>
+            <div class="modal-label">Reference Photo (Permanent Save)</div>
+            <div class="file-upload-wrapper">
+                <div class="file-upload-text" id="fileUploadLabel">Click to select photo or take snapshot</div>
+                <input type="file" id="poseModalFile" accept="image/*" onchange="processModalImageUpload(this)" />
+            </div>
+        </div>
+        <div class="modal-field">
+            <div class="modal-label">Pinterest / Moodboard URL (optional)</div>
             <input class="modal-input" id="poseModalLink" placeholder="https://pinterest.com/pin/..." />
         </div>
         <div class="modal-btns">
             <button class="modal-btn secondary" onclick="closePoseModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="savePose()">Save</button>
+            <button class="modal-btn primary" onclick="savePose()">Save Look</button>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="zoneModal">
     <div class="modal">
-        <div class="modal-title">Add Zone</div>
+        <div class="modal-title">Add Location Segment</div>
         <div class="modal-field">
-            <div class="modal-label">Zone Name</div>
-            <input class="modal-input" id="zoneModalName" placeholder="e.g. Warm-Up, Feature Looks, Closing..." />
+            <div class="modal-label">Segment Name</div>
+            <input class="modal-input" id="zoneModalName" placeholder="e.g. Warm-Up, Main Looks, Sunset Outfits..." />
         </div>
         <div class="modal-btns">
             <button class="modal-btn secondary" onclick="closeZoneModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="saveZone()">Add Zone</button>
+            <button class="modal-btn primary" onclick="saveZone()">Add Segment</button>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="checkModal">
     <div class="modal">
-        <div class="modal-title">Add Checklist Item</div>
+        <div class="modal-title">Add Gear / Prep Item</div>
         <div class="modal-field">
-            <div class="modal-label">Item</div>
-            <input class="modal-input" id="checkModalInput" placeholder="e.g. Reflector packed" />
+            <div class="modal-label">Item Description</div>
+            <input class="modal-input" id="checkModalInput" placeholder="e.g. Charge primary flash packs" />
         </div>
         <div class="modal-btns">
             <button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button>
-            <button class="modal-btn primary" onclick="saveCheckItem()">Add</button>
+            <button class="modal-btn primary" onclick="saveCheckItem()">Add Item</button>
         </div>
     </div>
 </div>
@@ -260,13 +269,13 @@
     <div class="screen-content">
         <div class="home-hero">
             <div class="home-logo">Pose // <em>Guide</em></div>
-            <div class="home-sub">Session Companion Matrix</div>
+            <div class="home-sub">Live Session Companion</div>
         </div>
         <div class="white-line"></div>
 
         <div class="client-block">
             <div class="client-label">Active Editorial Client</div>
-            <input class="client-input" id="clientNameInput" placeholder="Client name..." oninput="saveClientName()" />
+            <input class="client-input" id="clientNameInput" placeholder="Enter client name..." oninput="saveClientName()" />
         </div>
 
         <div class="checklist-block">
@@ -280,13 +289,13 @@
         <div class="favs-row">
             <button class="favs-btn" onclick="showFavorites()">
                 <span class="favs-btn-icon">★</span>
-                <span class="favs-btn-text">Favorites</span>
-                <span class="favs-btn-count" id="favsCount">0 poses</span>
+                <span class="favs-btn-text">Starred Portfolio</span>
+                <span class="favs-btn-count" id="favsCount">0 looks stored</span>
             </button>
         </div>
 
         <div class="divider"></div>
-        <div class="section-label">Session Architecture</div>
+        <div class="section-label">Select Session Directory</div>
         <div class="session-grid" id="sessionGrid"></div>
     </div>
 </div>
@@ -309,22 +318,20 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  DATA DEFAULTS & GLOBAL SPECIFICATION ENGINE
-// ═══════════════════════════════════════════════════
+// MASTER DATA DEFAULT CONFIGURATIONS
 const SESSION_TYPES = [
-    { id: 'solo_female', name: 'Solo Female', icon: '👩' },
-    { id: 'solo_male',   name: 'Solo Male',   icon: '🧔' },
-    { id: 'studio',      name: 'Studio Library', icon: '💡' },
-    { id: 'couples',     name: 'Couples Master', icon: '💑' },
-    { id: 'group',       name: 'Group Architecture', icon: '👥' },
+    { id: 'solo_female', name: 'Solo Female', icon: '👩', count: '20+ Master Poses' },
+    { id: 'solo_male',   name: 'Solo Male',   icon: '🧔', count: '20+ Master Poses' },
+    { id: 'studio',      name: 'Studio Library', icon: '💡', count: '9 Studio Configurations' },
+    { id: 'couples',     name: 'Couples Book', icon: '💑', count: '9 Classic Dynamics' },
+    { id: 'group',       name: 'Group Layouts', icon: '👥', count: '5 Architecture Blueprints' },
 ];
 
 const LENGTHS = [
-    { id: 'mini',      name: 'Mini Session',      time: '30 min', edits: '~1 hr editing',  images: '20+ images'  },
-    { id: 'signature', name: 'Signature Look', time: '1 hr',   edits: '~2 hr editing',  images: '50+ images'  },
-    { id: 'classic',   name: 'Classic Editorial',   time: '1.5 hr', edits: '~3 hr editing',  images: '75+ images'  },
-    { id: 'deluxe',    name: 'Deluxe Production',    time: '2 hr',   edits: '~4 hr editing',  images: '100+ images' },
+    { id: 'mini',      name: 'Mini Session',      time: '30 min', edits: '6 Loaded Poses',  images: '20+ Final Delivered'  },
+    { id: 'signature', name: 'Signature Look', time: '1 hr',   edits: '10 Loaded Poses', images: '50+ Final Delivered'  },
+    { id: 'classic',   name: 'Classic Editorial',   time: '1.5 hr', edits: '20 Loaded Poses', images: '75+ Final Delivered'  },
+    { id: 'deluxe',    name: 'Deluxe Production',    time: '2 hr',   edits: '26 Loaded Poses', images: '100+ Final Delivered' },
 ];
 
 const DEFAULT_POSES = {
@@ -470,36 +477,36 @@ const DEFAULT_POSES = {
     },
     studio: {
         mini: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light. Sharp jaw illumination, clean background spacing.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens. Standard elegant headshot configuration.' },
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light. Sharp jaw illumination, clean background spacing.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens. Standard elegant configuration.' },
             { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees. Intense eye contact.' }
         ],
         signature: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light. Sharp jaw illumination.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light. Sharp jaw illumination.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
             { name: 'Direct Power Stance', desc: 'Shoulders perfectly square to lens, chin down 5 degrees.' },
-            { name: 'Stool Seated — Arms resting on thighs', desc: 'Low stool, lean forward toward camera to create intimacy and eliminate midsection bunching.' },
+            { name: 'Stool Seated — Arms resting on thighs', desc: 'Low stool, lean forward toward camera to create intimacy.' },
             { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft fill from below. Relaxed fingers tracing jawline or resting lightly under chin.' }
         ],
         classic: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
             { name: 'Direct Power Stance', desc: 'Shoulders square, chin down. High intensity.' },
             { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
             { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
-            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera. Creates beautiful eye prominence and soft drop-off.' },
-            { name: 'Gelled Rim Silhouette', desc: 'Positioned directly between kicker light and lens. Hair and shoulder pop.' }
+            { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera. Creates beautiful eye prominence.' },
+            { name: 'Rim Silhouette', desc: 'Positioned directly between kicker light and lens. Hair and shoulder pop.' }
         ],
         deluxe: [
-            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to key light.' },
-            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from key, face back to lens.' },
+            { name: 'Clean Profile — Headshot focus', desc: '90 degrees to light.' },
+            { name: 'Classic 45-Degree Stance', desc: 'Body angled away from light, face back to lens.' },
             { name: 'Direct Power Stance', desc: 'Shoulders square, chin down.' },
             { name: 'Stool Seated — Arms on thighs', desc: 'Low stool, lean forward toward camera.' },
             { name: 'Beauty Lighting — Hands framing chin', desc: 'Soft bottom fill. Relaxed fingers tracing jawline.' },
             { name: 'High-Angle Floor Seated', desc: 'Client sits on floor looking up at camera.' },
-            { name: 'Gelled Rim Silhouette', desc: 'Positioned directly between kicker light and lens.' },
+            { name: 'Rim Silhouette', desc: 'Positioned directly between kicker light and lens.' },
             { name: 'Dynamic Fabric Motion Stretch', desc: 'Have client toss a sheer scarf or jacket edge while holding static face position.' },
-            { name: 'Editorial Vogue lean', desc: 'Hyperextended hip to one side, hands behind back, head tilted dramatically away from key.' }
+            { name: 'Editorial Vogue lean', desc: 'Hyperextended hip to one side, hands behind back, head tilted dramatically.' }
         ]
     },
     couples: {
@@ -522,7 +529,7 @@ const DEFAULT_POSES = {
             { name: 'Forehead to Forehead close up', desc: 'Eyes closed, bridges of noses almost touching.' },
             { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
             { name: 'Seated Lap Lean', desc: 'One partner sitting on bench or ground, the other leaning back securely between their knees.' },
-            { name: 'Frame-Within-A-Frame embrace', desc: 'One partner close to lens out of focus, framing the clear smiling face of the partner behind.' }
+            { name: 'Frame embrace', desc: 'One partner close to lens out of focus, framing the clear smiling face of the partner behind.' }
         ],
         deluxe: [
             { name: 'The Classic V-Stance', desc: 'Shoulders connected, bodies angled inward.' },
@@ -531,30 +538,30 @@ const DEFAULT_POSES = {
             { name: 'Forehead to Forehead close up', desc: 'Intimate close space connection.' },
             { name: 'The Promenading Dip', desc: 'Support lower back for elegant low dip frame.' },
             { name: 'Seated Lap Lean', desc: 'One sitting on bench, other leaning between knees.' },
-            { name: 'Frame-Within-A-Frame embrace', desc: 'One partner close to lens out of focus framing the other.' },
+            { name: 'Frame embrace', desc: 'One partner close to lens out of focus framing the other.' },
             { name: 'Dynamic Run-and-Spin loop', desc: 'Running hand in hand, one partner pulls back slightly to spin the other out. Pure kinetic emotion.' },
-            { name: 'Whispering Secret candid', desc: 'One partner whispers something funny/absurd into the other\'s ear. Shoot the immediate genuine laugh reaction.' }
+            { name: 'Whispering Secret candid', desc: 'One partner whispers something funny into the other\'s ear. Shoot the immediate genuine laugh reaction.' }
         ]
     },
     group: {
         mini: [
             { name: 'Staggered Depth Matrix', desc: 'Do not line up straight. Create three distinct layers of depth. Mix sitting and standing frames.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence. Creates a physical link throughout the frame architecture.' }
+            { name: 'The Connected Line', desc: 'Hand on shoulder links the group. Creates a physical link throughout the configuration.' }
         ],
         signature: [
             { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder links down the sequence.' },
             { name: 'Triangle Architecture layout', desc: 'Tallest figures in the center core, sloping down to shorter sitting/crouching figures at flank ends.' }
         ],
         classic: [
             { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth. Mix sitting and standing.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder loops down the sequence.' },
-            { name: 'Triangle Architecture layout', desc: 'Tallest figures in center core, sloping down to shorter figures at flanks.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder links down the sequence.' },
+            { name: 'Triangle Architecture layout', desc: 'Tallest figures center core, sloping down to shorter figures at flanks.' },
             { name: 'Candid Group Conversation loop', desc: 'Have everyone look at one central individual telling a story, then capture the general laugh cascade.' }
         ],
         deluxe: [
             { name: 'Staggered Depth Matrix', desc: 'Three distinct layers of depth.' },
-            { name: 'The Connected Line', desc: 'Hand on shoulder loops down sequence.' },
+            { name: 'The Connected Line', desc: 'Hand on shoulder links down sequence.' },
             { name: 'Triangle Architecture layout', desc: 'Tallest figures center core, sloping down.' },
             { name: 'Candid Group Conversation loop', desc: 'Everyone looks at one central individual telling a story, capture reactions.' },
             { name: 'Editorial Walking Grid Vibe', desc: 'Vogue-style group march toward camera. Spaced 2-3 feet apart, high confidence, asymmetrical strides.' }
@@ -562,39 +569,35 @@ const DEFAULT_POSES = {
     }
 };
 
-// ═══════════════════════════════════════════════════
-//  APPLICATION CORE INSTANCE STATE MACHINE
-// ═══════════════════════════════════════════════════
+// PERSISTED CLIENT APP STATE
 let appData = {
     clientName: '',
     checklist: [
-        { text: 'Verify batteries fully charged', checked: false },
-        { text: 'Clear and format primary memory cards', checked: false },
-        { text: 'Check backup lenses and speedlights', checked: false }
+        { text: 'Verify device batteries are fully charged', checked: false },
+        { text: 'Format primary and backup memory cards', checked: false },
+        { text: 'Pack core lenses and speedlights', checked: false }
     ],
     favorites: [],
     customSessions: {}
 };
 
-// State Stack Tracking for Back Navigations
 let screenHistory = ['screenHome'];
 let currentSessionType = '';
 let currentLength = '';
 let currentZoneIndex = 0;
 
-// Global Countdown Core Engine Reference
 let countdownInterval = null;
 let timerDuration = 0; 
 let isTimerRunning = false;
+let currentModalImageBase64 = ""; // Holds base64 string during upload inside modal
 
-// Initialize Storage State Core Pipeline on window mount
 window.onload = function() {
-    const saved = localStorage.getItem('pose_guide_data_v2');
+    const saved = localStorage.getItem('pose_guide_data_v3');
     if (saved) {
         try {
             appData = JSON.parse(saved);
         } catch(e) {
-            console.error("Local schema validation failed. Reverting to structural architecture template.");
+            console.error("Local data validation failed. Reverting to factory schemas.");
         }
     }
     initDragAndDrop();
@@ -602,12 +605,10 @@ window.onload = function() {
 };
 
 function saveStateToDisk() {
-    localStorage.setItem('pose_guide_data_v2', JSON.stringify(appData));
+    localStorage.setItem('pose_guide_data_v3', JSON.stringify(appData));
 }
 
-// ═══════════════════════════════════════════════════
-//  SCREEN TRANSITION LAYERENGINE
-// ═══════════════════════════════════════════════════
+// SCREEN TRANSITION ENGINE
 function navigateTo(screenId) {
     const currentScreen = screenHistory[screenHistory.length - 1];
     if (currentScreen === screenId) return;
@@ -624,7 +625,6 @@ function navigateTo(screenId) {
 function goBack() {
     if (screenHistory.length <= 1) return;
     
-    // Stop core system countdowns instantly if navigating out of active zones
     if(screenHistory[screenHistory.length - 1] === 'screenZones') {
         stopGlobalCountdownEngine();
     }
@@ -661,22 +661,19 @@ function updateNavUI() {
         const typeObj = SESSION_TYPES.find(t => t.id === currentSessionType);
         titleEl.innerHTML = typeObj ? `${typeObj.name}` : 'Duration';
     } else if (currentScreen === 'screenZones') {
-        titleEl.innerHTML = 'Execution Matrix';
-        actionsEl.innerHTML = `<button class="nav-btn gold" onclick="openZoneModal()">+ Zone</button>`;
+        titleEl.innerHTML = 'Session Board';
+        actionsEl.innerHTML = `<button class="nav-btn gold" onclick="openZoneModal()">+ Segment</button>`;
     } else if (currentScreen === 'screenFavs') {
-        titleEl.innerHTML = 'Global Stars';
+        titleEl.innerHTML = 'Starred Looks';
     }
 }
 
-// ═══════════════════════════════════════════════════
-//  SCREEN 1: HOME VIEW MANAGEMENT
-// ═══════════════════════════════════════════════════
+// SCREEN 1: DASHBOARD
 function renderHome() {
     document.getElementById('clientNameInput').value = appData.clientName || '';
     renderChecklist();
     
-    // Render Favorite Button Label Status Tracker
-    document.getElementById('favsCount').innerText = `${appData.favorites.length} poses total`;
+    document.getElementById('favsCount').innerText = `${appData.favorites.length} looks saved`;
 
     const grid = document.getElementById('sessionGrid');
     grid.innerHTML = SESSION_TYPES.map(type => {
@@ -684,7 +681,7 @@ function renderHome() {
             <div class="session-card" onclick="selectSessionType('${type.id}')">
                 <div class="session-card-icon">${type.icon}</div>
                 <div class="session-card-name">${type.name}</div>
-                <div class="session-card-count">System Configuration Array</div>
+                <div class="session-card-count">${type.count}</div>
             </div>
         `;
     }).join('');
@@ -701,11 +698,11 @@ function selectSessionType(id) {
     renderSessionLengths();
 }
 
-// ── CHECKLIST CONTROLLERS ──
+// PRE-SESSION PREP CHECKS
 function renderChecklist() {
     const container = document.getElementById('checklistItems');
     if (!appData.checklist || appData.checklist.length === 0) {
-        container.innerHTML = '<div style="font-size:13px; color:var(--text3); padding:8px 0;">Checklist clear. No performance tasks initialized.</div>';
+        container.innerHTML = '<div style="font-size:13px; color:var(--text3); padding:8px 0;">All items cleared. Ready for operations.</div>';
         return;
     }
 
@@ -744,9 +741,7 @@ function deleteCheckItem(idx) {
     renderChecklist();
 }
 
-// ═══════════════════════════════════════════════════
-//  SCREEN 2: TIMEFRAME SELECTION ARCHITECTURE
-// ═══════════════════════════════════════════════════
+// SCREEN 2: SESSION DURATION TIMELINE
 function renderSessionLengths() {
     const container = document.getElementById('lengthList');
     container.innerHTML = LENGTHS.map(len => `
@@ -767,18 +762,16 @@ function selectLength(lengthId) {
     currentLength = lengthId;
     currentZoneIndex = 0;
     
-    // Core Engine Structural Setup Check
     const storageKey = `${currentSessionType}_${currentLength}`;
     if (!appData.customSessions[storageKey]) {
-        // Build fresh functional runtime arrays inside storage engine matching default baseline parameters
         const originalDefaults = (DEFAULT_POSES[currentSessionType] && DEFAULT_POSES[currentSessionType][currentLength]) 
             ? DEFAULT_POSES[currentSessionType][lengthId] 
-            : [{ name: 'Introductory Stance Framework', desc: 'Baseline portrait alignment stance sequence configuration.' }];
+            : [{ name: 'Default Setup Stance', desc: 'Baseline layout posture guidelines.' }];
             
         appData.customSessions[storageKey] = [
             {
-                name: 'Zone A: Foundation Mapping',
-                notes: 'Establish standard composition frames.',
+                name: 'Segment 1: Baseline Looks',
+                notes: 'Establish standard layout pacing frames.',
                 poses: JSON.parse(JSON.stringify(originalDefaults))
             }
         ];
@@ -789,37 +782,32 @@ function selectLength(lengthId) {
     renderZonesView();
 }
 
-// ═══════════════════════════════════════════════════
-//  SCREEN 3: MATRIX ZONE PRODUCTION BOARD
-// ═══════════════════════════════════════════════════
+// SCREEN 3: ACTIVE PLAYBOOK LIST
 function renderZonesView() {
     const storageKey = `${currentSessionType}_${currentLength}`;
     const zones = appData.customSessions[storageKey] || [];
     
-    // Boundary structural sanitization checker
     if (currentZoneIndex >= zones.length) currentZoneIndex = 0;
     
-    // 1. Render Horizontal Tabs Layer
     const tabsContainer = document.getElementById('zoneTabs');
     tabsContainer.innerHTML = zones.map((z, idx) => `
         <div class="zone-tab ${idx === currentZoneIndex ? 'active' : ''}" onclick="switchZone(${idx})">
-            ${z.name.split(':')[0]}
+            Segment ${idx + 1}
         </div>
     `).join('');
 
-    // 2. Target Component Rendering Core
     const contentContainer = document.getElementById('zoneContent');
     const activeZone = zones[currentZoneIndex];
     
     if (!activeZone) {
-        contentContainer.innerHTML = '<div class="empty"><div class="empty-text">No active loops initialized.</div></div>';
+        contentContainer.innerHTML = '<div class="empty"><div class="empty-text">No workspace segments configured.</div></div>';
         return;
     }
 
     contentContainer.innerHTML = `
         <div class="zone-notes-block">
-            <div class="pose-direction-label">Zone Operational Framework Notes</div>
-            <textarea class="zone-notes-input" placeholder="Add custom lighting strategies or notes for this location segment..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
+            <div class="pose-direction-label">Location & Lighting Notes</div>
+            <textarea class="zone-notes-input" placeholder="Add notes on custom location setups, strobe options, or backdrop guidelines..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
         </div>
 
         <div class="zone-timer-block">
@@ -827,14 +815,14 @@ function renderZonesView() {
             <div class="timer-controls">
                 <div class="timer-set">
                     <input type="number" id="timerInputMin" value="5" min="1" max="99" onchange="syncTimerSettings()" />
-                    <span style="font-family:var(--font-display); font-size:16px; color:var(--text3)">M</span>
+                    <span style="font-family:var(--font-display); font-size:16px; color:var(--text3)">MIN</span>
                 </div>
-                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleZoneTimer()">Run</button>
+                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleZoneTimer()">Start</button>
                 <button class="timer-btn" onclick="resetZoneTimer()">⟲</button>
             </div>
         </div>
 
-        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Capture Vector Parameter</button>
+        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Add Custom Pose Layout</button>
         <div class="poses-list" id="posesLiveContainer"></div>
     `;
 
@@ -854,7 +842,7 @@ function saveZoneNotes(el) {
     saveStateToDisk();
 }
 
-// ── TIMING SYSTEM CONTROL MATRIX ──
+// LIVE COUNTDOWN MODULES
 function syncTimerSettings() {
     if (isTimerRunning) return;
     const mins = parseInt(document.getElementById('timerInputMin').value) || 5;
@@ -865,12 +853,12 @@ function toggleZoneTimer() {
     const btn = document.getElementById('timerToggleBtn');
     if (isTimerRunning) {
         stopGlobalCountdownEngine();
-        btn.innerText = "Run";
+        btn.innerText = "Start";
         btn.style.background = "var(--primary)";
         btn.style.color = "#000000";
     } else {
         startGlobalCountdownEngine();
-        btn.innerText = "Hold";
+        btn.innerText = "Pause";
         btn.style.background = "var(--danger)";
         btn.style.color = "#ffffff";
     }
@@ -890,20 +878,18 @@ function startGlobalCountdownEngine() {
         if (timerDuration <= 0) {
             stopGlobalCountdownEngine();
             display.classList.add('warning');
-            display.innerText = "00:00 - COMPLETE";
-            showToast("Zone operational frame completed.");
+            display.innerText = "TIME OUT";
+            showToast("Look segment timeframe finished.");
             
-            // Audio pulse ping frequency generation core logic sequence
             try {
                 let context = new (window.AudioContext || window.webkitAudioContext)();
                 let osc = context.createOscillator();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, context.currentTime);
+                osc.frequency.setValueAtTime(600, context.currentTime);
                 osc.connect(context.destination);
                 osc.start();
-                osc.stop(context.currentTime + 0.3);
+                osc.stop(context.currentTime + 0.2);
             } catch(e) {}
-            
             return;
         }
         timerDuration--;
@@ -924,7 +910,7 @@ function stopGlobalCountdownEngine() {
     clearInterval(countdownInterval);
     const btn = document.getElementById('timerToggleBtn');
     if(btn) {
-        btn.innerText = "Run";
+        btn.innerText = "Start";
         btn.style.background = "var(--primary)";
         btn.style.color = "#000000";
     }
@@ -940,11 +926,11 @@ function resetZoneTimer() {
     }
 }
 
-// ── POSES STRUCTURAL TRANSITION LAYER ──
+// RENDER POSE COMPONENT MATRIX
 function renderPosesList(posesArray) {
     const listEl = document.getElementById('posesLiveContainer');
     if (!posesArray || posesArray.length === 0) {
-        listEl.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">No vectors tracked inside zone.</div></div>';
+        listEl.innerHTML = '<div class="empty"><div class="empty-text">No custom poses created for this look space.</div></div>';
         return;
     }
 
@@ -956,21 +942,24 @@ function renderPosesList(posesArray) {
                     <div class="pose-drag">☰</div>
                     <div class="pose-num">${String(idx + 1).padStart(2, '0')}</div>
                     <div class="pose-name" onclick="togglePoseDrawer(${idx})">${pose.name}</div>
-                    <button class="pose-star" onclick="toggleStarPose(${idx})">${isStarred ? '★' : '☆'}</button>
+                    <button class="pose-star" onclick="toggleStarPose(${idx})" style="color:${isStarred ? '#ffffff':'var(--text3)'}">${isStarred ? '★' : '☆'}</button>
                     <button class="pose-expand" id="arrow-${idx}" onclick="togglePoseDrawer(${idx})">▼</button>
                 </div>
                 <div class="pose-body" id="body-${idx}">
-                    <div class="pose-direction-label">Directional Prompt Matrix</div>
-                    <div class="pose-desc">${pose.desc || 'No procedural metrics defined for execution framework.'}</div>
+                    
+                    ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" id="photo-preview-${idx}" />` : ''}
+                    
+                    <div class="pose-direction-label">Direction / Client Prompts</div>
+                    <div class="pose-desc">${pose.desc || 'No specific prompt cues added yet.'}</div>
                     
                     <div class="pose-link-row">
-                        <input type="text" class="pose-link-input" id="link-${idx}" placeholder="Reference layout hyperlink..." value="${pose.link || ''}" onchange="savePoseLink(${idx}, this.value)" />
-                        ${pose.link ? `<button class="pose-link-go" onclick="window.open('${pose.link}', '_blank')">View</button>` : ''}
+                        <input type="text" class="pose-link-input" id="link-${idx}" placeholder="Add reference link URL..." value="${pose.link || ''}" onchange="savePoseLink(${idx}, this.value)" />
+                        ${pose.link ? `<button class="pose-link-go" onclick="window.open('${pose.link}', '_blank')">Link</button>` : ''}
                     </div>
 
                     <div class="pose-actions">
                         <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify</button>
-                        <button class="pose-action-btn del" onclick="deletePoseInstance(${idx})">Purge</button>
+                        <button class="pose-action-btn del" onclick="deletePoseInstance(${idx})">Delete</button>
                     </div>
                 </div>
             </div>
@@ -996,28 +985,73 @@ function savePoseLink(idx, val) {
     saveStateToDisk();
 }
 
-// ═══════════════════════════════════════════════════
-//  MODAL SYSTEM INTERNALS ENGINE
-// ═══════════════════════════════════════════════════
+// PERMANENT PHOTO CONVERSION ENGINE
+function processModalImageUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    document.getElementById('fileUploadLabel').innerText = "Processing image file...";
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        // Compressor layer to safely stay well inside localStorage constraints
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            
+            // Constrain master limits to a max dimension profile of 800px
+            const max_dim = 800;
+            if (width > height && width > max_dim) {
+                height *= max_dim / width;
+                width = max_dim;
+            } else if (height > max_dim) {
+                width *= max_dim / height;
+                height = max_dim;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Save as space-optimized JPEG string format
+            currentModalImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            document.getElementById('fileUploadLabel').innerText = "✅ Image processed successfully (" + file.name + ")";
+        };
+    };
+    reader.readAsDataURL(file);
+}
+
+// POSE CREATION/MODIFICATION ENGINE
 let isEditMode = false;
 let targetedPoseIndex = null;
 
 function openPoseModal(isEdit = false, idx = null) {
     isEditMode = isEdit;
     targetedPoseIndex = idx;
+    currentModalImageBase64 = ""; // Clear active image caches
     
     const m = document.getElementById('poseModal');
     const title = document.getElementById('poseModalTitle');
+    document.getElementById('fileUploadLabel').innerText = "Click to select photo or take snapshot";
+    document.getElementById('poseModalFile').value = "";
     
     if (isEditMode) {
-        title.innerText = "Edit Pose Matrix Elements";
+        title.innerText = "Modify Pose Settings";
         const storageKey = `${currentSessionType}_${currentLength}`;
         const data = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
         document.getElementById('poseModalName').value = data.name || '';
         document.getElementById('poseModalDesc').value = data.desc || '';
         document.getElementById('poseModalLink').value = data.link || '';
+        if (data.image) {
+            currentModalImageBase64 = data.image;
+            document.getElementById('fileUploadLabel').innerText = "✅ Has existing reference file saved";
+        }
     } else {
-        title.innerText = "Initialize Custom Pose Vector";
+        title.innerText = "Create New Look Setup";
         document.getElementById('poseModalName').value = '';
         document.getElementById('poseModalDesc').value = '';
         document.getElementById('poseModalLink').value = '';
@@ -1034,17 +1068,27 @@ function savePose() {
     const desc = document.getElementById('poseModalDesc').value.trim();
     const link = document.getElementById('poseModalLink').value.trim();
     
-    if (!name) { showToast("Name context cannot be structural space character void."); return; }
+    if (!name) { showToast("Please input a name label for this pose design."); return; }
     
     const storageKey = `${currentSessionType}_${currentLength}`;
     const targetArr = appData.customSessions[storageKey][currentZoneIndex].poses;
     
     if (isEditMode) {
-        targetArr[targetedPoseIndex] = { name, desc, link };
-        showToast("Vector parameters structured correctly.");
+        targetArr[targetedPoseIndex] = { 
+            name, 
+            desc, 
+            link, 
+            image: currentModalImageBase64 || targetArr[targetedPoseIndex].image || "" 
+        };
+        showToast("Look updated successfully.");
     } else {
-        targetArr.push({ name, desc, link });
-        showToast("New alignment target instantiated.");
+        targetArr.push({ 
+            name, 
+            desc, 
+            link, 
+            image: currentModalImageBase64 || "" 
+        });
+        showToast("New look layout appended.");
     }
     
     saveStateToDisk();
@@ -1053,16 +1097,16 @@ function savePose() {
 }
 
 function deletePoseInstance(idx) {
-    if(confirm("Confirm structural purge validation routine?")) {
+    if(confirm("Are you sure you want to delete this pose from the session timeline?")) {
         const storageKey = `${currentSessionType}_${currentLength}`;
         appData.customSessions[storageKey][currentZoneIndex].poses.splice(idx, 1);
         saveStateToDisk();
         renderZonesView();
-        showToast("Parameter dropped safely.");
+        showToast("Pose profile cleared.");
     }
 }
 
-// ── COMPONENT LEVEL MANAGEMENT LAYER: ZONES ──
+// WORKSPACE SEGMENTS MODAL MANAGEMENT
 function openZoneModal() { document.getElementById('zoneModal').classList.add('open'); document.getElementById('zoneModalName').focus(); }
 function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value = ''; }
 
@@ -1081,12 +1125,10 @@ function saveZone() {
     saveStateToDisk();
     closeZoneModal();
     renderZonesView();
-    showToast("Segment system loop array added.");
+    showToast("New workflow section established.");
 }
 
-// ═══════════════════════════════════════════════════
-//  FAVORITES CORE INTERFACE LAYER
-// ═══════════════════════════════════════════════════
+// STARRED ITEMS DIRECTORIES
 function toggleStarPose(idx) {
     const storageKey = `${currentSessionType}_${currentLength}`;
     const pose = appData.customSessions[storageKey][currentZoneIndex].poses[idx];
@@ -1094,10 +1136,10 @@ function toggleStarPose(idx) {
     const matchIdx = appData.favorites.findIndex(f => f.name === pose.name);
     if (matchIdx > -1) {
         appData.favorites.splice(matchIdx, 1);
-        showToast("De-starred vector element.");
+        showToast("Removed look from stars index.");
     } else {
         appData.favorites.push(pose);
-        showToast("Added target matrix element to stars library.");
+        showToast("Added current look to primary portfolio targets.");
     }
     saveStateToDisk();
     renderZonesView();
@@ -1110,14 +1152,14 @@ function showFavorites() {
     if (!appData.favorites || appData.favorites.length === 0) {
         container.innerHTML = `
             <div style="padding-top: calc(var(--safe-top) + 20px);">
-                <div class="empty"><div class="empty-text">Star tracking storage array empty.</div></div>
+                <div class="empty"><div class="empty-text">No portfolio shots marked with star tracking yet.</div></div>
             </div>
         `;
         return;
     }
 
     container.innerHTML = `
-        <div style="padding:16px; font-family:var(--font-display); font-size:20px; color:var(--text2); letter-spacing:0.04em">STARS PORTFOLIO CONTROL ARCHIVE</div>
+        <div style="padding:16px; font-family:var(--font-display); font-size:20px; color:var(--text2); letter-spacing:0.04em">STARRED MASTER LOOKBOOK</div>
         <div class="poses-list" style="padding-top:0">
             ${appData.favorites.map((pose, idx) => `
                 <div class="pose-card">
@@ -1126,9 +1168,10 @@ function showFavorites() {
                         <div class="pose-name" style="cursor:default">${pose.name}</div>
                         <button class="check-del" onclick="removeFavoriteDirectly(${idx})">×</button>
                     </div>
-                    <div class="pose-body style" style="display:block; border-top:1px solid var(--border)">
-                        <div class="pose-desc">${pose.desc || 'No framework specs verified.'}</div>
-                        ${pose.link ? `<button class="pose-link-go" style="width:100%" onclick="window.open('${pose.link}', '_blank')">Launch Asset Ref Frame</button>` : ''}
+                    <div class="pose-body" style="display:block;">
+                        ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" />` : ''}
+                        <div class="pose-desc">${pose.desc || 'No directional descriptions added.'}</div>
+                        ${pose.link ? `<button class="pose-link-go" style="width:100%" onclick="window.open('${pose.link}', '_blank')">Open Reference Link</button>` : ''}
                     </div>
                 </div>
             `).join('')}
@@ -1142,9 +1185,7 @@ function removeFavoriteDirectly(idx) {
     showFavorites();
 }
 
-// ═══════════════════════════════════════════════════
-//  KINETIC HARDWARE INTERACTION DRAG/DROP PIPELINE
-// ═══════════════════════════════════════════════════
+// TIMELINE MANUAL POSITION DRAG/DROP REARRANGEMENT
 let elementDraggedSource = null;
 
 function initDragAndDrop() {
@@ -1190,7 +1231,6 @@ function initDragAndDrop() {
         const storageKey = `${currentSessionType}_${currentLength}`;
         const poses = appData.customSessions[storageKey][currentZoneIndex].poses;
         
-        // Mutate array indices using technical splice swap execution architecture
         const [movedElement] = poses.splice(srcIdx, 1);
         poses.splice(targetIdx, 0, movedElement);
 
@@ -1199,13 +1239,13 @@ function initDragAndDrop() {
     });
 }
 
-// Utility Toast Deployment System Core Engine
+// TOAST OVERLAY TIMEOUT RUNNER
 function showToast(msg) {
     const t = document.getElementById('toast');
     if(!t) return;
     t.innerText = msg;
     t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
+    setTimeout(() => t.classList.remove('show'), 2200);
 }
 </script>
 
