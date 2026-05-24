@@ -440,7 +440,7 @@ function renderHome() {
     renderChecklist();
     document.getElementById('favsCount').innerText = appData.favorites.length + ' looks loaded';
     document.getElementById('sessionGrid').innerHTML = SESSION_TYPES.map(type =>
-        '<div class="session-card" onclick="selectSessionType('' + type.id + '')">' +
+        '<div class="session-card" onclick="selectSessionType(\'' + type.id + '\')">' +
         '<div style="font-size:20px;filter:grayscale(100%)">' + type.icon + '</div>' +
         '<div class="session-card-name">' + type.name + '</div>' +
         '<div class="session-card-count">' + type.count + '</div></div>'
@@ -467,7 +467,7 @@ function selectSessionType(id) { currentSessionType = id; navigateTo('screenSess
 
 function renderSessionLengths() {
     document.getElementById('lengthList').innerHTML = LENGTHS.map(len =>
-        '<div class="length-card" onclick="selectLength('' + len.id + '')">' +
+        '<div class="length-card" onclick="selectLength(\'' + len.id + '\')">' +
         '<div class="length-badge">' + len.time.split(' ')[0] + '<span>' + len.time.split(' ')[1] + '</span></div>' +
         '<div class="length-info"><div class="length-name">' + len.name + '</div><div class="length-meta">' + len.edits + ' • ' + len.meta + '</div></div>' +
         '<div style="color:var(--text3)">›</div></div>'
