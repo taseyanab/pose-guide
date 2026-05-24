@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Pose Playbook">
-    <title>Photographer Pose Playbook Pro</title>
+    <title>Pose Playbook Pro</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     
     <style>
-        :root {
+        /* [PASTE YOUR ORIGINAL CSS HERE] */
+                :root {
             --primary: #ffffff; 
             --bg: #000000;      
             --bg2: #0a0a0a;     
@@ -152,7 +151,7 @@
         .pose-link-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); padding: 8px; color: var(--text); font-size: 12px; outline: none; }
         .pose-link-go { background: var(--primary); border: none; color: #000; font-family: var(--font-display); font-size: 13px; padding: 6px 12px; cursor: pointer; text-transform: uppercase; }
         .pose-actions { display: flex; gap: 6px; }
-        .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-family: var(--font-display); font-size: 12px; padding: 6px; cursor: pointer; text-transform: uppercase; }
+        .pose-action-btn { flex: 1; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-family: var(--font-display); font-size: 12px; padding: 6px; cursor: pointer; text-transform: uppercase; text-align: center; line-height: 1.2; }
         .pose-action-btn.del { color: var(--danger); border-color: var(--danger); }
 
         /* MODALS */
@@ -177,6 +176,19 @@
         .toast { position: fixed; bottom: calc(20px + var(--safe-bot)); left: 50%; transform: translateX(-50%) translateY(10px); background: var(--bg3); border: 1px solid var(--border2); padding: 10px 20px; font-size: 12px; opacity: 0; pointer-events: none; transition: all 0.2s; z-index: 300; white-space: nowrap; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .empty { text-align: center; padding: 40px; color: var(--text3); font-family: var(--font-display); font-size: 20px; text-transform: uppercase; }
+
+        /* NEW CLIENT-VIEW EXCLUSIVE STYLES */
+        .client-welcome-hero { padding: 30px 20px 10px; text-align: center; }
+        .client-welcome-title { font-family: var(--font-display); font-size: 38px; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
+        .client-welcome-sub { font-size: 13px; color: var(--text2); margin-top: 8px; line-height: 1.5; font-weight: 400; padding: 0 10px; }
+        .client-pose-card { background: var(--bg2); border: 1px solid var(--border); margin: 0 16px 16px; overflow: hidden; border-radius: 4px; }
+        .client-pose-img { width: 100%; max-height: 400px; object-fit: cover; display: block; border-bottom: 1px solid var(--border); }
+        .client-pose-info { padding: 16px; }
+        .client-pose-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+        .client-pose-name { font-family: var(--font-display); font-size: 22px; text-transform: uppercase; color: var(--text); letter-spacing: 0.02em; }
+        .client-practice-box { background: rgba(212, 175, 55, 0.06); border-left: 2px solid var(--accent); padding: 12px; border-radius: 0 4px 4px 0; }
+        .client-practice-title { font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px; letter-spacing: 0.05em; }
+        .client-practice-text { font-size: 13px; color: #f4f4f5; line-height: 1.5; font-style: italic; }
     </style>
 </head>
 <body>
@@ -266,6 +278,17 @@
 <div class="screen hidden" id="screenZones"><div class="screen-content"><div class="zone-tabs" id="zoneTabs"></div><div id="zoneContent"></div></div></div>
 <div class="screen hidden" id="screenFavs"><div class="screen-content" id="favsContent"></div></div>
 
+<div class="screen hidden" id="screenClientView">
+    <div class="screen-content" style="padding-bottom:60px;">
+        <div class="client-welcome-hero">
+            <div class="client-welcome-title" id="clientWelcomeTitle">YOUR PRACTICE PORTAL</div>
+            <div class="client-welcome-sub" id="clientWelcomeSub">Review your handpicked pose playbook boards. Try practicing these structural vibes front of a mirror before our production shoot targets!</div>
+        </div>
+        <div class="white-line"></div>
+        <div id="clientPosesContainer"></div>
+    </div>
+</div>
+
 <script>
 const SESSION_TYPES = [
     { id: 'grad_outdoor', name: 'Graduation (Outdoor)', icon: '🎓', count: '100 Core Stacks' },
@@ -284,6 +307,25 @@ const LENGTHS = [
     { id: 'classic',   name: 'Classic Editorial', time: '1.5 hr', edits: '75 Poses Loaded',  meta: 'Deep Look Coverage' },
     { id: 'deluxe',    name: 'Deluxe Production', time: '2 hr',   edits: '100 Poses Loaded', meta: 'Full Scale Storyboard' }
 ];
+
+// CENTRALIZED HANDPICKED CLIENTS DATABANK FOR METHOD 1
+const CLIENT_DIRECT_REGISTRY = {
+    "sarah": {
+        name: "Sarah Miller",
+        subtitle: "Hey Sarah! Here are your curated editorial vibes. Practice shifting your weight and relaxing your gaze in the mirror!",
+        poses: [
+            { name: "The Classic Look Away", crop: "three", script: "Drop your front shoulder cleanly, shift your hips back away from the light, and softly trail your profile gaze off-camera.", image: "" },
+            { name: "Resting Soft Frame", crop: "half", script: "Bring your hands gently up near your jawline, keep fingers spaced naturally, and tilt your chin slightly downward.", image: "" }
+        ]
+    },
+    "john": {
+        name: "John Doe",
+        subtitle: "Welcome to your studio preparation deck, John. Work on keeping a tall silhouette frame and relaxed jaw mechanics line.",
+        poses: [
+            { name: "The Executive Silhouette", crop: "half", script: "Fold your arms loosely, tuck your thumb lines inside, turn 45 degrees towards the main key axis frame.", image: "" }
+        ]
+    }
+};
 
 // GENERATIVE ENGINE PATTERNS FOR 100 UNIQUE PRODUCTION COMPULSORIES
 function generatePhotographerMockDatabase() {
@@ -341,8 +383,65 @@ window.onload = function() {
     const saved = localStorage.getItem('photog_playbook_v4');
     if (saved) { try { appData = JSON.parse(saved); } catch(e){} }
     initDragAndDrop();
-    renderHome();
+
+    // METHOD 1 URL PARSER INTERCEPT ENGINE
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientParam = urlParams.get('client')?.toLowerCase();
+
+    if (clientParam) {
+        renderClientFacingPortal(clientParam);
+    } else {
+        renderHome();
+    }
 };
+
+// NEW FUNCTION: RENDERS SECURE, CLEAN MIRROR GUIDE FOR THE CLIENT
+function renderClientFacingPortal(clientKey) {
+    const targetClient = CLIENT_DIRECT_REGISTRY[clientKey];
+    
+    // Hide standard workflow navigation back keys completely
+    document.getElementById('navBack').style.display = 'none';
+    const titleEl = document.getElementById('navTitle');
+    const container = document.getElementById('clientPosesContainer');
+
+    // Switch screen hierarchy instantly, bypassing default home arrays
+    document.getElementById('screenHome').classList.add('hidden');
+    document.getElementById('screenClientView').classList.remove('hidden');
+
+    if (targetClient) {
+        titleEl.innerHTML = `${targetClient.name} // POSE DECK`;
+        document.getElementById('clientWelcomeTitle').innerText = `READY TO PRACTICE, ${targetClient.name.split(' ')[0]}?`;
+        document.getElementById('clientWelcomeSub').innerText = targetClient.subtitle;
+
+        if (!targetClient.poses.length) {
+            container.innerHTML = '<div class="empty">Your personalized pose selections are loading soon.</div>';
+            return;
+        }
+
+        container.innerHTML = targetClient.poses.map((pose) => `
+            <div class="client-pose-card">
+                ${pose.image ? `<img src="${pose.image}" class="client-pose-img" alt="Practice Blueprint Target" />` : 
+                `<div style="height:200px; background:var(--bg3); display:flex; align-items:center; justify-content:center; color:var(--text3); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; border-bottom:1px solid var(--border)">Visual Reference Frame</div>`}
+                <div class="client-pose-info">
+                    <div class="client-pose-header">
+                        <div class="client-pose-name">${pose.name}</div>
+                        <span class="crop-badge ${pose.crop}">${pose.crop} Crop</span>
+                    </div>
+                    <div class="client-practice-box">
+                        <div class="client-practice-title">Mirror Practice Cues</div>
+                        <div class="client-practice-text">${pose.script}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        // Fallback state if they typos the parameter link
+        titleEl.innerHTML = "CLIENT PORTAL ERROR";
+        document.getElementById('clientWelcomeTitle').innerText = "LINK REVERIFICATION NEEDED";
+        document.getElementById('clientWelcomeSub').innerText = "We couldn't track down your unique practice playbook list profile. Please re-check the address link provided by your photographer.";
+        container.innerHTML = '<div class="empty" style="color:var(--danger)">Invalid Client Access Route Parameter</div>';
+    }
+}
 
 function saveStateToDisk() { localStorage.setItem('photog_playbook_v4', JSON.stringify(appData)); }
 
@@ -532,6 +631,7 @@ function renderPosesList(poses) {
                     </div>
                     <div class="pose-actions">
                         <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify Setup</button>
+                        <button class="pose-action-btn" style="border-color: var(--accent); color: var(--accent);" onclick="copyPoseDataForClient(${idx})">Code Snippet</button>
                         <button class="pose-action-btn del" onclick="deletePose(${idx})">Delete Look</button>
                     </div>
                 </div>
@@ -541,6 +641,19 @@ function renderPosesList(poses) {
 }
 
 function togglePose(idx) { document.getElementById(`body-${idx}`).classList.toggle('open'); }
+
+function copyPoseDataForClient(idx) {
+    const sk = `${currentSessionType}_${currentLength}`;
+    const pose = appData.customSessions[sk][currentZoneIndex].poses[idx];
+    
+    const formattedCode = `{\n  name: "${pose.name}", \n  crop: "${pose.crop}", \n  script: "${pose.script.replace(/"/g, '\\"')}", \n  image: "${pose.image || ''}"\n},`;
+    
+    navigator.clipboard.writeText(formattedCode).then(() => {
+        showToast("Snippet Bound to Clipboard!");
+    }).catch(err => {
+        alert("Failed to copy automatically. Here is the code:\n\n" + formattedCode);
+    });
+}
 
 function processModalImageUpload(input) {
     const file = input.files[0]; if(!file) return;
@@ -659,6 +772,49 @@ function initDragAndDrop() {
 }
 
 function showToast(m) { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
-</script>
+    <script>
+        // --- FIREBASE SETUP ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyADL9gFcf52Gy2ZSopy0VaQJex3bW2IlZk",
+            authDomain: "pose-guide.firebaseapp.com",
+            projectId: "pose-guide",
+            storageBucket: "pose-guide.firebasestorage.app",
+            messagingSenderId: "989912567243",
+            appId: "1:989912567243:web:10d7eaf1788250ac093a4e",
+            measurementId: "G-1ZQ49R12GY"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // Data initialization
+        let appData = { clientName: '', checklist: [], favorites: [], customSessions: {} };
+
+        // Auto-login and Sync Engine
+        auth.signInAnonymously().then(() => {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    db.collection('user_data').doc(user.uid).get().then(doc => {
+                        if (doc.exists) { 
+                            appData = doc.data(); 
+                            renderHome(); 
+                        }
+                    });
+                }
+            });
+        });
+
+        function saveStateToDisk() { 
+            localStorage.setItem('photog_playbook_v4', JSON.stringify(appData)); 
+            if (auth.currentUser) {
+                db.collection('user_data').doc(auth.currentUser.uid).set(appData);
+            }
+        }
+
+        // --- PASTE YOUR ORIGINAL JS FUNCTIONS BELOW THIS LINE ---
+        // (Copy everything from your original file that isn't CSS/HTML and put it here)
+        
+    </script>
 </body>
 </html>
