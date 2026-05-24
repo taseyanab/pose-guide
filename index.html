@@ -6,10 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Pose Playbook Pro</title>
     
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    
+
     <style>
         /* [PASTE YOUR ORIGINAL CSS HERE] */
                 :root {
@@ -72,7 +69,7 @@
         .checklist-item:last-child { border-bottom: none; }
         .check-box { width: 16px; height: 16px; border: 1px solid var(--border2); cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .check-box.checked { background: var(--primary); }
-        .check-box.checked::after { content: '✓'; color: #000; font-size: 10px; font-weight: 900; }
+        .check-box.checked::after { content: '\2713'; color: #000; font-size: 10px; font-weight: 900; }
         .check-label { flex: 1; font-size: 13px; }
         .check-label.checked { text-decoration: line-through; color: var(--text3); }
         .check-del { background: none; border: none; color: var(--text3); font-size: 16px; cursor: pointer; padding: 2px 6px; }
@@ -177,7 +174,6 @@
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         .empty { text-align: center; padding: 40px; color: var(--text3); font-family: var(--font-display); font-size: 20px; text-transform: uppercase; }
 
-        /* NEW CLIENT-VIEW EXCLUSIVE STYLES */
         .client-welcome-hero { padding: 30px 20px 10px; text-align: center; }
         .client-welcome-title { font-family: var(--font-display); font-size: 38px; color: var(--text); text-transform: uppercase; letter-spacing: 0.04em; }
         .client-welcome-sub { font-size: 13px; color: var(--text2); margin-top: 8px; line-height: 1.5; font-weight: 400; padding: 0 10px; }
@@ -216,11 +212,11 @@
             <input class="modal-input" id="poseModalSetup" placeholder="Weight shift mechanics, lighting angles, focal notes..." />
         </div>
         <div class="modal-field">
-            <div class="meta-label">Client Scripting ("What to say to them")</div>
+            <div class="meta-label">Client Scripting</div>
             <input class="modal-input" id="poseModalScript" placeholder="Give them precise words or dynamic action commands..." />
         </div>
         <div class="modal-field">
-            <div class="meta-label">Reference Photo (Saved Permanently)</div>
+            <div class="meta-label">Reference Photo</div>
             <div class="file-upload-wrapper">
                 <div id="fileUploadLabel" style="font-size:12px; color:var(--text2)">Upload visual mock reference</div>
                 <input type="file" id="poseModalFile" accept="image/*" onchange="processModalImageUpload(this)" />
@@ -234,10 +230,10 @@
 </div>
 
 <div class="modal-overlay" id="zoneModal"><div class="modal"><div class="modal-title">New Session Setup Block</div><div class="modal-field"><div class="meta-label">Block Location / Setup Title</div><input class="modal-input" id="zoneModalName" placeholder="e.g., Brick wall texture background" /></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeZoneModal()">Cancel</button><button class="modal-btn primary" onclick="saveZone()">Add Block</button></div></div></div>
-<div class="modal-overlay" id="checkModal"><div class="modal"><div class="modal-title">Add Gear Target Check</div><div class="modal-field"><div class="meta-label">Gear Verification Need</div><input class="modal-input" id="checkModalInput" placeholder="Verify remote receiver channels match strobe sync" /></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button><button class="modal-btn primary" onclick="saveCheckItem()">Add Item</button></div></div></div>
+<div class="modal-overlay" id="checkModal"><div class="modal"><div class="modal-title">Add Gear Check</div><div class="modal-field"><div class="meta-label">Item</div><input class="modal-input" id="checkModalInput" placeholder="e.g., Memory card formatted" /></div><div class="modal-btns"><button class="modal-btn secondary" onclick="closeCheckModal()">Cancel</button><button class="modal-btn primary" onclick="saveCheckItem()">Add Item</button></div></div></div>
 
 <div class="app-nav" id="appNav">
-    <button class="nav-back" id="navBack" onclick="goBack()">‹</button>
+    <button class="nav-back" id="navBack" onclick="goBack()">&#8249;</button>
     <div class="nav-title" id="navTitle">Pose // Playbook</div>
     <div class="nav-actions" id="navActions"></div>
 </div>
@@ -249,25 +245,21 @@
             <div class="home-sub">Photographer Production System</div>
         </div>
         <div class="white-line"></div>
-
         <div class="client-block">
-            <div class="client-label">Active Editorial Production Client</div>
+            <div class="client-label">Active Client</div>
             <input class="client-input" id="clientNameInput" placeholder="Client Name..." oninput="saveClientName()" />
         </div>
-
         <div class="checklist-block">
-            <div class="checklist-title">Photographer Prep Checklist <button class="checklist-add-btn" onclick="openCheckModal()">+</button></div>
+            <div class="checklist-title">Prep Checklist <button class="checklist-add-btn" onclick="openCheckModal()">+</button></div>
             <div id="checklistItems"></div>
         </div>
-
         <div class="favs-row">
             <button class="favs-btn" onclick="showFavorites()">
-                <span style="color:var(--accent)">★</span>
+                <span style="color:var(--accent)">&#9733;</span>
                 <span class="favs-btn-text">Starred Portfolio Targets</span>
                 <span class="favs-btn-count" id="favsCount">0 looks</span>
             </button>
         </div>
-
         <div class="divider"></div>
         <div class="section-label" style="padding-left:16px;">Production Modules</div>
         <div class="session-grid" id="sessionGrid"></div>
@@ -282,7 +274,7 @@
     <div class="screen-content" style="padding-bottom:60px;">
         <div class="client-welcome-hero">
             <div class="client-welcome-title" id="clientWelcomeTitle">YOUR PRACTICE PORTAL</div>
-            <div class="client-welcome-sub" id="clientWelcomeSub">Review your handpicked pose playbook boards. Try practicing these structural vibes front of a mirror before our production shoot targets!</div>
+            <div class="client-welcome-sub" id="clientWelcomeSub">Review your handpicked pose playbook boards.</div>
         </div>
         <div class="white-line"></div>
         <div id="clientPosesContainer"></div>
@@ -291,14 +283,14 @@
 
 <script>
 const SESSION_TYPES = [
-    { id: 'grad_outdoor', name: 'Graduation (Outdoor)', icon: '🎓', count: '100 Core Stacks' },
-    { id: 'grad_studio',  name: 'Graduation (Studio)',  icon: '🏛️', count: '100 Core Stacks' },
-    { id: 'bday_outdoor', name: 'Birthdays (Outdoor)',  icon: '🍾', count: '100 Core Stacks' },
-    { id: 'bday_studio',  name: 'Birthdays (Studio)',   icon: '🎂', count: '100 Core Stacks' },
-    { id: 'prom_solo',    name: 'Prom / Formal Looks',  icon: '✨', count: '100 Core Stacks' },
-    { id: 'group_layouts',name: 'Group Formations',     icon: '👥', count: '100 Core Stacks' },
-    { id: 'solo_female',  name: 'Solo Female Book',     icon: '👩', count: '100 Core Stacks' },
-    { id: 'solo_male',    name: 'Solo Male Book',       icon: '🧔', count: '100 Core Stacks' }
+    { id: 'grad_outdoor', name: 'Graduation (Outdoor)', icon: '\u{1F393}', count: '100 Core Stacks' },
+    { id: 'grad_studio',  name: 'Graduation (Studio)',  icon: '\u{1F3DB}\uFE0F', count: '100 Core Stacks' },
+    { id: 'bday_outdoor', name: 'Birthdays (Outdoor)',  icon: '\u{1F37E}', count: '100 Core Stacks' },
+    { id: 'bday_studio',  name: 'Birthdays (Studio)',   icon: '\u{1F382}', count: '100 Core Stacks' },
+    { id: 'prom_solo',    name: 'Prom / Formal Looks',  icon: '\u2728', count: '100 Core Stacks' },
+    { id: 'group_layouts',name: 'Group Formations',     icon: '\u{1F465}', count: '100 Core Stacks' },
+    { id: 'solo_female',  name: 'Solo Female Book',     icon: '\u{1F469}', count: '100 Core Stacks' },
+    { id: 'solo_male',    name: 'Solo Male Book',       icon: '\u{1F9D4}', count: '100 Core Stacks' }
 ];
 
 const LENGTHS = [
@@ -308,11 +300,10 @@ const LENGTHS = [
     { id: 'deluxe',    name: 'Deluxe Production', time: '2 hr',   edits: '100 Poses Loaded', meta: 'Full Scale Storyboard' }
 ];
 
-// CENTRALIZED HANDPICKED CLIENTS DATABANK FOR METHOD 1
 const CLIENT_DIRECT_REGISTRY = {
     "sarah": {
         name: "Sarah Miller",
-        subtitle: "Hey Sarah! Here are your curated editorial vibes. Practice shifting your weight and relaxing your gaze in the mirror!",
+        subtitle: "Hey Sarah! Here are your curated editorial vibes.",
         poses: [
             { name: "The Classic Look Away", crop: "three", script: "Drop your front shoulder cleanly, shift your hips back away from the light, and softly trail your profile gaze off-camera.", image: "" },
             { name: "Resting Soft Frame", crop: "half", script: "Bring your hands gently up near your jawline, keep fingers spaced naturally, and tilt your chin slightly downward.", image: "" }
@@ -320,35 +311,30 @@ const CLIENT_DIRECT_REGISTRY = {
     },
     "john": {
         name: "John Doe",
-        subtitle: "Welcome to your studio preparation deck, John. Work on keeping a tall silhouette frame and relaxed jaw mechanics line.",
+        subtitle: "Welcome to your studio preparation deck, John.",
         poses: [
             { name: "The Executive Silhouette", crop: "half", script: "Fold your arms loosely, tuck your thumb lines inside, turn 45 degrees towards the main key axis frame.", image: "" }
         ]
     }
 };
 
-// GENERATIVE ENGINE PATTERNS FOR 100 UNIQUE PRODUCTION COMPULSORIES
 function generatePhotographerMockDatabase() {
     const database = {};
     const framingCycles = ['full', 'three', 'half', 'close'];
-    
     SESSION_TYPES.forEach(type => {
         database[type.id] = { mini: [], signature: [], classic: [], deluxe: [] };
-        
-        let contextDescriptor = "Setup Framework Focus";
-        if(type.id.includes('grad')) contextDescriptor = "Cap, Ribbon, Diploma & Regalia Alignment";
-        else if(type.id.includes('bday')) contextDescriptor = "Glamour, Balloons, Emotion Burst Framing";
-        else if(type.id.includes('male')) contextDescriptor = "Structured Architecture, Geometric Lines";
-        
+        let ctx = "Setup Framework Focus";
+        if(type.id.includes('grad')) ctx = "Cap, Ribbon, Diploma & Regalia Alignment";
+        else if(type.id.includes('bday')) ctx = "Glamour, Balloons, Emotion Burst Framing";
+        else if(type.id.includes('male')) ctx = "Structured Architecture, Geometric Lines";
         for(let i = 1; i <= 100; i++) {
             const cropType = framingCycles[(i - 1) % 4];
             const poseItem = {
-                name: `${type.name} Target Matrix Style Look #${i}`,
+                name: type.name + " Look #" + i,
                 crop: cropType,
-                setup: `Mechanics Strategy Stage #${i}: Align subject at a 45-degree angle relative to light grid axis source. ${contextDescriptor}. Maintain focal configuration tracking parameters clear.`,
-                script: `"Alright, let's make a slight adjustment. Tilt your chin down slightly, look directly into the lens, and give me a soft, subtle smile."`
+                setup: "Stage #" + i + ": Align subject at 45-degree angle. " + ctx,
+                script: "Tilt your chin down slightly, look into the lens, soft smile."
             };
-            
             if (i <= 25) database[type.id].mini.push(poseItem);
             if (i <= 50) database[type.id].signature.push(poseItem);
             if (i <= 75) database[type.id].classic.push(poseItem);
@@ -363,9 +349,9 @@ const MASTER_FACTORY_POSES = generatePhotographerMockDatabase();
 let appData = {
     clientName: '',
     checklist: [
-        { text: 'Sync radio trigger transceivers & test strobe output levels', checked: false },
-        { text: 'Clear primary high-speed memory catalog cards', checked: false },
-        { text: 'Inspect lens optics elements for debris anomalies', checked: false }
+        { text: 'Memory card formatted', checked: false },
+        { text: 'Battery charged', checked: false },
+        { text: 'Contract signed', checked: false }
     ],
     favorites: [],
     customSessions: {}
@@ -383,72 +369,41 @@ window.onload = function() {
     const saved = localStorage.getItem('photog_playbook_v4');
     if (saved) { try { appData = JSON.parse(saved); } catch(e){} }
     initDragAndDrop();
-
-    // METHOD 1 URL PARSER INTERCEPT ENGINE
     const urlParams = new URLSearchParams(window.location.search);
-    const clientParam = urlParams.get('client')?.toLowerCase();
-
-    if (clientParam) {
-        renderClientFacingPortal(clientParam);
-    } else {
-        renderHome();
-    }
+    const clientParam = urlParams.get('client') ? urlParams.get('client').toLowerCase() : null;
+    if (clientParam) { renderClientFacingPortal(clientParam); } else { renderHome(); }
 };
 
-// NEW FUNCTION: RENDERS SECURE, CLEAN MIRROR GUIDE FOR THE CLIENT
 function renderClientFacingPortal(clientKey) {
     const targetClient = CLIENT_DIRECT_REGISTRY[clientKey];
-    
-    // Hide standard workflow navigation back keys completely
     document.getElementById('navBack').style.display = 'none';
     const titleEl = document.getElementById('navTitle');
     const container = document.getElementById('clientPosesContainer');
-
-    // Switch screen hierarchy instantly, bypassing default home arrays
     document.getElementById('screenHome').classList.add('hidden');
     document.getElementById('screenClientView').classList.remove('hidden');
-
     if (targetClient) {
-        titleEl.innerHTML = `${targetClient.name} // POSE DECK`;
-        document.getElementById('clientWelcomeTitle').innerText = `READY TO PRACTICE, ${targetClient.name.split(' ')[0]}?`;
+        titleEl.innerHTML = targetClient.name + " // POSE DECK";
+        document.getElementById('clientWelcomeTitle').innerText = "READY TO PRACTICE, " + targetClient.name.split(' ')[0] + "?";
         document.getElementById('clientWelcomeSub').innerText = targetClient.subtitle;
-
-        if (!targetClient.poses.length) {
-            container.innerHTML = '<div class="empty">Your personalized pose selections are loading soon.</div>';
-            return;
-        }
-
-        container.innerHTML = targetClient.poses.map((pose) => `
-            <div class="client-pose-card">
-                ${pose.image ? `<img src="${pose.image}" class="client-pose-img" alt="Practice Blueprint Target" />` : 
-                `<div style="height:200px; background:var(--bg3); display:flex; align-items:center; justify-content:center; color:var(--text3); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; border-bottom:1px solid var(--border)">Visual Reference Frame</div>`}
-                <div class="client-pose-info">
-                    <div class="client-pose-header">
-                        <div class="client-pose-name">${pose.name}</div>
-                        <span class="crop-badge ${pose.crop}">${pose.crop} Crop</span>
-                    </div>
-                    <div class="client-practice-box">
-                        <div class="client-practice-title">Mirror Practice Cues</div>
-                        <div class="client-practice-text">${pose.script}</div>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        if (!targetClient.poses.length) { container.innerHTML = '<div class="empty">Poses loading soon.</div>'; return; }
+        container.innerHTML = targetClient.poses.map(pose => {
+            const img = pose.image ? '<img src="' + pose.image + '" class="client-pose-img" />' : '<div style="height:200px;background:var(--bg3);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:11px;text-transform:uppercase;border-bottom:1px solid var(--border)">Visual Reference</div>';
+            return '<div class="client-pose-card">' + img + '<div class="client-pose-info"><div class="client-pose-header"><div class="client-pose-name">' + pose.name + '</div><span class="crop-badge ' + pose.crop + '">' + pose.crop + ' Crop</span></div><div class="client-practice-box"><div class="client-practice-title">Mirror Practice Cues</div><div class="client-practice-text">' + pose.script + '</div></div></div></div>';
+        }).join('');
     } else {
-        // Fallback state if they typos the parameter link
         titleEl.innerHTML = "CLIENT PORTAL ERROR";
-        document.getElementById('clientWelcomeTitle').innerText = "LINK REVERIFICATION NEEDED";
-        document.getElementById('clientWelcomeSub').innerText = "We couldn't track down your unique practice playbook list profile. Please re-check the address link provided by your photographer.";
-        container.innerHTML = '<div class="empty" style="color:var(--danger)">Invalid Client Access Route Parameter</div>';
+        document.getElementById('clientWelcomeTitle').innerText = "LINK NOT FOUND";
+        document.getElementById('clientWelcomeSub').innerText = "We could not find your pose deck. Please check the link from your photographer.";
+        container.innerHTML = '<div class="empty" style="color:var(--danger)">Invalid link</div>';
     }
 }
 
 function saveStateToDisk() { localStorage.setItem('photog_playbook_v4', JSON.stringify(appData)); }
 
 function navigateTo(screenId) {
-    const currentScreen = screenHistory[screenHistory.length - 1];
-    if (currentScreen === screenId) return;
-    document.getElementById(currentScreen).classList.add('slide-left');
+    const cur = screenHistory[screenHistory.length - 1];
+    if (cur === screenId) return;
+    document.getElementById(cur).classList.add('slide-left');
     document.getElementById(screenId).classList.remove('hidden', 'slide-left');
     screenHistory.push(screenId);
     updateNavUI();
@@ -457,148 +412,116 @@ function navigateTo(screenId) {
 function goBack() {
     if (screenHistory.length <= 1) return;
     if(screenHistory[screenHistory.length - 1] === 'screenZones') stopTimer();
-    const currentScreen = screenHistory.pop();
-    document.getElementById(currentScreen).classList.add('hidden');
-    const prevScreen = screenHistory[screenHistory.length - 1];
-    document.getElementById(prevScreen).classList.remove('slide-left', 'hidden');
+    const cur = screenHistory.pop();
+    document.getElementById(cur).classList.add('hidden');
+    const prev = screenHistory[screenHistory.length - 1];
+    document.getElementById(prev).classList.remove('slide-left', 'hidden');
     updateNavUI();
-    if (prevScreen === 'screenHome') renderHome();
-    else if (prevScreen === 'screenSession') renderSessionLengths();
-    else if (prevScreen === 'screenZones') renderZonesView();
+    if (prev === 'screenHome') renderHome();
+    else if (prev === 'screenSession') renderSessionLengths();
+    else if (prev === 'screenZones') renderZonesView();
 }
 
 function updateNavUI() {
-    const currentScreen = screenHistory[screenHistory.length - 1];
+    const cur = screenHistory[screenHistory.length - 1];
     const backBtn = document.getElementById('navBack');
     const titleEl = document.getElementById('navTitle');
     const actionsEl = document.getElementById('navActions');
     actionsEl.innerHTML = '';
     backBtn.style.display = (screenHistory.length > 1) ? 'block' : 'none';
-
-    if (currentScreen === 'screenHome') titleEl.innerHTML = 'Pose // Playbook';
-    else if (currentScreen === 'screenSession') titleEl.innerHTML = 'Time Track';
-    else if (currentScreen === 'screenZones') {
-        titleEl.innerHTML = 'Playbook Deck';
-        actionsEl.innerHTML = `<button class="nav-btn" style="border-color:var(--accent); color:var(--accent);" onclick="openZoneModal()">+ Setup Block</button>`;
-    }
-    else if (currentScreen === 'screenFavs') titleEl.innerHTML = 'Starred Targets';
+    if (cur === 'screenHome') titleEl.innerHTML = 'Pose // Playbook';
+    else if (cur === 'screenSession') titleEl.innerHTML = 'Time Track';
+    else if (cur === 'screenZones') { titleEl.innerHTML = 'Playbook Deck'; actionsEl.innerHTML = '<button class="nav-btn" style="border-color:var(--accent);color:var(--accent);" onclick="openZoneModal()">+ Setup Block</button>'; }
+    else if (cur === 'screenFavs') titleEl.innerHTML = 'Starred Targets';
 }
 
 function renderHome() {
     document.getElementById('clientNameInput').value = appData.clientName || '';
     renderChecklist();
-    document.getElementById('favsCount').innerText = `${appData.favorites.length} looks loaded`;
-    const grid = document.getElementById('sessionGrid');
-    grid.innerHTML = SESSION_TYPES.map(type => `
-        <div class="session-card" onclick="selectSessionType('${type.id}')">
-            <div style="font-size:20px; filter:grayscale(100%)">${type.icon}</div>
-            <div class="session-card-name">${type.name}</div>
-            <div class="session-card-count">${type.count}</div>
-        </div>
-    `).join('');
+    document.getElementById('favsCount').innerText = appData.favorites.length + ' looks loaded';
+    document.getElementById('sessionGrid').innerHTML = SESSION_TYPES.map(type =>
+        '<div class="session-card" onclick="selectSessionType('' + type.id + '')">' +
+        '<div style="font-size:20px;filter:grayscale(100%)">' + type.icon + '</div>' +
+        '<div class="session-card-name">' + type.name + '</div>' +
+        '<div class="session-card-count">' + type.count + '</div></div>'
+    ).join('');
 }
 
 function saveClientName() { appData.clientName = document.getElementById('clientNameInput').value; saveStateToDisk(); }
 
 function renderChecklist() {
-    const container = document.getElementById('checklistItems');
-    container.innerHTML = appData.checklist.map((item, idx) => `
-        <div class="checklist-item">
-            <div class="check-box ${item.checked ? 'checked' : ''}" onclick="toggleCheckItem(${idx})"></div>
-            <div class="check-label ${item.checked ? 'checked' : ''}">${item.text}</div>
-            <button class="check-del" onclick="deleteCheckItem(${idx})">×</button>
-        </div>
-    `).join('');
+    document.getElementById('checklistItems').innerHTML = appData.checklist.map((item, idx) =>
+        '<div class="checklist-item">' +
+        '<div class="check-box ' + (item.checked ? 'checked' : '') + '" onclick="toggleCheckItem(' + idx + ')"></div>' +
+        '<div class="check-label ' + (item.checked ? 'checked' : '') + '">' + item.text + '</div>' +
+        '<button class="check-del" onclick="deleteCheckItem(' + idx + ')">&#215;</button></div>'
+    ).join('');
 }
 function toggleCheckItem(idx) { appData.checklist[idx].checked = !appData.checklist[idx].checked; saveStateToDisk(); renderChecklist(); }
 function openCheckModal() { document.getElementById('checkModal').classList.add('open'); document.getElementById('checkModalInput').focus(); }
 function closeCheckModal() { document.getElementById('checkModal').classList.remove('open'); document.getElementById('checkModalInput').value = ''; }
-function saveCheckItem() {
-    const val = document.getElementById('checkModalInput').value.trim();
-    if(val) { appData.checklist.push({ text: val, checked: false }); saveStateToDisk(); renderChecklist(); }
-    closeCheckModal();
-}
+function saveCheckItem() { const val = document.getElementById('checkModalInput').value.trim(); if(val) { appData.checklist.push({ text: val, checked: false }); saveStateToDisk(); renderChecklist(); } closeCheckModal(); }
 function deleteCheckItem(idx) { appData.checklist.splice(idx, 1); saveStateToDisk(); renderChecklist(); }
 
 function selectSessionType(id) { currentSessionType = id; navigateTo('screenSession'); renderSessionLengths(); }
 
 function renderSessionLengths() {
-    const container = document.getElementById('lengthList');
-    container.innerHTML = LENGTHS.map(len => `
-        <div class="length-card" onclick="selectLength('${len.id}')">
-            <div class="length-badge">${len.time.split(' ')[0]}<span>${len.time.split(' ')[1]}</span></div>
-            <div class="length-info">
-                <div class="length-name">${len.name}</div>
-                <div class="length-meta">${len.edits} • ${len.meta}</div>
-            </div>
-            <div style="color:var(--text3)">›</div>
-        </div>
-    `).join('');
+    document.getElementById('lengthList').innerHTML = LENGTHS.map(len =>
+        '<div class="length-card" onclick="selectLength('' + len.id + '')">' +
+        '<div class="length-badge">' + len.time.split(' ')[0] + '<span>' + len.time.split(' ')[1] + '</span></div>' +
+        '<div class="length-info"><div class="length-name">' + len.name + '</div><div class="length-meta">' + len.edits + ' • ' + len.meta + '</div></div>' +
+        '<div style="color:var(--text3)">›</div></div>'
+    ).join('');
 }
 
 function selectLength(lengthId) {
     currentLength = lengthId; currentZoneIndex = 0;
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    
-    if (!appData.customSessions[storageKey]) {
+    const sk = currentSessionType + '_' + currentLength;
+    if (!appData.customSessions[sk]) {
         const defaults = MASTER_FACTORY_POSES[currentSessionType][currentLength] || [];
-        appData.customSessions[storageKey] = [{
-            name: 'Primary Setup Block Location Alpha',
-            notes: 'Initial production light configurations baseline settings.',
-            poses: JSON.parse(JSON.stringify(defaults))
-        }];
+        appData.customSessions[sk] = [{ name: 'Primary Block', notes: '', poses: JSON.parse(JSON.stringify(defaults)) }];
         saveStateToDisk();
     }
     navigateTo('screenZones'); renderZonesView();
 }
 
 function renderZonesView() {
-    const storageKey = `${currentSessionType}_${currentLength}`;
-    const zones = appData.customSessions[storageKey] || [];
+    const sk = currentSessionType + '_' + currentLength;
+    const zones = appData.customSessions[sk] || [];
     if(currentZoneIndex >= zones.length) currentZoneIndex = 0;
-    
-    document.getElementById('zoneTabs').innerHTML = zones.map((z, idx) => `
-        <div class="zone-tab ${idx === currentZoneIndex ? 'active' : ''}" onclick="switchZone(${idx})">Setup Block ${idx + 1}</div>
-    `).join('');
-
+    document.getElementById('zoneTabs').innerHTML = zones.map((z, idx) =>
+        '<div class="zone-tab ' + (idx === currentZoneIndex ? 'active' : '') + '" onclick="switchZone(' + idx + ')">Block ' + (idx + 1) + '</div>'
+    ).join('');
     const activeZone = zones[currentZoneIndex];
     const content = document.getElementById('zoneContent');
-    if(!activeZone) { content.innerHTML = '<div class="empty">No production sequences built.</div>'; return; }
-
-    content.innerHTML = `
-        <div class="zone-notes-block">
-            <div class="meta-label">Photographer Location & Lighting Blueprint</div>
-            <textarea class="zone-notes-input" placeholder="Note modifiers, background details, ambient exposures..." oninput="saveZoneNotes(this)">${activeZone.notes || ''}</textarea>
-        </div>
-        <div class="zone-timer-block">
-            <div class="timer-display" id="timerDisplay">15:00</div>
-            <div class="timer-controls">
-                <div class="timer-set"><input type="number" id="timerInputMin" value="15" onchange="syncTimer()"/><span>MIN</span></div>
-                <button class="timer-btn start" id="timerToggleBtn" onclick="toggleTimer()">Start</button>
-            </div>
-        </div>
-        <button class="pose-add-btn" onclick="openPoseModal(false)">+ Inject Custom Flow Target Look</button>
-        <div class="poses-list" id="posesLiveContainer"></div>
-    `;
+    if(!activeZone) { content.innerHTML = '<div class="empty">No sequences built.</div>'; return; }
+    content.innerHTML =
+        '<div class="zone-notes-block"><div class="meta-label">Location & Lighting Notes</div>' +
+        '<textarea class="zone-notes-input" placeholder="Background details, light setup..." oninput="saveZoneNotes(this)">' + (activeZone.notes || '') + '</textarea></div>' +
+        '<div class="zone-timer-block"><div class="timer-display" id="timerDisplay">15:00</div>' +
+        '<div class="timer-controls"><div class="timer-set"><input type="number" id="timerInputMin" value="15" onchange="syncTimer()"/><span>MIN</span></div>' +
+        '<button class="timer-btn start" id="timerToggleBtn" onclick="toggleTimer()">Start</button></div></div>' +
+        '<button class="pose-add-btn" onclick="openPoseModal(false)">+ Add Custom Look</button>' +
+        '<div class="poses-list" id="posesLiveContainer"></div>';
     renderPosesList(activeZone.poses);
 }
 
 function switchZone(idx) { stopTimer(); currentZoneIndex = idx; renderZonesView(); }
-function saveZoneNotes(el) { const sk = `${currentSessionType}_${currentLength}`; appData.customSessions[sk][currentZoneIndex].notes = el.value; saveStateToDisk(); }
-
-function syncTimer() { if(!isTimerRunning) document.getElementById('timerDisplay').innerText = String(document.getElementById('timerInputMin').value).padStart(2,'0')+":00"; }
+function saveZoneNotes(el) { appData.customSessions[currentSessionType + '_' + currentLength][currentZoneIndex].notes = el.value; saveStateToDisk(); }
+function syncTimer() { if(!isTimerRunning) document.getElementById('timerDisplay').innerText = String(document.getElementById('timerInputMin').value).padStart(2,'0') + ":00"; }
 function toggleTimer() {
     const btn = document.getElementById('timerToggleBtn');
-    if(isTimerRunning) { stopTimer(); btn.innerText = "Start"; btn.style.background = "var(--primary)"; btn.style.color="#000"; }
-    else { startTimer(); btn.innerText = "Pause"; btn.style.background = "var(--danger)"; btn.style.color="#fff"; }
+    if(isTimerRunning) { stopTimer(); btn.innerText = "Start"; btn.style.background = "var(--primary)"; btn.style.color = "#000"; }
+    else { startTimer(); btn.innerText = "Pause"; btn.style.background = "var(--danger)"; btn.style.color = "#fff"; }
 }
 function startTimer() {
-    isTimerRunning = true; const display = document.getElementById('timerDisplay');
-    let secs = display.innerText.split(':'); let duration = (parseInt(secs[0])*60)+parseInt(secs[1]);
+    isTimerRunning = true;
+    const display = document.getElementById('timerDisplay');
+    const parts = display.innerText.split(':');
+    let duration = (parseInt(parts[0]) * 60) + parseInt(parts[1]);
     countdownInterval = setInterval(() => {
-        if(duration <= 0) { clearInterval(countdownInterval); display.innerText="OUT"; return; }
-        duration--; let m = Math.floor(duration/60); let s = duration%60;
-        display.innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        if(duration <= 0) { clearInterval(countdownInterval); display.innerText = "OUT"; return; }
+        duration--; display.innerText = String(Math.floor(duration/60)).padStart(2,'0') + ":" + String(duration%60).padStart(2,'0');
     }, 1000);
 }
 function stopTimer() { isTimerRunning = false; clearInterval(countdownInterval); }
@@ -606,54 +529,28 @@ function stopTimer() { isTimerRunning = false; clearInterval(countdownInterval);
 function renderPosesList(poses) {
     const container = document.getElementById('posesLiveContainer');
     container.innerHTML = poses.map((pose, idx) => {
-        const isStarred = appData.favorites.some(f => f.name === pose.name);
-        return `
-            <div class="pose-card" data-index="${idx}" draggable="true">
-                <div class="pose-header">
-                    <div class="pose-drag">☰</div>
-                    <div class="pose-num">${idx + 1}</div>
-                    <div class="pose-name-container" onclick="togglePose(${idx})">
-                        <div class="pose-name">${pose.name}</div>
-                        <div class="crop-badge ${pose.crop}">${pose.crop || 'Full Body'} Crop</div>
-                    </div>
-                    <button class="pose-star" onclick="toggleStar(${idx})" style="color:${isStarred?'var(--accent)':'var(--text3)'}">★</button>
-                    <button class="pose-expand" onclick="togglePose(${idx})">▼</button>
-                </div>
-                <div class="pose-body" id="body-${idx}">
-                    ${pose.image ? `<img src="${pose.image}" class="pose-photo-preview" />` : ''}
-                    <div class="instruction-box">
-                        <div class="instruction-title">Photographer Setup & Mechanics</div>
-                        <div class="instruction-text">${pose.setup || 'No execution guidelines loaded.'}</div>
-                    </div>
-                    <div class="script-box">
-                        <div class="script-title">Client Scripting Blueprint ("What to say")</div>
-                        <div class="script-text">${pose.script || 'No verbal scripting configured.'}</div>
-                    </div>
-                    <div class="pose-actions">
-                        <button class="pose-action-btn" onclick="openPoseModal(true, ${idx})">Modify Setup</button>
-                        <button class="pose-action-btn" style="border-color: var(--accent); color: var(--accent);" onclick="copyPoseDataForClient(${idx})">Code Snippet</button>
-                        <button class="pose-action-btn del" onclick="deletePose(${idx})">Delete Look</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        const starred = appData.favorites.some(f => f.name === pose.name);
+        return '<div class="pose-card" data-index="' + idx + '" draggable="true">' +
+            '<div class="pose-header">' +
+            '<div class="pose-drag">☰</div>' +
+            '<div class="pose-num">' + (idx+1) + '</div>' +
+            '<div class="pose-name-container" onclick="togglePose(' + idx + ')">' +
+            '<div class="pose-name">' + pose.name + '</div>' +
+            '<div class="crop-badge ' + pose.crop + '">' + (pose.crop || 'full') + ' crop</div></div>' +
+            '<button class="pose-star" onclick="toggleStar(' + idx + ')" style="color:' + (starred ? 'var(--accent)' : 'var(--text3)') + '">★</button>' +
+            '<button class="pose-expand" onclick="togglePose(' + idx + ')">▼</button></div>' +
+            '<div class="pose-body" id="body-' + idx + '">' +
+            (pose.image ? '<img src="' + pose.image + '" class="pose-photo-preview" />' : '') +
+            '<div class="instruction-box"><div class="instruction-title">Setup & Mechanics</div><div class="instruction-text">' + (pose.setup || 'None.') + '</div></div>' +
+            '<div class="script-box"><div class="script-title">What to say</div><div class="script-text">' + (pose.script || 'None.') + '</div></div>' +
+            '<div class="pose-actions">' +
+            '<button class="pose-action-btn" onclick="openPoseModal(true,' + idx + ')">Edit</button>' +
+            '<button class="pose-action-btn del" onclick="deletePose(' + idx + ')">Delete</button>' +
+            '</div></div></div>';
     }).join('');
 }
 
-function togglePose(idx) { document.getElementById(`body-${idx}`).classList.toggle('open'); }
-
-function copyPoseDataForClient(idx) {
-    const sk = `${currentSessionType}_${currentLength}`;
-    const pose = appData.customSessions[sk][currentZoneIndex].poses[idx];
-    
-    const formattedCode = `{\n  name: "${pose.name}", \n  crop: "${pose.crop}", \n  script: "${pose.script.replace(/"/g, '\\"')}", \n  image: "${pose.image || ''}"\n},`;
-    
-    navigator.clipboard.writeText(formattedCode).then(() => {
-        showToast("Snippet Bound to Clipboard!");
-    }).catch(err => {
-        alert("Failed to copy automatically. Here is the code:\n\n" + formattedCode);
-    });
-}
+function togglePose(idx) { document.getElementById('body-' + idx).classList.toggle('open'); }
 
 function processModalImageUpload(input) {
     const file = input.files[0]; if(!file) return;
@@ -665,29 +562,27 @@ function processModalImageUpload(input) {
             let w = img.width; let h = img.height; if(w > 600) { h *= 600/w; w = 600; }
             canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
             currentModalImageBase64 = canvas.toDataURL('image/jpeg', 0.65);
-            document.getElementById('fileUploadLabel').innerText = "✅ Image Bound Permanently";
-        }
+            document.getElementById('fileUploadLabel').innerText = "Image saved";
+        };
     };
     reader.readAsDataURL(file);
 }
 
 let editMode = false; let targetIdx = null;
-function openPoseModal(isEdit = false, idx = null) {
+function openPoseModal(isEdit, idx) {
     editMode = isEdit; targetIdx = idx; currentModalImageBase64 = "";
     document.getElementById('fileUploadLabel').innerText = "Upload visual mock reference";
     document.getElementById('poseModalFile').value = "";
-    
     if(editMode) {
-        document.getElementById('poseModalTitle').innerText = "Modify Playbook Core Look";
-        const sk = `${currentSessionType}_${currentLength}`;
-        const p = appData.customSessions[sk][currentZoneIndex].poses[idx];
+        document.getElementById('poseModalTitle').innerText = "Edit Look";
+        const p = appData.customSessions[currentSessionType + '_' + currentLength][currentZoneIndex].poses[idx];
         document.getElementById('poseModalName').value = p.name || '';
         document.getElementById('poseModalCrop').value = p.crop || 'full';
         document.getElementById('poseModalSetup').value = p.setup || '';
         document.getElementById('poseModalScript').value = p.script || '';
-        if(p.image) { currentModalImageBase64 = p.image; document.getElementById('fileUploadLabel').innerText = "✅ Retaining saved photo string"; }
+        if(p.image) { currentModalImageBase64 = p.image; document.getElementById('fileUploadLabel').innerText = "Image retained"; }
     } else {
-        document.getElementById('poseModalTitle').innerText = "Inject New Flow Target Look";
+        document.getElementById('poseModalTitle').innerText = "Add New Look";
         document.getElementById('poseModalName').value = '';
         document.getElementById('poseModalSetup').value = '';
         document.getElementById('poseModalScript').value = '';
@@ -697,124 +592,74 @@ function openPoseModal(isEdit = false, idx = null) {
 function closePoseModal() { document.getElementById('poseModal').classList.remove('open'); }
 
 function savePose() {
-    const name = document.getElementById('poseModalName').value.trim();
-    if(!name) return;
-    const sk = `${currentSessionType}_${currentLength}`;
+    const name = document.getElementById('poseModalName').value.trim(); if(!name) return;
+    const sk = currentSessionType + '_' + currentLength;
     const poses = appData.customSessions[sk][currentZoneIndex].poses;
-    const payload = {
-        name, crop: document.getElementById('poseModalCrop').value,
-        setup: document.getElementById('poseModalSetup').value,
-        script: document.getElementById('poseModalScript').value,
-        image: currentModalImageBase64 || (editMode ? poses[targetIdx].image : "")
-    };
+    const payload = { name, crop: document.getElementById('poseModalCrop').value, setup: document.getElementById('poseModalSetup').value, script: document.getElementById('poseModalScript').value, image: currentModalImageBase64 || (editMode ? poses[targetIdx].image : "") };
     if(editMode) poses[targetIdx] = payload; else poses.push(payload);
     saveStateToDisk(); closePoseModal(); renderZonesView(); showToast("Playbook Updated");
 }
 
 function deletePose(idx) {
-    if(confirm("Purge look component from production active loop?")) {
-        const sk = `${currentSessionType}_${currentLength}`; appData.customSessions[sk][currentZoneIndex].poses.splice(idx,1);
+    if(confirm("Delete this look?")) {
+        appData.customSessions[currentSessionType + '_' + currentLength][currentZoneIndex].poses.splice(idx, 1);
         saveStateToDisk(); renderZonesView();
     }
 }
 
 function openZoneModal() { document.getElementById('zoneModal').classList.add('open'); }
-function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value=''; }
+function closeZoneModal() { document.getElementById('zoneModal').classList.remove('open'); document.getElementById('zoneModalName').value = ''; }
 function saveZone() {
     const name = document.getElementById('zoneModalName').value.trim(); if(!name) return;
-    const sk = `${currentSessionType}_${currentLength}`;
+    const sk = currentSessionType + '_' + currentLength;
     appData.customSessions[sk].push({ name, notes: '', poses: [] });
     currentZoneIndex = appData.customSessions[sk].length - 1;
     saveStateToDisk(); closeZoneModal(); renderZonesView();
 }
 
 function toggleStar(idx) {
-    const sk = `${currentSessionType}_${currentLength}`; const p = appData.customSessions[sk][currentZoneIndex].poses[idx];
+    const p = appData.customSessions[currentSessionType + '_' + currentLength][currentZoneIndex].poses[idx];
     const fIdx = appData.favorites.findIndex(f => f.name === p.name);
     if(fIdx > -1) appData.favorites.splice(fIdx, 1); else appData.favorites.push(p);
-    saveStateToDisk(); renderZonesView(); showToast("Starred Index Adjusted");
+    saveStateToDisk(); renderZonesView(); showToast("Starred Updated");
 }
 
 function showFavorites() {
-    navigateTo('screenFavs'); const container = document.getElementById('favsContent');
-    if(!appData.favorites.length) { container.innerHTML = '<div class="empty">No master portfolios cataloged.</div>'; return; }
-    container.innerHTML = `<div style="padding:16px; font-family:var(--font-display); font-size:22px;">STARRED PORTFOLIO INDEX</div>
-    <div class="poses-list">${appData.favorites.map((p, i) => `
-        <div class="pose-card">
-            <div class="pose-header">
-                <div class="pose-num" style="color:var(--accent)">★</div>
-                <div class="pose-name-container"><div class="pose-name">${p.name}</div><div class="crop-badge ${p.crop}">${p.crop}</div></div>
-                <button class="check-del" onclick="removeFavDirect(${i})">×</button>
-            </div>
-            <div class="pose-body" style="display:block;">
-                ${p.image ? `<img src="${p.image}" class="pose-photo-preview" />` : ''}
-                <div class="instruction-box"><div class="instruction-text">${p.setup}</div></div>
-                <div class="script-box"><div class="script-text">${p.script}</div></div>
-            </div>
-        </div>
-    `).join('')}</div>`;
+    navigateTo('screenFavs');
+    const container = document.getElementById('favsContent');
+    if(!appData.favorites.length) { container.innerHTML = '<div class="empty">No favorites yet.</div>'; return; }
+    container.innerHTML = '<div style="padding:16px;font-family:var(--font-display);font-size:22px;">STARRED</div><div class="poses-list">' +
+        appData.favorites.map((p, i) =>
+            '<div class="pose-card"><div class="pose-header">' +
+            '<div class="pose-num" style="color:var(--accent)">★</div>' +
+            '<div class="pose-name-container"><div class="pose-name">' + p.name + '</div><div class="crop-badge ' + p.crop + '">' + p.crop + '</div></div>' +
+            '<button class="check-del" onclick="removeFavDirect(' + i + ')">&#215;</button></div>' +
+            '<div class="pose-body" style="display:block;">' +
+            (p.image ? '<img src="' + p.image + '" class="pose-photo-preview" />' : '') +
+            '<div class="instruction-box"><div class="instruction-text">' + p.setup + '</div></div>' +
+            '<div class="script-box"><div class="script-text">' + p.script + '</div></div></div></div>'
+        ).join('') + '</div>';
 }
-function removeFavDirect(i) { appData.favorites.splice(i,1); saveStateToDisk(); showFavorites(); }
+function removeFavDirect(i) { appData.favorites.splice(i, 1); saveStateToDisk(); showFavorites(); }
 
 let dragSrc = null;
 function initDragAndDrop() {
     const list = document.getElementById('posesLiveContainer'); if(!list) return;
-    list.addEventListener('dragstart', (e) => { dragSrc = e.target.closest('.pose-card'); e.dataTransfer.effectAllowed='move'; });
-    list.addEventListener('dragover', (e) => { e.preventDefault(); });
-    list.addEventListener('drop', (e) => {
-        e.preventDefault(); const target = e.target.closest('.pose-card');
+    list.addEventListener('dragstart', e => { dragSrc = e.target.closest('.pose-card'); e.dataTransfer.effectAllowed = 'move'; });
+    list.addEventListener('dragover', e => e.preventDefault());
+    list.addEventListener('drop', e => {
+        e.preventDefault();
+        const target = e.target.closest('.pose-card');
         if(!target || target === dragSrc) return;
-        const sIdx = parseInt(dragSrc.getAttribute('data-index')); const tIdx = parseInt(target.getAttribute('data-index'));
-        const sk = `${currentSessionType}_${currentLength}`; const poses = appData.customSessions[sk][currentZoneIndex].poses;
+        const sIdx = parseInt(dragSrc.getAttribute('data-index'));
+        const tIdx = parseInt(target.getAttribute('data-index'));
+        const poses = appData.customSessions[currentSessionType + '_' + currentLength][currentZoneIndex].poses;
         const [moved] = poses.splice(sIdx, 1); poses.splice(tIdx, 0, moved);
         saveStateToDisk(); renderZonesView();
     });
 }
 
-function showToast(m) { const t = document.getElementById('toast'); t.innerText=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
-    <script>
-        // --- FIREBASE SETUP ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyADL9gFcf52Gy2ZSopy0VaQJex3bW2IlZk",
-            authDomain: "pose-guide.firebaseapp.com",
-            projectId: "pose-guide",
-            storageBucket: "pose-guide.firebasestorage.app",
-            messagingSenderId: "989912567243",
-            appId: "1:989912567243:web:10d7eaf1788250ac093a4e",
-            measurementId: "G-1ZQ49R12GY"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-
-        // Data initialization
-        let appData = { clientName: '', checklist: [], favorites: [], customSessions: {} };
-
-        // Auto-login and Sync Engine
-        auth.signInAnonymously().then(() => {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    db.collection('user_data').doc(user.uid).get().then(doc => {
-                        if (doc.exists) { 
-                            appData = doc.data(); 
-                            renderHome(); 
-                        }
-                    });
-                }
-            });
-        });
-
-        function saveStateToDisk() { 
-            localStorage.setItem('photog_playbook_v4', JSON.stringify(appData)); 
-            if (auth.currentUser) {
-                db.collection('user_data').doc(auth.currentUser.uid).set(appData);
-            }
-        }
-
-        // --- PASTE YOUR ORIGINAL JS FUNCTIONS BELOW THIS LINE ---
-        // (Copy everything from your original file that isn't CSS/HTML and put it here)
-        
-    </script>
+function showToast(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+</script>
 </body>
 </html>
